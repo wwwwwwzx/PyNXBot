@@ -28,7 +28,7 @@ class NXBot(object):
 	
 	def read(self,address,size,save2file = False):
 		self.sendCommand(f'peek 0x{address:X} 0x{size:X}')
-		time.sleep(0.5)
+		time.sleep(0.05)
 		buf = self.s.recv(2 * size + 1)
 		buf = binascii.unhexlify(buf[0:-1])
 		if save2file:

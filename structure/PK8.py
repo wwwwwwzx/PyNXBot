@@ -113,10 +113,10 @@ class PK8(ByteStruct):
 			return 'Invalid Data'
 
 	def isValid(self):
-	    return self.checksum() == self.calChecksum()
+	    return self.checksum() == self.calChecksum() and not self.isEncrypted()
 
 	def isEncrypted(self):
-		return (self.getushort(0x70) != 0) & (self.getushort(0xC0) != 0)
+		return self.getushort(0x70) != 0 and self.getushort(0xC0) != 0
 
 	def decrypt(self):
 		seed = self.ec()
