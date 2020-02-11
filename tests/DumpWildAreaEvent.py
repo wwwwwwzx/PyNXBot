@@ -23,9 +23,9 @@ else:
 		print(f"Game Version:{table.GameVersion()}")
 		for jj in range(table.EntriesLength()):
 			entry = table.Entries(jj)
-			msg = f"{entry.EntryIndex()}:\t{'G-' if entry.IsGigantamax() else ''}{pmtext.species[entry.Species()]}{('-' + str(entry.AltForm())) if entry.AltForm() > 0 else ''}  Lv:{entry.Level()}\t\t"
+			msg = f"{entry.EntryIndex()}:\t{'G-' if entry.IsGigantamax() else ''}{pmtext.species[entry.Species()]}{('-' + str(entry.AltForm())) if entry.AltForm() > 0 else ''}  Lv:{entry.Level()}"
+			msg = f"{msg:25}\t"
 			msg += f"A:{entry.Ability()} N:{entry.Nature()} G:{entry.Gender()}\t"
-			for p in entry.ProbabilitiesAsNumpy():
-				msg += f"{p} "
+			msg += f"{entry.ProbabilitiesAsNumpy()} "
 			msg += f"{pmtext.moves[entry.Move0()]} / {pmtext.moves[entry.Move1()]} / {pmtext.moves[entry.Move2()]} / {pmtext.moves[entry.Move3()]}\t"
 			print(msg)
