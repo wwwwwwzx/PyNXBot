@@ -1,1 +1,1 @@
-from .G8RNG import XOROSHIRO,Raid
+from .G8RNG import XOROSHIRO,Raid,Toxtricity
