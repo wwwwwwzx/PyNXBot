@@ -26,13 +26,15 @@ class NXBot(object):
 	def release(self,button):
 		self.sendCommand('release '+ button)
 	
-	def read(self,address,size,save2file = False):
+	def read(self,address,size,filename = None):
 		self.sendCommand(f'peek 0x{address:X} 0x{size:X}')
-		time.sleep(0.05)
+		time.sleep(size/0x20000)
 		buf = self.s.recv(2 * size + 1)
 		buf = binascii.unhexlify(buf[0:-1])
-		if save2file:
-			with open(f'dump_heap_0x{address:X}_0x{size:X}.bin','wb') as fileOut:
+		if filename is not None:
+			if filename == '':
+				filename = f'dump_heap_0x{address:X}_0x{size:X}.bin'
+			with open(filename,'wb') as fileOut:
 				fileOut.write(buf)
 		return buf
 
@@ -67,8 +69,17 @@ class SWSHBot(NXBot):
 	def readLegend(self):
 		return self.read(0x85C74F88,self.PK8STOREDSIZE)
 
-	def readEventBlock(self):
-		return self.read(0x2E5E58B8,0x23D4,True)
+	def readEventBlock_RaidEncounter(self):
+		return self.read(0x2E5E58B8,0x23D4,'normal_encount')
+
+	def readEventBlock_CrystalEncounter(self):
+		return self.read(0x2E5E7D40,0x1241C,'dai_encount')
+
+	def readEventBlock_DropRewards(self):
+		return self.read(0x2E5FA210,0x426C,'drop_rewards')
+
+	def readEventBlock_BonusRewards(self):
+		return self.read(0x2E5FE530,0x116C4,'bonus_rewards')
 
 	def readDen(self,denID):
 		denDataSize = 0x18;

@@ -2,15 +2,14 @@
 import sys
 sys.path.append('../')
 
-from structure import NestHoleDistributionEncounter8Archive
+from structure import NestHoleDistributionEncounter8Archive, NestHoleCrystalEncounter8Archive, NestHoleDistributionReward8Archive
 from lookups import PKMString
 from nxbot import SWSHBot
 
 pmtext = PKMString()
 b = SWSHBot('192.168.0.10')
-buf = b.readEventBlock()
-b.close()
-# buf = open('dump_heap_0x2E5E58B8_0x23D4','rb').read()
+buf = b.readEventBlock_RaidEncounter()
+# buf = open('normal_encount','rb').read()
 # buf = bytearray(buf)
 
 eventencounter = NestHoleDistributionEncounter8Archive.GetRootAsNestHoleDistributionEncounter8Archive(buf,0x20)
@@ -29,3 +28,20 @@ else:
 			msg += f"{entry.ProbabilitiesAsNumpy()} "
 			msg += f"{pmtext.moves[entry.Move0()]} / {pmtext.moves[entry.Move1()]} / {pmtext.moves[entry.Move2()]} / {pmtext.moves[entry.Move3()]}\t"
 			print(msg)
+
+buf = b.readEventBlock_CrystalEncounter()
+crystalencounter = NestHoleCrystalEncounter8Archive.GetRootAsNestHoleCrystalEncounter8Archive(buf,0x20)
+if crystalencounter.TablesIsNone():
+	print('Wrong offset!')
+else: 
+	pass
+
+buf = b.readEventBlock_DropRewards()
+dropreward = NestHoleDistributionReward8Archive.GetRootAsNestHoleDistributionReward8Archive(buf,0x20)
+if dropreward.TablesIsNone():
+	print('Wrong offset!')
+else: 
+	pass
+
+buf = b.readEventBlock_BonusRewards()
+b.close()
