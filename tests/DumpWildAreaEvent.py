@@ -30,7 +30,8 @@ else:
 			msg = f"{entry.EntryIndex()}:\t{'G-' if entry.IsGigantamax() else ''}{pmtext.species[entry.Species()]}{('-' + str(entry.AltForm())) if entry.AltForm() > 0 else ''}  Lv:{entry.Level()}"
 			msg = f"{msg:25}\t"
 			msg += f"A:{entry.Ability()} N:{entry.Nature()} G:{entry.Gender()}\t"
-			msg += f"{entry.ProbabilitiesAsNumpy()} "
+			msg += f"{entry.ProbabilitiesAsNumpy()}\t"
+			msg += f"Drop:{entry.DropTableID():X} Bonus:{entry.BonusTableID():X}\t"
 			msg += f"{pmtext.moves[entry.Move0()]} / {pmtext.moves[entry.Move1()]} / {pmtext.moves[entry.Move2()]} / {pmtext.moves[entry.Move3()]}\t"
 			print(msg)
 
@@ -46,7 +47,7 @@ if crystalencounter.TablesIsNone():
 else: 
 	for ii in range(crystalencounter.TablesLength()):
 		table = crystalencounter.Tables(ii);
-		print(f"Table ID:{table.TableID()}")
+		print(f"Table ID:{table.TableID():X}")
 		print(f"Game Version:{table.GameVersion()}")
 		for jj in range(table.EntriesLength()):
 			entry = table.Entries(jj)
@@ -71,7 +72,7 @@ if dropreward.TablesIsNone():
 else: 
 	for ii in range(dropreward.TablesLength()):
 		table = dropreward.Tables(ii);
-		print(f"Drop Table ID:{table.TableID()}")
+		print(f"Drop Table ID:{table.TableID():X}")
 		msg = ''
 		for jj in range(table.EntriesLength()):
 			msg += pmtext.items[table.Entries(jj).ItemID()] + '\t'
