@@ -5,7 +5,6 @@ from lookups import PKMString
 from nxbot import SWSHBot
 from structure import NestHoleDistributionEncounter8Archive, NestHoleCrystalEncounter8Archive, NestHoleDistributionReward8Archive
 
-
 ReadFromConsole = True
 IP = '192.168.0.10'
 
@@ -29,7 +28,7 @@ else:
 			entry = table.Entries(jj)
 			msg = f"{entry.EntryIndex()}:\t{'G-' if entry.IsGigantamax() else ''}{pmtext.species[entry.Species()]}{('-' + str(entry.AltForm())) if entry.AltForm() > 0 else ''}  Lv:{entry.Level()}"
 			msg = f"{msg:25}\t"
-			msg += f"A:{entry.Ability()} N:{entry.Nature()} G:{entry.Gender()}\t"
+			msg += f"A:{entry.Ability()} N:{entry.Nature()} G:{entry.Gender()} IV:{entry.FlawlessIVs()}\t"
 			msg += f"{entry.ProbabilitiesAsNumpy()}\t"
 			msg += f"Drop:{entry.DropTableID():X} Bonus:{entry.BonusTableID():X}\t"
 			msg += f"{pmtext.moves[entry.Move0()]} / {pmtext.moves[entry.Move1()]} / {pmtext.moves[entry.Move2()]} / {pmtext.moves[entry.Move3()]}\t"
@@ -82,4 +81,5 @@ if ReadFromConsole:
 	buf = b.readEventBlock_BonusRewards()
 else:
 	buf = bytearray(open('Bonus_rewards','rb').read())
-b.close()
+if ReadFromConsole:
+	b.close()
