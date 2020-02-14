@@ -11,3 +11,5 @@ class PKMString(object):
 			self.species = file.read().splitlines()
 		with open(currentfolder + '/Moves.txt','r', encoding="utf8") as file: 
 			self.moves = file.read().splitlines()
+		with open(currentfolder + '/Items.txt','r', encoding="utf8") as file: 
+			self.items = file.read().splitlines()
