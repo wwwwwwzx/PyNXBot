@@ -53,6 +53,8 @@ else:
 				msg += "No Shiny\t"
 			elif entry.Field12() == 2:
 				msg += "Forced shiny\t"
+			if entry.Field13() > 4:
+				msg += "Not catchable\t"
 			if entry.Ability() == 4:
 				pass # random ability
 			elif entry.Ability() == 3:
@@ -70,8 +72,12 @@ else:
 			rank = np.nonzero(entry.ProbabilitiesAsNumpy())[0][0]
 			msg += f"{entry.ProbabilitiesAsNumpy()}\t"
 			# msg += f"Drop:{entry.DropTableID():X} Bonus:{entry.BonusTableID():X}\t"
-			msg += f"{pmtext.moves[entry.Move0()]} / {pmtext.moves[entry.Move1()]} / {pmtext.moves[entry.Move2()]} / {pmtext.moves[entry.Move3()]}\t"
-			msg += f"({pmtext.moves[entry.Field20()]})"
+			msg += f"{pmtext.moves[entry.Move0()]} / {pmtext.moves[entry.Move1()]} / {pmtext.moves[entry.Move2()]} / {pmtext.moves[entry.Move3()]}  \t"
+			if entry.Field1F() > 0:
+				msg += f"({pmtext.moves[entry.Field20()]}-{entry.Field1F()}%-{entry.Field21()})"
+			if entry.Field22() > 0:
+				msg += f"({pmtext.moves[entry.Field23()]}-{entry.Field22()}%-{entry.Field24()})"
+
 			print(msg)
 
 			dropid = entry.DropTableID()
