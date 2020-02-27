@@ -16,3 +16,7 @@ from .NestHoleDistributionEncounter8Archive import NestHoleDistributionEncounter
 from .NestHoleDistributionReward8 import NestHoleDistributionReward8
 from .NestHoleDistributionReward8Table import NestHoleDistributionReward8Table
 from .NestHoleDistributionReward8Archive import NestHoleDistributionReward8Archive
+
+from .NestHoleReward8 import NestHoleReward8
+from .NestHoleReward8Table import NestHoleReward8Table
+from .NestHoleReward8Archive import NestHoleReward8Archive
