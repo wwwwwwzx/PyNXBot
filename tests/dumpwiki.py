@@ -4,7 +4,6 @@ Path = 'event/Index 12/'
 import sys
 sys.path.append('../')
 from lookups import PKMString
-from nxbot import SWSHBot
 from structure import NestHoleReward8Archive
 from structure import NestHoleDistributionEncounter8Archive, NestHoleCrystalEncounter8Archive, NestHoleDistributionReward8Archive
 from structure import PersonalTable
@@ -57,6 +56,7 @@ for ii in range(eventencounter.TablesLength()):
 	print(f'! colspan="11" | Nest ID：{table.TableID()}')
 	for jj in range(table.EntriesLength()):
 		entry = table.Entries(table.EntriesLength() - jj - 1)
+		pi = pt.getFormeEntry(entry.Species(),entry.AltForm())
 		rank = np.nonzero(entry.ProbabilitiesAsNumpy())[0]
 		print('|- style="background:white"')
 		msg = '| '
@@ -158,11 +158,11 @@ for ii in range(eventencounter.TablesLength()):
 		elif entry.Ability() == 3:
 			comment +=f"特性:随机普特<br>"
 		elif entry.Ability() == 2:
-			comment +=f"固定[[{pmtext.abilities[pt.getFormeEntry(entry.Species(),entry.AltForm()).AbilityH()]}]]<br>"
+			comment +=f"固定[[{pmtext.abilities[pi.AbilityH()]}]]<br>"
 		elif entry.Ability() == 1:
-			comment +=f"固定[[{pmtext.abilities[pt.getFormeEntry(entry.Species(),entry.AltForm()).Ability2()]}]]<br>"
+			comment +=f"固定[[{pmtext.abilities[pi.Ability2()]}]]<br>"
 		else:
-			comment +=f"固定[[{pmtext.abilities[pt.getFormeEntry(entry.Species(),entry.AltForm()).Ability1()]}]]<br>"
+			comment +=f"固定[[{pmtext.abilities[pi.Ability1()]}]]<br>"
 		if entry.Nature() == 25:
 			pass # random nature
 		else:

@@ -32,6 +32,12 @@ class PersonalInfoSWSH(PersonalInfo):
 		self.data = bytearray(PersonalInfoSWSH.SIZE)
 		self.data[:] = buf
 
+	def Type1(self):
+		return self.getbyte(0x06)
+
+	def Type2(self):
+		return self.getbyte(0x07)
+
 	def Ability1(self):
 		return self.getushort(0x18)
 
