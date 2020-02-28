@@ -7,13 +7,13 @@ from structure import EncounterNest8Archive
 from structure import NestHoleReward8Archive
 
 pmtext = PKMString()
-buf = bytearray(open('local_raid','rb').read())
+buf = bytearray(open('../resources/bytes/local_raid','rb').read())
 encounter = EncounterNest8Archive.GetRootAsEncounterNest8Archive(buf,0)
 
-buf = bytearray(open('local_drop','rb').read())
+buf = bytearray(open('../resources/bytes/local_drop','rb').read())
 drop = NestHoleReward8Archive.GetRootAsNestHoleReward8Archive(buf,0)
 
-buf = bytearray(open('local_bonus','rb').read())
+buf = bytearray(open('../resources/bytes/local_bonus','rb').read())
 bonus = NestHoleReward8Archive.GetRootAsNestHoleReward8Archive(buf,0)
 
 if encounter.TablesIsNone():
