@@ -1,4 +1,6 @@
 # Go to root of PyNXBot
+
+Path = 'event/Index 01/'
 import sys
 sys.path.append('../')
 from lookups import PKMString
@@ -16,19 +18,30 @@ def getitem(itemid):
 	else:
 		return "{{Bag|" + pmtext.items[itemid] + "}}{{i|" + pmtext.items[itemid] + "}}"
 
+def getspecies(species, isgmax = False, formid = 0, isShiny = False):
+	if species == 849:
+		t = '{{MSP|' + f'{species:03}' +('GM' if isgmax else 'L' if formid == 1 else '') + '}}<br>[[' + pmtext.species[species] + ']]<br><small>' + ('高调的样子' if formid == 0 else '低调的样子') + '</small>'
+	elif species == 868:
+		t = '{{MSP|' + f'{species:03}' + '}}<br>[[' + pmtext.species[species] + ']]' + ('<br />[[File:极巨化 Sprite.png|link=极巨化]]' if isgmax else '')
+	else:
+		t = '{{MSP|' + f'{species:03}' +('GM' if isgmax else '') + '}}<br>[[' + pmtext.species[species] + ']]' + (f'<br>形态数:{formid}' if formid > 0 else '')
+	if isShiny:
+		t+= '<br>[[File:ShinySWSHStar.png]]'
+	return t
+
 pmtext = PKMString()
 buf = bytearray(open('local_drop','rb').read())
 drop = NestHoleReward8Archive.GetRootAsNestHoleReward8Archive(buf,0)
 buf = bytearray(open('local_bonus','rb').read())
 bonus = NestHoleReward8Archive.GetRootAsNestHoleReward8Archive(buf,0)
 
-buf = bytearray(open('normal_encount','rb').read())
+buf = bytearray(open(Path + 'normal_encount','rb').read())
 eventencounter = NestHoleDistributionEncounter8Archive.GetRootAsNestHoleDistributionEncounter8Archive(buf,0x20)
-buf = bytearray(open('drop_rewards','rb').read())
+buf = bytearray(open(Path + 'drop_rewards','rb').read())
 dropreward = NestHoleDistributionReward8Archive.GetRootAsNestHoleDistributionReward8Archive(buf,0x20)
-buf = bytearray(open('Bonus_rewards','rb').read())
+buf = bytearray(open(Path + 'bonus_rewards','rb').read())
 bonusreward = NestHoleDistributionReward8Archive.GetRootAsNestHoleDistributionReward8Archive(buf,0x20)
-
+print('__TOC__')
 for ii in range(eventencounter.TablesLength()):
 	table = eventencounter.Tables(ii)
 	ver = '剑' if table.GameVersion() == 1 else '盾'
@@ -50,7 +63,7 @@ for ii in range(eventencounter.TablesLength()):
 				stars += '★'
 			msg += stars + '<br>(' + f'{entry.Probabilities(r)}%)<br>'
 		msg =  msg[:-4] + ' || ' 
-		msg += '{{MSP|' + f'{entry.Species():03}' +('GM' if entry.IsGigantamax() else '') + '}}<br>[[' + pmtext.species[entry.Species()] + ']] || '
+		msg += getspecies(entry.Species(),entry.IsGigantamax(),entry.AltForm(),entry.Field12() == 2) + ' || '
 		msg += f'{entry.Level()}' + ' || '
 		msg += f'{entry.FlawlessIVs()}' + ' || '
 		msg += f'{entry.Field1E()}' + ' || '
@@ -58,7 +71,14 @@ for ii in range(eventencounter.TablesLength()):
 		msg += f'{entry.DynamaxBoost():0.1f}' + 'x || '
 		Sep = '}}<br>{{m|'
 		msg += '{{m|'
-		msg += f"{pmtext.moves[entry.Move0()]}{Sep}{pmtext.moves[entry.Move1()]}{Sep}{pmtext.moves[entry.Move2()]}{Sep}{pmtext.moves[entry.Move3()]}"
+		if entry.Move3() > 0:
+			msg += f"{pmtext.moves[entry.Move0()]}{Sep}{pmtext.moves[entry.Move1()]}{Sep}{pmtext.moves[entry.Move2()]}{Sep}{pmtext.moves[entry.Move3()]}"
+		elif entry.Move2() > 0:
+			msg += f"{pmtext.moves[entry.Move0()]}{Sep}{pmtext.moves[entry.Move1()]}{Sep}{pmtext.moves[entry.Move2()]}"
+		elif entry.Move1() > 0:
+			msg += f"{pmtext.moves[entry.Move0()]}{Sep}{pmtext.moves[entry.Move1()]}"
+		else:
+			msg += f"{pmtext.moves[entry.Move0()]}"
 		msg += "}}"
 		if entry.Field1F() > 0:
 			msg += "<br><br>{{m|" + f"{pmtext.moves[entry.Field20()]}" + "}}<br>" + f"({entry.Field1F()}% - {entry.Field21()})"
@@ -129,13 +149,13 @@ for ii in range(eventencounter.TablesLength()):
 		if entry.Field12() == 1:
 			comment += "必定非异色<br>"
 		elif entry.Field12() == 2:
-			comment += "必定异色<br>"
+			pass # comment += "必定异色<br>"
 		if entry.Ability() == 4:
 			pass # comment +=f"特性:随机可梦特<br>"
 		elif entry.Ability() == 3:
 			comment +=f"特性:随机普特<br>"
 		elif entry.Ability() == 2:
-			comment +=f"特性:只有梦特<br>"
+			comment +=f"必定[[隐藏特性]]<br>"
 		else:
 			comment += f"特性:只有特性{entry.Ability() + 1}<br>"
 		if entry.Nature() == 25:
@@ -144,8 +164,8 @@ for ii in range(eventencounter.TablesLength()):
 			comment += f"性格:{pmtext.natures[entry.Nature()]}<br>"
 		if entry.Field13() > 4:
 			comment += f"无法捕捉<br>"
-		if entry.AltForm() > 0:
-			comment += f"形态数:{entry.AltForm()}<br>"
+		# if entry.AltForm() > 0:
+		# 	comment += f"形态数:{entry.AltForm()}<br>"
 		msg += ('-' if comment == '' else comment[:-4])
 		print(msg)
 	print('|}\n\n\n')
