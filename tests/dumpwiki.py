@@ -1,12 +1,13 @@
 # Go to root of PyNXBot
 
-Path = 'event/Index 01/'
+Path = 'event/Index 12/'
 import sys
 sys.path.append('../')
 from lookups import PKMString
 from nxbot import SWSHBot
 from structure import NestHoleReward8Archive
 from structure import NestHoleDistributionEncounter8Archive, NestHoleCrystalEncounter8Archive, NestHoleDistributionReward8Archive
+from structure import PersonalTable
 import flatbuffers
 from flatbuffers.compat import import_numpy
 np = import_numpy()
@@ -30,10 +31,12 @@ def getspecies(species, isgmax = False, formid = 0, isShiny = False):
 	return t
 
 pmtext = PKMString()
-buf = bytearray(open('local_drop','rb').read())
+buf = bytearray(open('../resources/bytes/local_drop','rb').read())
 drop = NestHoleReward8Archive.GetRootAsNestHoleReward8Archive(buf,0)
-buf = bytearray(open('local_bonus','rb').read())
+buf = bytearray(open('../resources/bytes/local_bonus','rb').read())
 bonus = NestHoleReward8Archive.GetRootAsNestHoleReward8Archive(buf,0)
+buf = bytearray(open('../resources/bytes/personal_swsh','rb').read())
+pt = PersonalTable(buf)
 
 buf = bytearray(open(Path + 'normal_encount','rb').read())
 eventencounter = NestHoleDistributionEncounter8Archive.GetRootAsNestHoleDistributionEncounter8Archive(buf,0x20)
@@ -155,9 +158,11 @@ for ii in range(eventencounter.TablesLength()):
 		elif entry.Ability() == 3:
 			comment +=f"特性:随机普特<br>"
 		elif entry.Ability() == 2:
-			comment +=f"必定[[隐藏特性]]<br>"
+			comment +=f"固定[[{pmtext.abilities[pt.getFormeEntry(entry.Species(),entry.AltForm()).AbilityH()]}]]<br>"
+		elif entry.Ability() == 1:
+			comment +=f"固定[[{pmtext.abilities[pt.getFormeEntry(entry.Species(),entry.AltForm()).Ability2()]}]]<br>"
 		else:
-			comment += f"特性:只有特性{entry.Ability() + 1}<br>"
+			comment +=f"固定[[{pmtext.abilities[pt.getFormeEntry(entry.Species(),entry.AltForm()).Ability1()]}]]<br>"
 		if entry.Nature() == 25:
 			pass # random nature
 		else:
