@@ -89,7 +89,7 @@ if ShortVersion:
 			entry1 = eventencounter.Tables(0).Entries(ii)
 			if entry1.Probabilities(star) > 0:
 				entry2 = eventencounter.Tables(1).Entries(ii)
-				if entry1.Species() == entry2.Species() and entry1.AltForm() == entry2.AltForm() and entry1.IsGigantamax() == entry2.IsGigantamax() and entry1.ShinyFlag() == entry2.Field12():
+				if entry1.Species() == entry2.Species() and entry1.AltForm() == entry2.AltForm() and entry1.IsGigantamax() == entry2.IsGigantamax() and entry1.ShinyFlag() == entry2.ShinyFlag():
 					# Same entry
 					msg = header + getspecies_short(entry1.Species(),entry1.IsGigantamax(),entry1.AltForm())
 					msg += f'|yes|yes|团体战|{entry1.Level()}|{entry1.Probabilities(star)}%|'

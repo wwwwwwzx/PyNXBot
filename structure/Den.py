@@ -11,6 +11,8 @@ class DenType(Enum):
 
 class Den(ByteStruct):
 	SIZE = 0x18
+	LOCALTABLE = None
+	EVENTTABLE = None
 	def __init__(self,buf):
 		self.data = bytearray(Den.SIZE)
 		self.data[:] = buf
@@ -45,13 +47,13 @@ class Den(ByteStruct):
 	def isEvent(self):
 		return (self.flagByte() & 2) == 2
 
-	def getSpawn(self,denID,localtable,eventtable,isSword = True):
+	def getSpawn(self,denID,isSword = True):
 		gameversion = 1 if isSword else 2
 		randroll = self.randroll()
 		rank = self.stars() - 1
 		if self.isEvent():
-			for ii in range(localtable.TablesLength()):
-				table = eventtable.Tables(ii)
+			for ii in range(Den.EVENTTABLE.TablesLength()):
+				table = Den.EVENTTABLE.Tables(ii)
 				if table.GameVersion() == gameversion:
 					for jj in range(table.EntriesLength()):
 						entry = table.Entries(jj)
@@ -60,8 +62,8 @@ class Den(ByteStruct):
 							return entry
 		else:
 			denhash = Den.DENHASHES[denID][1 if self.isRare() else 0]
-			for ii in range(localtable.TablesLength()):
-				table = localtable.Tables(ii)
+			for ii in range(Den.LOCALTABLE.TablesLength()):
+				table = Den.LOCALTABLE.Tables(ii)
 				if table.TableID() == denhash and table.GameVersion() == gameversion:
 					for jj in range(table.EntriesLength()):
 						entry = table.Entries(jj)

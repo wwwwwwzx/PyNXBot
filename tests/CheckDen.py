@@ -24,18 +24,18 @@ from rng import XOROSHIRO,Raid
 
 pmtext = PKMString()
 buf = bytearray(open('../resources/bytes/local_raid','rb').read())
-local = EncounterNest8Archive.GetRootAsEncounterNest8Archive(buf,0)
+Den.LOCALTABLE = EncounterNest8Archive.GetRootAsEncounterNest8Archive(buf,0)
 b = SWSHBot(IP)
 if ReadEventFromConsole:
 	buf = b.readEventBlock_RaidEncounter(DumpPath)
 else:
 	buf = bytearray(open(LocalPath + 'normal_encount','rb').read())
-event = NestHoleDistributionEncounter8Archive.GetRootAsNestHoleDistributionEncounter8Archive(buf,0x20)
+Den.EVENTTABLE = NestHoleDistributionEncounter8Archive.GetRootAsNestHoleDistributionEncounter8Archive(buf,0x20)
 seed = None
 for ii in range(SWSHBot.DENCOUNT):
 	den = Den(b.readDen(ii))
 	if den.isActive():
-		spawn = den.getSpawn(denID = ii, localtable = local, eventtable = event, isSword = isPlayingSword)
+		spawn = den.getSpawn(denID = ii, isSword = isPlayingSword)
 		info = f"denID {ii}:0x{den.seed():X}\t{den.stars()}★\tSpecies: {pmtext.species[spawn.Species()]}\t"
 		if den.isEvent():
 			info += "Event\t"
