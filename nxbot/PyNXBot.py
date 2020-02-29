@@ -7,6 +7,10 @@ class NXBot(object):
 		self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.s.connect((ip, port))
 		print('Bot Connected')
+		self.configure()
+
+	def configure(self):
+		self.sendCommand('configure echoCommands 0')
 
 	def sendCommand(self,content):
 		content += '\r\n' #important for the parser on the switch side
@@ -69,17 +73,17 @@ class SWSHBot(NXBot):
 	def readLegend(self):
 		return self.read(0x85C74F88,self.PK8STOREDSIZE)
 
-	def readEventBlock_RaidEncounter(self):
-		return self.read(0x2E5E58B8,0x23D4,'normal_encount')
+	def readEventBlock_RaidEncounter(self,path=''):
+		return self.read(0x2E5E58B8,0x23D4,path + 'normal_encount')
 
-	def readEventBlock_CrystalEncounter(self):
-		return self.read(0x2E5E7D40,0x1241C,'dai_encount')
+	def readEventBlock_CrystalEncounter(self,path=''):
+		return self.read(0x2E5E7D40,0x1241C,path + 'dai_encount')
 
-	def readEventBlock_DropRewards(self):
-		return self.read(0x2E5FA210,0x426C,'drop_rewards')
+	def readEventBlock_DropRewards(self,path=''):
+		return self.read(0x2E5FA210,0x426C,path + 'drop_rewards')
 
-	def readEventBlock_BonusRewards(self):
-		return self.read(0x2E5FE530,0x116C4,'bonus_rewards')
+	def readEventBlock_BonusRewards(self,path=''):
+		return self.read(0x2E5FE530,0x116C4,path + 'bonus_rewards')
 
 	def readDen(self,denID):
 		denDataSize = 0x18;

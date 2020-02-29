@@ -76,16 +76,21 @@ class XOROSHIRO(object):
         models = get_models(solver)
         return [ model[start_s0].as_long() for model in models ]
 
-class Toxtricity(Enum):
-    NONE = 0
-    AMPED = 1
-    LOWKEY = 2
+class FrameGenerator(object):
+    GenderSymbol = ['♂','♀','-']
+    from structure import PersonalTable
+    PT = PersonalTable(bytearray(open('../resources/bytes/personal_swsh','rb').read()))
+    pmstring = PKMString()
 
-class Raid(object):
+class Egg(FrameGenerator):
+    pass
+
+class Raid(FrameGenerator):
     toxtricityAmpedNatures = [3, 4, 2, 8, 9, 19, 22, 11, 13, 14, 0, 6, 24]
     toxtricityLowKeyNatures = [1, 5, 7, 10, 12, 15, 16, 17, 18, 20, 21, 23]
 
-    def __init__(self,seed,flawlessiv, HA = 0, RandomGender = 1, ToxicityType = Toxtricity.NONE):
+    def __init__(self,seed,flawlessiv, ability = 4, gender = 0, species = 25, altform = 0):
+        pi = FrameGenerator.PT.getFormeEntry(species,altform)
         self.seed = seed
         r = XOROSHIRO(seed)
         self.EC = r.nextuint()
@@ -109,24 +114,34 @@ class Raid(object):
             if self.IVs[i] == 0:
                 self.IVs[i] = r.quickrand1(0x1F)
 
-        if HA:
+        if ability == 4:
             self.Ability = r.quickrand2(3,3) + 1
-        else:
+        elif ability == 3:
             self.Ability = r.quickrand1(0x1) + 1
-        if RandomGender:
-            self.Gender = r.quickrand2(253,0xFF)
         else:
-            self.Gender = 0
-        if ToxicityType == Toxtricity.NONE:
+            self.Ability = ability + 1
+        if self.Ability == 3:
+            self.Ability = 'H'
+
+        if gender == 0:
+            ratio = pi.Gender()
+            if ratio == 255:
+                self.Gender = 2
+            elif ratio == 254:
+                self.Gender = 1
+            elif ratio == 0:
+                self.Gender = 0
+            self.Gender = 1 if r.quickrand2(253,0xFF) + 1 < ratio else 0
+
+        if species != 849:
             self.Nature = r.quickrand2(25,0x1F)
-        elif ToxicityType == Toxtricity.AMPED:
+        elif altform == 0:
             self.Nature = Raid.toxtricityAmpedNatures[r.quickrand2(13,0xF)]
-        elif ToxicityType == Toxtricity.LOWKEY:
+        else:
             self.Nature = Raid.toxtricityLowKeyNatures[r.quickrand2(12,0xF)]
 
     def print(self):
-        pmstring = PKMString()
-        print(f"Seed:{self.seed:016X}\tShinyType:{self.ShinyType}\tEC:{self.EC:08X}\tPID:{self.PID:08X}\tAbility:{self.Ability}\tGender:{self.Gender}\tNature:{pmstring.natures[self.Nature]}\tIVs:{self.IVs}")
+        print(f"Seed:{self.seed:016X}\tShinyType:{self.ShinyType}\tEC:{self.EC:08X}\tPID:{self.PID:08X}\tAbility:{self.Ability}\tGender:{FrameGenerator.GenderSymbol[self.Gender]}\tNature:{FrameGenerator.pmstring.natures[self.Nature]}\tIVs:{self.IVs}")
 
     @staticmethod
     def getseeds(EC,PID,IVs):

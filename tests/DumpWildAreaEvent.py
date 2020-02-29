@@ -9,7 +9,8 @@ import flatbuffers
 from flatbuffers.compat import import_numpy
 np = import_numpy()
 
-ReadFromConsole = False
+ReadFromConsole = True
+DumpPath = 'Event/Current/'
 LocalPath = 'Event/Index 12/'
 IP = '192.168.0.10'
 
@@ -21,30 +22,30 @@ bonus = NestHoleReward8Archive.GetRootAsNestHoleReward8Archive(buf,0)
 
 if ReadFromConsole:
 	b = SWSHBot(IP)
-	buf = b.readEventBlock_RaidEncounter()
+	buf = b.readEventBlock_RaidEncounter(DumpPath)
 else:
 	buf = bytearray(open(LocalPath + 'normal_encount','rb').read())
-print('Raid Encounter Table')
 eventencounter = NestHoleDistributionEncounter8Archive.GetRootAsNestHoleDistributionEncounter8Archive(buf,0x20)
 
 if ReadFromConsole:
-	buf = b.readEventBlock_DropRewards()
+	buf = b.readEventBlock_DropRewards(DumpPath)
 else:
 	buf = bytearray(open(LocalPath + 'drop_rewards','rb').read())
 dropreward = NestHoleDistributionReward8Archive.GetRootAsNestHoleDistributionReward8Archive(buf,0x20)
 
 if ReadFromConsole:
-	buf = b.readEventBlock_BonusRewards()
+	buf = b.readEventBlock_BonusRewards(DumpPath)
 else:
 	buf = bytearray(open(LocalPath + 'Bonus_rewards','rb').read())
 bonusreward = NestHoleDistributionReward8Archive.GetRootAsNestHoleDistributionReward8Archive(buf,0x20)
 
 if ReadFromConsole:
-	buf = b.readEventBlock_CrystalEncounter()
+	buf = b.readEventBlock_CrystalEncounter(DumpPath)
 else:
 	buf = bytearray(open(LocalPath + 'dai_encount','rb').read())
 crystalencounter = NestHoleCrystalEncounter8Archive.GetRootAsNestHoleCrystalEncounter8Archive(buf,0x20)
 
+print('Raid Encounter Table')
 if eventencounter.TablesIsNone():
 	print('No promoted raid or wrong offset!')
 else: 

@@ -1,34 +1,63 @@
-# Go to root of PyNXBot
-import sys
-sys.path.append('../')
-
-from structure import Den
-from nxbot import SWSHBot
-from rng import XOROSHIRO,Raid,Toxtricity
-
-usefilters = False
-MaxResults = 5
+# Settings
 IP = '192.168.0.10'
+isPlayingSword = True
+ReadEventFromConsole = True
+DumpPath = 'Event/Current/'
+LocalPath = 'Event/Index 12/'
 
 # Desired IVs
 V6 = [31,31,31,31,31,31]
 S0 = [31,31,31,31,31,00]
 A0 = [31,00,31,31,31,31]
+usefilters = True
+MaxResults = 10000
 
+# Go to root of PyNXBot
+import sys
+sys.path.append('../')
+
+from lookups import PKMString
+from structure import Den
+from structure import EncounterNest8Archive, NestHoleDistributionEncounter8Archive
+from nxbot import SWSHBot
+from rng import XOROSHIRO,Raid
+
+pmtext = PKMString()
+buf = bytearray(open('../resources/bytes/local_raid','rb').read())
+local = EncounterNest8Archive.GetRootAsEncounterNest8Archive(buf,0)
 b = SWSHBot(IP)
+if ReadEventFromConsole:
+	buf = b.readEventBlock_RaidEncounter(DumpPath)
+else:
+	buf = bytearray(open(LocalPath + 'normal_encount','rb').read())
+event = NestHoleDistributionEncounter8Archive.GetRootAsNestHoleDistributionEncounter8Archive(buf,0x20)
+seed = None
 for ii in range(SWSHBot.DENCOUNT):
 	den = Den(b.readDen(ii))
-	if den.isActive() and den.isWishingPiece(): # Find the den is wishing pieced
-		print(f"{ii}:0x{den.seed():X}")
-		seed = den.seed()
-		i = 0
-		while i < MaxResults:
-			r = Raid(seed, flawlessiv = 1, HA = 0, RandomGender = 1, ToxicityType = Toxtricity.NONE)
-			seed = XOROSHIRO(seed).next()
-			if usefilters:
-				if r.ShinyType != 'None' or r.IVs == V6 or r.IVs == S0 or r.IVs == A0:
-					print(i)
-					r.print()
-			else:
+	if den.isActive():
+		spawn = den.getSpawn(denID = ii, localtable = local, eventtable = event, isSword = isPlayingSword)
+		info = f"denID {ii}:0x{den.seed():X}\t{den.stars()}★\tSpecies: {pmtext.species[spawn.Species()]}\t"
+		if den.isEvent():
+			info += "Event\t"
+		if den.isWishingPiece():
+			seed = den.seed()
+			info = "!!!\t" + info
+		print(info)
+		r = Raid(seed = den.seed(), flawlessiv = spawn.FlawlessIVs(), ability = spawn.Ability(), gender = spawn.Gender(), species = spawn.Species(), altform = spawn.AltForm())
+		r.print()
+		print()
+
+# Choose RNGable den to calculate frames
+if seed is not None:
+	print('Wishing Piece Den Prediction:')
+	i = 0
+	while i < MaxResults:
+		r = Raid(seed, flawlessiv = 1)
+		seed = XOROSHIRO(seed).next()
+		if usefilters:
+			if r.ShinyType != 'None' or r.IVs == V6 or r.IVs == S0 or r.IVs == A0:
+				print(f"Frame:{i}")
 				r.print()
-			i += 1
+		else:
+			r.print()
+		i += 1

@@ -38,6 +38,9 @@ class PersonalInfoSWSH(PersonalInfo):
 	def Type2(self):
 		return self.getbyte(0x07)
 
+	def Gender(self):
+		return self.getbyte(0x12)
+
 	def Ability1(self):
 		return self.getushort(0x18)
 
