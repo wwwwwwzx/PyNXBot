@@ -17,6 +17,9 @@ class PKMString(object):
 			self.types = file.read().splitlines()
 		# with open(currentfolder + f'/text_Forms_{lang}.txt','r', encoding="utf8") as file:
 		# 	self.forms = file.read().splitlines()
-		if lang == 'zh':
+		if lang == 'zh' or lang == 'en': # for wiki
 			with open(currentfolder + f'/text_TRTypes_{lang}.txt','r', encoding="utf8") as file: 
 				self.trtypes = file.read().splitlines()
+		if lang == 'en':
+			with open(currentfolder + f'/text_TRMoves_{lang}.txt','r', encoding="utf8") as file: 
+				self.trmoves = file.read().splitlines()
