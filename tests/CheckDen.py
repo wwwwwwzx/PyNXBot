@@ -1,6 +1,7 @@
 # Settings
 IP = '192.168.0.10'
-isPlayingSword = True
+isPlayingSword = True # to be read
+language = 'ENUS' # to be read
 ReadEventFromConsole = True
 DumpPath = 'Event/Current/'
 LocalPath = 'Event/Index 12/'
@@ -26,6 +27,7 @@ pmtext = PKMString()
 buf = bytearray(open('../resources/bytes/local_raid','rb').read())
 Den.LOCALTABLE = EncounterNest8Archive.GetRootAsEncounterNest8Archive(buf,0)
 b = SWSHBot(IP)
+b.getEventOffset(language)
 if ReadEventFromConsole:
 	buf = b.readEventBlock_RaidEncounter(DumpPath)
 else:

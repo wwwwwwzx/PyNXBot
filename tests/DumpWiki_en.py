@@ -1,7 +1,7 @@
-# Go to root of PyNXBot
+Path = 'Event/Index 10/'
+ShortVersion = True
 
-Path = 'Event/Index 12/'
-ShortVersion = False
+# Go to root of PyNXBot
 import sys
 sys.path.append('../')
 from lookups import PKMString
@@ -27,14 +27,16 @@ def getspecies(species, isgmax = False, formid = 0, isShiny = False):
 	else:
 		t = '{{MSP|' + f'{species:03}' +('Gi' if isgmax else '') + '}}<br>[[' + pmtext.species[species] + ']]' + (f'<br>FormeID:{formid}' if formid > 0 else '')
 	if isShiny:
-		t+= '<br>[[File:ShinySWSHStar.png]]'
+		t+= '<br>[[File:ShinyLGPEStar.png]]'
 	return t
 
 def getspecies_short(species, isgmax = False, formid = 0):
 	if species == 849:
-		t = f'{species:03}' +('Gi' if isgmax else ('L' if formid == 1 else '')) + '|' + pmtext.species[species]
-	else:
+		t = f'{species:03}' + ('Gi' if isgmax else ('L' if formid == 1 else '')) + '|' + pmtext.species[species]
+	elif species == 868:
 		t = f'{species:03}' + '|' + pmtext.species[species]
+	else:
+		t = f'{species:03}' + ('Gi' if isgmax else '') +'|' + pmtext.species[species]
 	return t
 
 def getform_short(species, isgmax = False, formid = 0, isShiny = False):
@@ -42,8 +44,8 @@ def getform_short(species, isgmax = False, formid = 0, isShiny = False):
 	if species == 849:
 		t = "|form=Amped Form" if formid == 0 else "|form=Low Key Form"
 	elif species == 868:
-		t = f'{species:03}' + '|' + pmtext.species[species] + '|form=Gigantamax Factor' if isgmax else ''
-	if isgmax:
+		t = '|form=Gigantamax Factor' if isgmax else ''
+	if isgmax and species != 868:
 		t = "|form=Gigantamax" if t == '' else (t + '<br>Gigantamax|formlink=Gigantamax')
 	if isShiny:
 		t = "|form=Shiny" if t == '' else (t + '<br>Shiny')
@@ -221,7 +223,7 @@ if ShortVersion:
 					print(msg)
 					msg = header + getspecies_short(entry2.Species(),entry2.IsGigantamax(),entry2.AltForm())
 					msg += '|no|yes'
-					msg += getmsg2_short(entry1,star)
+					msg += getmsg2_short(entry2,star)
 					print(msg)
 	print('{{catch/footer|red}}')
 else:

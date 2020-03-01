@@ -50,6 +50,30 @@ class SWSHBot(NXBot):
 	PK8PARTYSIZE = 0x158
 	DENCOUNT = 111
 
+	def __init__(self,ip,port = 6000):
+		NXBot.__init__(self,ip,port)
+		self.getEventOffset()
+ 	
+	def getEventOffset(self, language = 'ENUS'):
+		self.eventoffset = 0
+		if language == 'ENUS' or language == 'ENGB' or language == 'PT' or language == 'RU' or language == 'NL':
+			pass
+		elif language == 'ZHCN' or language == 'ZHHANS':
+			self.eventoffset = -0xDB0
+		elif language == 'ZHTW' or language == 'ZHHANT':
+			self.eventoffset = -0xE10
+		elif language == 'KO':
+			self.eventoffset = -0x9C0
+		elif language == 'IT':
+			self.eventoffset = -0x70
+		elif language == 'JA':
+			self.eventoffset = +0x180
+		elif language == 'FR' or language == 'FRCA' or language == 'ES' or language == 'ES419':
+			self.eventoffset = +0x1C0
+		elif language == 'DE':
+			self.eventoffset = +0x2C0 
+		return self.eventoffset
+
 	def readParty(self,slot=0):
 		if slot > 5:
 			slot = 5
@@ -74,16 +98,16 @@ class SWSHBot(NXBot):
 		return self.read(0x85C74F88,self.PK8STOREDSIZE)
 
 	def readEventBlock_RaidEncounter(self,path=''):
-		return self.read(0x2E5E58B8,0x23D4,path + 'normal_encount')
+		return self.read(0x2E5E58B8 + self.eventoffset, 0x23D4, path + 'normal_encount')
 
 	def readEventBlock_CrystalEncounter(self,path=''):
-		return self.read(0x2E5E7D40,0x1241C,path + 'dai_encount')
+		return self.read(0x2E5E7D40 + self.eventoffset, 0x1241C, path + 'dai_encount')
 
 	def readEventBlock_DropRewards(self,path=''):
-		return self.read(0x2E5FA210,0x426C,path + 'drop_rewards')
+		return self.read(0x2E5FA210 + self.eventoffset, 0x426C, path + 'drop_rewards')
 
 	def readEventBlock_BonusRewards(self,path=''):
-		return self.read(0x2E5FE530,0x116C4,path + 'bonus_rewards')
+		return self.read(0x2E5FE530 + self.eventoffset, 0x116C4, path + 'bonus_rewards')
 
 	def readDen(self,denID):
 		denDataSize = 0x18;

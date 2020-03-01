@@ -1,8 +1,8 @@
-# Go to root of PyNXBot
-
 Path = 'Event/Index 12/'
 ShortVersion = False
 OneTable = True
+
+# Go to root of PyNXBot
 import sys
 sys.path.append('../')
 from lookups import PKMString
@@ -222,7 +222,7 @@ if ShortVersion:
 					print(msg)
 					msg = header + getspecies_short(entry2.Species(),entry2.IsGigantamax(),entry2.AltForm())
 					msg += '|no|yes'
-					msg += getmsg2_short(entry1,star)
+					msg += getmsg2_short(entry2,star)
 					print(msg)
 	print('{{捕捉/footer|红}}')
 elif OneTable:
