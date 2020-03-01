@@ -72,3 +72,12 @@ class PersonalTable(object):
 
 	def getFormeEntry(self, species, forme):
 		return self.table[self.getFormeIndex(species,forme)]
+
+	def getFormeNameIndex(self, species, forme):
+		if forme == 0:
+			return species
+		if species == 849 and forme == 1:
+			return 1072
+		if  species == 869:
+			return 1072 + forme
+		return -1

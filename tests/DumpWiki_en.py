@@ -20,10 +20,13 @@ def getitem(itemid):
 		return "{{Bag|" + pmtext.items[itemid] + "}}[[" + pmtext.items[itemid] + "]]"
 
 def getspecies(species, isgmax = False, formid = 0, isShiny = False):
+	formtext = pmtext.forms[pt.getFormeNameIndex(species,formid)]
 	if species == 849:
-		t = '{{MSP|' + f'{species:03}' +('Gi' if isgmax else 'L' if formid == 1 else '') + '}}<br>[[' + pmtext.species[species] + ']]<br><small>' + ('Amped Form' if formid == 0 else 'Low Key Form') + '</small>'
+		t = '{{MSP|' + f'{species:03}' +('Gi' if isgmax else 'L' if formid == 1 else '') + '}}<br>[[' + pmtext.species[species] + ']]<br><small>' + formtext + '</small>'
 	elif species == 868:
 		t = '{{MSP|' + f'{species:03}' + '}}<br>[[' + pmtext.species[species] + ']]' + ('<br />[[File:Dynamax icon.png|link=Gigantamax]]' if isgmax else '')
+	elif species == 869:
+		t = '{{MSP|' + f'{species:03}' +('Gi' if isgmax else '') + '}}<br>[[' + pmtext.species[species] + ']]<br><small>' + formtext + '</small>'
 	else:
 		t = '{{MSP|' + f'{species:03}' +('Gi' if isgmax else '') + '}}<br>[[' + pmtext.species[species] + ']]' + (f'<br>FormeID:{formid}' if formid > 0 else '')
 	if isShiny:
@@ -41,8 +44,9 @@ def getspecies_short(species, isgmax = False, formid = 0):
 
 def getform_short(species, isgmax = False, formid = 0, isShiny = False):
 	t = ''
-	if species == 849:
-		t = "|form=Amped Form" if formid == 0 else "|form=Low Key Form"
+	formtext = pmtext.forms[pt.getFormeNameIndex(species,formid)]
+	if species == 849 or species == 869:
+		t = f"|form={formtext}"
 	elif species == 868:
 		t = '|form=Gigantamax Factor' if isgmax else ''
 	if isgmax and species != 868:

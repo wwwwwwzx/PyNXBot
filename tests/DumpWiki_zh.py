@@ -21,10 +21,13 @@ def getitem(itemid):
 		return "{{Bag|" + pmtext.items[itemid] + "}}{{i|" + pmtext.items[itemid] + "}}"
 
 def getspecies(species, isgmax = False, formid = 0, isShiny = False):
+	formtext = pmtext.forms[pt.getFormeNameIndex(species,formid)]
 	if species == 849:
-		t = '{{MSP|' + f'{species:03}' +('GM' if isgmax else 'L' if formid == 1 else '') + '}}<br>[[' + pmtext.species[species] + ']]<br><small>' + ('高调的样子' if formid == 0 else '低调的样子') + '</small>'
+		t = '{{MSP|' + f'{species:03}' +('GM' if isgmax else 'L' if formid == 1 else '') + '}}<br>[[' + pmtext.species[species] + ']]<br><small>' + formtext + '</small>'
 	elif species == 868:
 		t = '{{MSP|' + f'{species:03}' + '}}<br>[[' + pmtext.species[species] + ']]' + ('<br />[[File:极巨化 Sprite.png|link=极巨化]]' if isgmax else '')
+	elif species == 869:
+		t = '{{MSP|' + f'{species:03}' +('GM' if isgmax else '') + '}}<br>[[' + pmtext.species[species] + ']]<br><small>' + formtext + '</small>'
 	else:
 		t = '{{MSP|' + f'{species:03}' +('GM' if isgmax else '') + '}}<br>[[' + pmtext.species[species] + ']]' + (f'<br>形态数:{formid}' if formid > 0 else '')
 	if isShiny:
@@ -152,8 +155,9 @@ def getspecies_short(species, isgmax = False, formid = 0):
 
 def getform_short(species, isgmax = False, formid = 0, isShiny = False):
 	t = ''
-	if species == 849:
-		t = "|form=高调的样子" if formid == 0 else "|form=低调的样子"
+	formtext = pmtext.forms[pt.getFormeNameIndex(species,formid)]
+	if species == 849 or species == 869:
+		t = f"|form={formtext}"
 	elif species == 868:
 		t = f'{species:03}' + '|' + pmtext.species[species]
 	if isgmax:
