@@ -1,5 +1,6 @@
-Path = 'Event/Index 08/'
-lang = 'zh'
+Path = 'Event/Index 12/'
+lang = 'en'
+useLargeImage = True
 
 import sys
 sys.path.append('../')
@@ -17,8 +18,8 @@ def tr(c):
 def th(c):
 	return "\t\t<th>"  + c + "</th>\n"
 
-def td(c):
-	return "\t\t<td>"  + c + "</td>\n"
+def td(c,style=''):
+	return f"\t\t<td {style}>"  + c + "</td>\n"
 
 def isthesame(entry1, entry2):
 	if entry1.Species() != entry2.Species() or entry1.AltForm() != entry2.AltForm():
@@ -35,8 +36,15 @@ def getpmimage(species,forme,cangmax,isShiny):
 		filename += "-l"
 	if cangmax and species != 868:
 		filename += "-gi"
-	url = f"https://www.serebii.net/pokedex-swsh/icon/{filename}.png"
-	return f'<img src="{url}" alt="{filename}">'
+	if useLargeImage:
+		if isShiny:
+			url = f"https://www.serebii.net/Shiny/SWSH/{filename}.png"
+		else:
+			url = f"https://www.serebii.net/swordshield/pokemon/{filename}.png"
+		return f'<img src="{url}" alt="{filename}" width="100" height="100">'
+	else:
+		url = f"https://www.serebii.net/pokedex-swsh/icon/{filename}.png"
+		return f'<img src="{url}" alt="{filename}">'
 
 GMAXSTR = "Gigantamax" if lang == "en" else "超极巨化"
 SHINYSTR = "Shiny" if lang == "en" else "异色"
@@ -96,6 +104,7 @@ def getmsg2(entry, rank):
 	for jj in range(drop.TablesLength()):
 		ldt = drop.Tables(jj)
 		if dropid == ldt.TableID():
+			style = ''
 			for kk in range(ldt.EntriesLength()):
 				ldte = ldt.Entries(kk)
 				if ldte.Values(rank) > 0:
@@ -104,6 +113,7 @@ def getmsg2(entry, rank):
 	for jj in range(dropreward.TablesLength()):
 		edt = dropreward.Tables(jj) # event drop table
 		if dropid == edt.TableID():
+			style = 'style = "background-color:#ffe4c3"'
 			for kk in range(edt.EntriesLength()):
 				edte = edt.Entries(kk)
 				if rank == 0:
@@ -118,7 +128,7 @@ def getmsg2(entry, rank):
 					value = edte.Value4()
 				if value > 0:
 					dropmsg += f'{value}% ' + getitemname(edte.ItemID()) + "<br>"
-	txt += td(dropmsg[:-4])
+	txt += td(dropmsg[:-4],style)
 
 
 	bonusid = entry.BonusTableID()
@@ -127,6 +137,7 @@ def getmsg2(entry, rank):
 	for jj in range(bonus.TablesLength()):
 		lbt = bonus.Tables(jj)
 		if bonusid == lbt.TableID():
+			style = ''
 			for kk in range(lbt.EntriesLength()):
 				lbte = lbt.Entries(kk)
 				if lbte.Values(rank) > 0:
@@ -135,6 +146,7 @@ def getmsg2(entry, rank):
 	for jj in range(bonusreward.TablesLength()):
 		ebt = bonusreward.Tables(jj) # event bonus table
 		if bonusid == ebt.TableID():
+			style = 'style = "background-color:#ffe4c3"'
 			for kk in range(ebt.EntriesLength()):
 				ebte = ebt.Entries(kk)
 				if rank == 0:
@@ -149,7 +161,7 @@ def getmsg2(entry, rank):
 					value = ebte.Value4()
 				if value > 0:
 					bonustxt += f'{value}x' + getitemname(ebte.ItemID()) + "<br>"
-	txt += td(bonustxt[:-4])
+	txt += td(bonustxt[:-4],style)
 
 	comment = ''
 	AbilityStr = 'Ability' if lang == 'en' else '特性'
