@@ -1,5 +1,5 @@
-Path = 'Event/Index 10/'
-ShortVersion = True
+Path = 'Event/Index 12/'
+ShortVersion = False
 
 # Go to root of PyNXBot
 import sys
@@ -22,15 +22,15 @@ def getitem(itemid):
 def getspecies(species, isgmax = False, formid = 0, isShiny = False):
 	formtext = pmtext.forms[pt.getFormeNameIndex(species,formid)]
 	if species == 849:
-		t = '{{MSP|' + f'{species:03}' +('Gi' if isgmax else 'L' if formid == 1 else '') + '}}<br>[[' + pmtext.species[species] + ']]<br><small>' + formtext + '</small>'
+		t = '{{MSP|' + f'{species:03}' +('Gi' if isgmax else 'L' if formid == 1 else '') + '}}<br>{{p|' + pmtext.species[species] + '}}<br><small>' + formtext + '</small>'
 	elif species == 868:
-		t = '{{MSP|' + f'{species:03}' + '}}<br>[[' + pmtext.species[species] + ']]' + ('<br />[[File:Dynamax icon.png|link=Gigantamax]]' if isgmax else '')
+		t = '{{MSP|' + f'{species:03}' + '}}<br>{{p|' + pmtext.species[species] + '}}' + ('<br />[[File:Dynamax icon.png|link=Gigantamax]]' if isgmax else '')
 	elif species == 869:
-		t = '{{MSP|' + f'{species:03}' +('Gi' if isgmax else '') + '}}<br>[[' + pmtext.species[species] + ']]<br><small>' + formtext + '</small>'
+		t = '{{MSP|' + f'{species:03}' +('Gi' if isgmax else '') + '}}<br>{{p|' + pmtext.species[species] + '}}<br><small>' + formtext + '</small>'
 	else:
-		t = '{{MSP|' + f'{species:03}' +('Gi' if isgmax else '') + '}}<br>[[' + pmtext.species[species] + ']]' + (f'<br>FormeID:{formid}' if formid > 0 else '')
+		t = '{{MSP|' + f'{species:03}' +('Gi' if isgmax else '') + '}}<br>{{p|' + pmtext.species[species] + '}}' + (f'<br>FormeID:{formid}' if formid > 0 else '')
 	if isShiny:
-		t+= '<br>[[File:ShinyLGPEStar.png]]'
+		t+= '<br>{{Shiny}}'
 	return t
 
 def getspecies_short(species, isgmax = False, formid = 0):
@@ -156,11 +156,11 @@ def getmsg2(entry, rank):
 	elif entry.Ability() == 3:
 		comment +=f"No Hidden Ability<br>"
 	elif entry.Ability() == 2:
-		comment +=f"Ability: [[{pmtext.abilities[pi.AbilityH()]}]]<br>"
+		comment += "Ability: {{a|" + pmtext.abilities[pi.AbilityH()] + "}}<br>"
 	elif entry.Ability() == 1:
-		comment +=f"Ability: [[{pmtext.abilities[pi.Ability2()]}]]<br>"
+		comment += "Ability: {{a|" + pmtext.abilities[pi.Ability2()] + "}}<br>"
 	else:
-		comment +=f"Ability: [[{pmtext.abilities[pi.Ability1()]}]]<br>"
+		comment += "Ability: {{a|" + pmtext.abilities[pi.Ability1()] + "}}<br>"
 	if entry.Nature() == 25:
 		pass # random nature
 	else:
