@@ -5,10 +5,6 @@ class GameVersion(Enum):
 	SWSH = 0
 
 class PersonalInfo(ByteStruct):
-	SIZE = 0x0
-	def __init__(self,buf):
-		self.data = bytearray(PersonalInfo.SIZE)
-		self.data[:] = buf
 
 	def FormStatsIndex(self):
 		return 0

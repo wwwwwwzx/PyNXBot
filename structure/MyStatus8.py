@@ -2,10 +2,6 @@ from structure.ByteStruct import ByteStruct
 
 class MyStatus8(ByteStruct):
 
-	def __init__(self,buf):
-		self.data = bytearray(len(buf))
-		self.data[:] = buf
-
 	def TID(self):
 		return self.getushort(0xA0)
 
@@ -17,6 +13,9 @@ class MyStatus8(ByteStruct):
 
 	def Game(self):
 		return self.getbyte(0xA4)
+
+	def Language(self):
+		return self.getbyte(0xA7)
 
 	def isSword(self):
 		return self.Game() == 44
