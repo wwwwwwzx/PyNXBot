@@ -1,6 +1,5 @@
 # Settings
 IP = '192.168.0.10'
-isPlayingSword = True # to be read
 language = 'ENUS' # to be read
 ReadEventFromConsole = True
 DumpPath = 'Event/Current/'
@@ -37,8 +36,8 @@ seed = None
 for ii in range(SWSHBot.DENCOUNT):
 	den = Den(b.readDen(ii))
 	if den.isActive():
-		spawn = den.getSpawn(denID = ii, isSword = isPlayingSword)
-		info = f"denID {ii}:0x{den.seed():X}\t{den.stars()}★\tSpecies: {pmtext.species[spawn.Species()]}\t"
+		spawn = den.getSpawn(denID = ii, isSword = b.isPlayingSword)
+		info = f"denID {ii}:0x{den.seed():X}\t{den.stars()}★\tSpecies: {pmtext.species[spawn.Species()]}\tShiny Frame: {Raid.getNextShinyFrame(den.seed())}\t"
 		if den.isEvent():
 			info += "Event\t"
 		if den.isWishingPiece():

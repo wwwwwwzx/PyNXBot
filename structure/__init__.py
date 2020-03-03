@@ -1,5 +1,6 @@
 from .PK8 import PK8
 from .Den import Den
+from .MyStatus8 import MyStatus8
 from .PersonalInfo import PersonalTable
 
 from .EncounterNest8 import EncounterNest8

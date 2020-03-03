@@ -52,7 +52,12 @@ class SWSHBot(NXBot):
 
 	def __init__(self,ip,port = 6000):
 		NXBot.__init__(self,ip,port)
-		self.getEventOffset()
+		from structure import MyStatus8
+		self.TrainerSave = MyStatus8(self.readTrainerBlock())
+		if self.TrainerSave.isPokemonSave():
+			print(f"Game:{self.TrainerSave.GameVersion()} OT: {self.TrainerSave.OT()} ID:{self.TrainerSave.displayID()}\n")
+			self.isPlayingSword = self.TrainerSave.isSword()
+			self.getEventOffset()
  	
 	def getEventOffset(self, language = 'ENUS'):
 		self.eventoffset = 0
@@ -73,6 +78,9 @@ class SWSHBot(NXBot):
 		elif language == 'DE':
 			self.eventoffset = +0x2C0 
 		return self.eventoffset
+
+	def readTrainerBlock(self):
+		return self.read(0x42935E48, 0x110)
 
 	def readParty(self,slot=0):
 		if slot > 5:

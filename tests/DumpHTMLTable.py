@@ -1,6 +1,7 @@
 Path = 'Event/Index 12/'
 lang = 'en'
 useLargeImage = True
+eventstyle = ' style = "background-color:#ffe4c3"'
 
 import sys
 sys.path.append('../')
@@ -12,14 +13,14 @@ import flatbuffers
 from flatbuffers.compat import import_numpy
 np = import_numpy()
 
-def tr(c):
+def tr(c): # table row
 	return "\t<tr>\n"  + c + "\t</tr>"
 
-def th(c):
+def th(c): # table header
 	return "\t\t<th>"  + c + "</th>\n"
 
-def td(c,style=''):
-	return f"\t\t<td {style}>"  + c + "</td>\n"
+def td(c,style=''): # table data(cell)
+	return f"\t\t<td{style}>"  + c + "</td>\n"
 
 def isthesame(entry1, entry2):
 	if entry1.Species() != entry2.Species() or entry1.AltForm() != entry2.AltForm():
@@ -113,7 +114,7 @@ def getmsg2(entry, rank):
 	for jj in range(dropreward.TablesLength()):
 		edt = dropreward.Tables(jj) # event drop table
 		if dropid == edt.TableID():
-			style = 'style = "background-color:#ffe4c3"'
+			style = eventstyle
 			for kk in range(edt.EntriesLength()):
 				edte = edt.Entries(kk)
 				if rank == 0:
@@ -146,7 +147,7 @@ def getmsg2(entry, rank):
 	for jj in range(bonusreward.TablesLength()):
 		ebt = bonusreward.Tables(jj) # event bonus table
 		if bonusid == ebt.TableID():
-			style = 'style = "background-color:#ffe4c3"'
+			style = eventstyle
 			for kk in range(ebt.EntriesLength()):
 				ebte = ebt.Entries(kk)
 				if rank == 0:

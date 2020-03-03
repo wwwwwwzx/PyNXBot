@@ -1,3 +1,5 @@
+import binascii
+
 class ByteStruct(object):
 
 	def __init__(self,buf):
@@ -15,3 +17,6 @@ class ByteStruct(object):
 
 	def getbyte(self,offset):
 		return self.data[offset]
+
+	def getstring(self,offset,size):
+		return self.data[offset:offset+size].decode("utf-16").rstrip('\x00')

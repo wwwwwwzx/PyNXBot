@@ -144,6 +144,17 @@ class Raid(FrameGenerator):
         print(f"Seed:{self.seed:016X}\tShinyType:{self.ShinyType}\tEC:{self.EC:08X}\tPID:{self.PID:08X}\tAbility:{self.Ability}\tGender:{FrameGenerator.GenderSymbol[self.Gender]}\tNature:{FrameGenerator.pmstring.natures[self.Nature]}\tIVs:{self.IVs}")
 
     @staticmethod
+    def getNextShinyFrame(seed):
+        for ii in range(99999):
+            r = XOROSHIRO(seed)
+            seed = r.next()
+            OTID = r.nextuint()
+            PID = r.nextuint()
+            XOR = (PID >> 16) ^ (PID & 0xFFFF) ^ (OTID >> 16) ^ (OTID & 0xFFFF)
+            if XOR < 16:
+                return ii
+
+    @staticmethod
     def getseeds(EC,PID,IVs):
         result = []
         seeds = XOROSHIRO.find_seeds(EC, PID)    
