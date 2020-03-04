@@ -89,7 +89,7 @@ class Raid(FrameGenerator):
     toxtricityAmpedNatures = [3, 4, 2, 8, 9, 19, 22, 11, 13, 14, 0, 6, 24]
     toxtricityLowKeyNatures = [1, 5, 7, 10, 12, 15, 16, 17, 18, 20, 21, 23]
 
-    def __init__(self,seed,flawlessiv, ability = 4, gender = 0, species = 25, altform = 0):
+    def __init__(self, seed, flawlessiv, ability = 4, gender = 0, species = 25, altform = 0):
         pi = FrameGenerator.PT.getFormeEntry(species,altform)
         self.seed = seed
         r = XOROSHIRO(seed)

@@ -21,6 +21,9 @@ class PK8(ByteStruct):
 	def species(self):
 		return self.getushort(0x8)
 
+	def helditem(self):
+		return self.getushort(0xA)
+
 	def sidtid(self):
 		return self.getuint(0x0C)
 
@@ -65,6 +68,12 @@ class PK8(ByteStruct):
 
 	def iv32(self):
 		return self.getuint(0x8C)
+
+	def language(self):
+		return self.getbyte(0xE2)
+
+	def ball(self):
+		return self.getbyte(0x124)
 
 	def isEgg(self):
 		return ((self.iv32() >> 31) & 1) == 1

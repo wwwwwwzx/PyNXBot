@@ -52,6 +52,12 @@ class PersonalInfoSWSH(PersonalInfo):
 	def FormeCount(self):
 		return self.getbyte(0x20)
 
+	def BaseSpecies(self):
+		return self.getushort(0x56)
+
+	def BaseSpeciesForm(self):
+		return self.getushort(0x58)
+
 class PersonalTable(object):
 	def __init__(self,buf,ver = GameVersion.SWSH):
 		length = len(buf)
