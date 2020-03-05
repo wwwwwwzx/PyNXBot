@@ -1,6 +1,6 @@
 Path = 'Event/Index 12/'
 ShortVersion = False
-OneTable = True
+OneTable = False
 
 # Go to root of PyNXBot
 import sys
@@ -74,6 +74,7 @@ def getmsg2(entry,rank):
 	for jj in range(dropreward.TablesLength()):
 		edt = dropreward.Tables(jj) # event drop table
 		if dropid == edt.TableID():
+			msg += 'style = "background:#ffe4c3" |'
 			for kk in range(edt.EntriesLength()):
 				edte = edt.Entries(kk)
 				if rank == 0:
@@ -104,6 +105,7 @@ def getmsg2(entry,rank):
 	for jj in range(bonusreward.TablesLength()):
 		ebt = bonusreward.Tables(jj) # event bonus table
 		if bonusid == ebt.TableID():
+			msg += 'style = "background:#ffe4c3" |'
 			for kk in range(ebt.EntriesLength()):
 				ebte = ebt.Entries(kk)
 				if rank == 0:
@@ -122,7 +124,7 @@ def getmsg2(entry,rank):
 
 	comment = ''
 	if entry.ShinyFlag() == 1:
-		comment += "不能异色<br>"
+		comment += "不可能为异色<br>"
 	elif entry.ShinyFlag() == 2:
 		pass # comment += "必定异色<br>"
 	if entry.Ability() == 4:
@@ -130,11 +132,11 @@ def getmsg2(entry,rank):
 	elif entry.Ability() == 3:
 		comment +=f"特性:随机普特<br>"
 	elif entry.Ability() == 2:
-		comment +=f"锁[[{pmtext.abilities[pi.AbilityH()]}]]<br>"
+		comment +=f"锁隐藏特性: [[{pmtext.abilities[pi.AbilityH()]}]]<br>"
 	elif entry.Ability() == 1:
-		comment +=f"锁[[{pmtext.abilities[pi.Ability2()]}]]<br>"
+		comment +=f"锁特性2: [[{pmtext.abilities[pi.Ability2()]}]]<br>"
 	else:
-		comment +=f"锁[[{pmtext.abilities[pi.Ability1()]}]]<br>"
+		comment +=f"锁特性1: [[{pmtext.abilities[pi.Ability1()]}]]<br>"
 	if entry.Nature() == 25:
 		pass # random nature
 	else:

@@ -16,7 +16,11 @@ class NXBot(object):
 		content += '\r\n' #important for the parser on the switch side
 		self.s.sendall(content.encode())
 
+	def detach(self):
+		self.sendCommand('detachController')
+
 	def close(self):
+		self.detach()
 		self.s.shutdown(socket.SHUT_RDWR)
 		self.s.close()
 		print('Bot Disconnected')

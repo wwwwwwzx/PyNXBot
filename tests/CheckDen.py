@@ -37,10 +37,13 @@ for ii in range(SWSHBot.DENCOUNT):
 	den = Den(b.readDen(ii))
 	if den.isActive():
 		spawn = den.getSpawn(denID = ii, isSword = b.isPlayingSword)
-		info = f"denID {ii}:0x{den.seed():X}\t{den.stars()}★\tSpecies: {pmtext.species[spawn.Species()]}\tShiny Frame: {Raid.getNextShinyFrame(den.seed())}\t"
+		info = f"denID {ii}:0x{den.seed():X}\t{den.stars()}★\tSpecies: {pmtext.species[spawn.Species()]}\t"
+		if spawn.IsGigantamax():
+			info += "G-Max\t"
 		if den.isEvent():
 			info += "Event\t"
 		if den.isWishingPiece():
+			info += f"Next Shiny Frame: {Raid.getNextShinyFrame(den.seed())}\t"
 			seed = den.seed()
 			info = "!!!\t" + info
 		print(info)
