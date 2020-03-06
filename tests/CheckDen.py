@@ -12,19 +12,18 @@ MaxResults = 10000
 import sys
 sys.path.append('../')
 
-from lookups import PKMString
+from lookups import Util
 from nxbot import RaidBot
 from rng import XOROSHIRO,Raid
 from structure import Den
 
-pmtext = PKMString()
 b = RaidBot(IP)
 seed = None
 for ii in range(RaidBot.DENCOUNT):
 	den = Den(b.readDen(ii))
 	if den.isActive():
 		spawn = den.getSpawn(denID = ii, isSword = b.isPlayingSword)
-		info = f"denID {ii}:0x{den.seed():X}\t{den.stars()}★\tSpecies: {pmtext.species[spawn.Species()]}\t"
+		info = f"denID {ii}:0x{den.seed():X}\t{den.stars()}★\tSpecies: {Util.STRINGS.species[spawn.Species()]}\t"
 		if spawn.IsGigantamax():
 			info += "G-Max\t"
 		if den.isEvent():

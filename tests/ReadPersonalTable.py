@@ -1,11 +1,6 @@
 # Go to root of PyNXBot
 import sys
 sys.path.append('../')
-from lookups import PKMString
-from structure import PersonalTable
+from lookups import Util
 
-pmtext = PKMString()
-
-buf = bytearray(open('../resources/bytes/personal_swsh','rb').read())
-pt = PersonalTable(buf)
-print(pmtext.abilities[pt.getFormeEntry(869,2).Ability1()])
+print(Util.STRINGS.abilities[Util.PT.getFormeEntry(869,2).Ability1()])

@@ -1,10 +1,8 @@
 from structure.ByteStruct import ByteStruct
-from lookups import PKMString
 
 class PK8(ByteStruct):
 	STOREDSIZE = 0x148
 	BLOCKSIZE = 0x50
-	TEXT = PKMString()
 
 	def __init__(self,buf):
 		self.data = bytearray(len(buf))
@@ -105,18 +103,17 @@ class PK8(ByteStruct):
 			fileOut.write(self.data)
 
 	def toString(self):
+		from lookups import Util
 		if self.isValid():
 			shinytype = self.shinyType()
-			gender = self.gender()
 			shinyflag = '' if shinytype == 0 else '⋆' if shinytype == 1 else '◇'
-			genderflag = '♂' if gender == 0 else '♀' if gender == 1 else '-'
 			msg = f'EC: {self.ec():X} PID: {self.pid():X} ' + shinyflag
-			msg += f"{' G-' if self.canGigantamax() else ''}{PK8.TEXT.species[self.species()]}{('-' + str(self.altForm())) if self.altForm() > 0 else ''}\n"
-			msg += f"Nature: {PK8.TEXT.natures[self.nature()]}({PK8.TEXT.natures[self.statnature()]})\t"
-			msg += f"Ability: {PK8.TEXT.abilities[self.ability()]}({self.abilityNum() if self.abilityNum() < 4 else 'H'})\t"
-			msg += f"Gender: {genderflag}\n"
+			msg += f"{' G-' if self.canGigantamax() else ''}{Util.STRINGS.species[self.species()]}{('-' + str(self.altForm())) if self.altForm() > 0 else ''}\n"
+			msg += f"Nature: {Util.STRINGS.natures[self.nature()]}({Util.STRINGS.natures[self.statnature()]})\t"
+			msg += f"Ability: {Util.STRINGS.abilities[self.ability()]}({self.abilityNum() if self.abilityNum() < 4 else 'H'})\t"
+			msg += f"Gender: {Util.GenderSymbol[self.gender()]}\n"
 			msg += f"IVs: {self.ivs()}\rEVs: {self.evs()}\n"
-			msg += f"Moves: {PK8.TEXT.moves[self.move1()]} / {PK8.TEXT.moves[self.move2()]} / {PK8.TEXT.moves[self.move3()]} / {PK8.TEXT.moves[self.move4()]}\n"
+			msg += f"Moves: {Util.STRINGS.moves[self.move1()]} / {Util.STRINGS.moves[self.move2()]} / {Util.STRINGS.moves[self.move3()]} / {Util.STRINGS.moves[self.move4()]}\n"
 			return msg
 		else:
 			return 'Invalid Data'

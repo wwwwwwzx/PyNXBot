@@ -2,7 +2,6 @@ import z3
 import sys,os
 from enum import Enum
 sys.path.append(os.path.dirname(os.path.realpath(__file__)) + '/..')
-from lookups import PKMString
 
 class XOROSHIRO(object):
     ulongmask = 2 ** 64 - 1
@@ -77,10 +76,9 @@ class XOROSHIRO(object):
         return [ model[start_s0].as_long() for model in models ]
 
 class FrameGenerator(object):
-    GenderSymbol = ['♂','♀','-']
-    from structure import PersonalTable
-    PT = PersonalTable(bytearray(open('../resources/bytes/personal_swsh','rb').read()))
-    pmstring = PKMString()
+    def print(self):
+        from lookups import Util
+        print(f"Seed:{self.seed:016X}\tShinyType:{self.ShinyType}\tEC:{self.EC:08X}\tPID:{self.PID:08X}\tAbility:{self.Ability}\tGender:{Util.GenderSymbol[self.Gender]}\tNature:{Util.STRINGS.natures[self.Nature]}\tIVs:{self.IVs}")
 
 class Egg(FrameGenerator):
     EVERSTONE = 229
@@ -94,12 +92,13 @@ class Egg(FrameGenerator):
                 return 1
             if randroll < 40:
                 return 2
-            return 3
+            return 'H'
         elif baseAbility == 1:
             return 1 if randroll < 80 else 2
         elif baseAbility == 2:
             return 1 if randroll < 20 else 2
 
+    @staticmethod
     def getPowerItem(itemID):
         if POWERITEM <= itemID and itemID <= POWERITEM + 5:
             return itemID - POWERITEM
@@ -117,7 +116,8 @@ class Egg(FrameGenerator):
             Female = parent1
             Male = parent2
         base = Male if Female.species() == 132 else Female
-        parentpi = FrameGenerator.PT.getFormeEntry(base.species(),base.altForm())
+        from lookups import Util
+        parentpi = Util.PT.getFormeEntry(base.species(),base.altForm())
         self.species = parentpi.BaseSpecies()
 
         # Gender
@@ -131,7 +131,7 @@ class Egg(FrameGenerator):
         if base.species() == 490:
             self.species = 489
         self.forme = parentpi.BaseSpeciesForm()
-        childpi = FrameGenerator.PT.getFormeEntry(self.species,self.forme)
+        childpi = Util.PT.getFormeEntry(self.species,self.forme)
         self.GenderRatio = childpi.Gender()
         if self.GenderRatio == 255:
             self.Gender = 2
@@ -300,7 +300,8 @@ class Raid(FrameGenerator):
     toxtricityLowKeyNatures = [1, 5, 7, 10, 12, 15, 16, 17, 18, 20, 21, 23]
 
     def __init__(self, seed, flawlessiv, ability = 4, gender = 0, species = 25, altform = 0):
-        pi = FrameGenerator.PT.getFormeEntry(species,altform)
+        from lookups import Util
+        pi = Util.PT.getFormeEntry(species,altform)
         self.seed = seed
         r = XOROSHIRO(seed)
         self.EC = r.nextuint()
@@ -350,9 +351,6 @@ class Raid(FrameGenerator):
             self.Nature = Raid.toxtricityAmpedNatures[r.quickrand2(13,0xF)]
         else:
             self.Nature = Raid.toxtricityLowKeyNatures[r.quickrand2(12,0xF)]
-
-    def print(self):
-        print(f"Seed:{self.seed:016X}\tShinyType:{self.ShinyType}\tEC:{self.EC:08X}\tPID:{self.PID:08X}\tAbility:{self.Ability}\tGender:{FrameGenerator.GenderSymbol[self.Gender]}\tNature:{FrameGenerator.pmstring.natures[self.Nature]}\tIVs:{self.IVs}")
 
     @staticmethod
     def getNextShinyFrame(seed):
