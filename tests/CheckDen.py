@@ -1,9 +1,5 @@
 # Settings
 IP = '192.168.0.10'
-language = 'ENUS' # to be read
-ReadEventFromConsole = True
-DumpPath = 'Event/Current/'
-LocalPath = 'Event/Index 12/'
 
 # Desired IVs
 V6 = [31,31,31,31,31,31]
@@ -17,23 +13,14 @@ import sys
 sys.path.append('../')
 
 from lookups import PKMString
-from structure import Den
-from structure import EncounterNest8Archive, NestHoleDistributionEncounter8Archive
-from nxbot import SWSHBot
+from nxbot import RaidBot
 from rng import XOROSHIRO,Raid
+from structure import Den
 
 pmtext = PKMString()
-buf = bytearray(open('../resources/bytes/local_raid','rb').read())
-Den.LOCALTABLE = EncounterNest8Archive.GetRootAsEncounterNest8Archive(buf,0)
-b = SWSHBot(IP)
-b.getEventOffset(language)
-if ReadEventFromConsole:
-	buf = b.readEventBlock_RaidEncounter(DumpPath)
-else:
-	buf = bytearray(open(LocalPath + 'normal_encount','rb').read())
-Den.EVENTTABLE = NestHoleDistributionEncounter8Archive.GetRootAsNestHoleDistributionEncounter8Archive(buf,0x20)
+b = RaidBot(IP)
 seed = None
-for ii in range(SWSHBot.DENCOUNT):
+for ii in range(RaidBot.DENCOUNT):
 	den = Den(b.readDen(ii))
 	if den.isActive():
 		spawn = den.getSpawn(denID = ii, isSword = b.isPlayingSword)

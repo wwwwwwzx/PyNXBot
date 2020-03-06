@@ -1,6 +1,25 @@
 import socket
 import time
 import binascii
+from enum import Enum
+
+class SystemLanguage(Enum):
+	JA = 0
+	ENUS = 1
+	FR = 2
+	DE = 3
+	IT = 4
+	ES = 5
+	ZHCN = 6
+	KO = 7
+	NL = 8
+	PT = 9
+	ZHTW = 11
+	ENGB = 12
+	FRCA = 13
+	ES419 = 14
+	ZHHANS = 15
+	ZHHANT = 16
 
 class NXBot(object):
 	def __init__(self,ip,port = 6000):
@@ -49,6 +68,12 @@ class NXBot(object):
 	def write(self,address,data):
 		self.sendCommand(f'poke 0x{address:X} {data}')
 
+	def getSystemLanguage(self):
+		self.sendCommand('getSystemLanguage')
+		time.sleep(0.005)
+		buf = self.s.recv(4)
+		return SystemLanguage(int(buf[0:-1]))
+
 class SWSHBot(NXBot):
 	PK8STOREDSIZE = 0x148
 	PK8PARTYSIZE = 0x158
@@ -58,29 +83,29 @@ class SWSHBot(NXBot):
 		NXBot.__init__(self,ip,port)
 		from structure import MyStatus8
 		self.TrainerSave = MyStatus8(self.readTrainerBlock())
+		self.eventoffset = 0
 		if self.TrainerSave.isPokemonSave():
 			print(f"Game:{self.TrainerSave.GameVersion()} OT: {self.TrainerSave.OT()} ID:{self.TrainerSave.displayID()}\n")
 			self.isPlayingSword = self.TrainerSave.isSword()
-			self.getEventOffset()
+			self.getEventOffset(self.getSystemLanguage())
  	
-	def getEventOffset(self, language = 'ENUS'):
-		self.eventoffset = 0
-		if language == 'ENUS' or language == 'ENGB' or language == 'PT' or language == 'RU' or language == 'NL':
-			pass
-		elif language == 'ZHCN' or language == 'ZHHANS':
+	def getEventOffset(self, language = SystemLanguage.ENUS):
+		if language == SystemLanguage.ZHCN or language == SystemLanguage.ZHHANS:
 			self.eventoffset = -0xDB0
-		elif language == 'ZHTW' or language == 'ZHHANT':
+		elif language == SystemLanguage.ZHTW or language == SystemLanguage.ZHHANT:
 			self.eventoffset = -0xE10
-		elif language == 'KO':
+		elif language == SystemLanguage.KO:
 			self.eventoffset = -0x9C0
-		elif language == 'IT':
+		elif language == SystemLanguage.IT:
 			self.eventoffset = -0x70
-		elif language == 'JA':
+		elif language == SystemLanguage.JA:
 			self.eventoffset = +0x180
-		elif language == 'FR' or language == 'FRCA' or language == 'ES' or language == 'ES419':
+		elif language == SystemLanguage.FR or language == SystemLanguage.FRCA or language == SystemLanguage.ES or language == SystemLanguage.ES419:
 			self.eventoffset = +0x1C0
-		elif language == 'DE':
+		elif language == SystemLanguage.DE:
 			self.eventoffset = +0x2C0 
+		else: # English
+			pass
 		return self.eventoffset
 
 	def readTrainerBlock(self):

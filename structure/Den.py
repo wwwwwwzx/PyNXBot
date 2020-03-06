@@ -44,6 +44,9 @@ class Den(ByteStruct):
 	def isWishingPiece(self):
 		return self.denType() == DenType.COMMON_WISH or self.denType() == DenType.RARE_WISH
 
+	def hasWatts(self):
+		return (self.flagByte() & 1) == 0
+
 	def isEvent(self):
 		return (self.flagByte() & 2) == 2
 
