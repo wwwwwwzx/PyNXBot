@@ -316,7 +316,7 @@ class Raid(FrameGenerator):
         i = 0
         self.IVs = [0,0,0,0,0,0]
         while i < flawlessiv:
-            stat = r.rand(6)
+            stat = r.quickrand2(6,0x7)
             if self.IVs[stat] == 0:
                 self.IVs[stat] = 31
                 i += 1
@@ -341,7 +341,8 @@ class Raid(FrameGenerator):
                 self.Gender = 1
             elif ratio == 0:
                 self.Gender = 0
-            self.Gender = 1 if r.quickrand2(253,0xFF) + 1 < ratio else 0
+            else:
+                self.Gender = 1 if r.quickrand2(253,0xFF) + 1 < ratio else 0
 
         if species != 849:
             self.Nature = r.quickrand2(25,0x1F)
