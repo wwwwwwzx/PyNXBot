@@ -83,7 +83,217 @@ class FrameGenerator(object):
     pmstring = PKMString()
 
 class Egg(FrameGenerator):
-    pass
+    EVERSTONE = 229
+    DESTINYKNOT = 280
+    POWERITEM = 289
+
+    @staticmethod
+    def getAbilityNum(baseAbility,randroll):
+        if baseAbility == 4:
+            if randroll < 20:
+                return 1
+            if randroll < 40:
+                return 2
+            return 3
+        elif baseAbility == 1:
+            return 1 if randroll < 80 else 2
+        elif baseAbility == 2:
+            return 1 if randroll < 20 else 2
+
+    def getPowerItem(itemID):
+        if POWERITEM <= itemID and itemID <= POWERITEM + 5:
+            return itemID - POWERITEM
+        return -1
+
+    def __init__(self, seed, parent1, parent2, shinycharm, tid = 0, sid = 0):
+        # slow generator
+        self.seed = seed
+        r = XOROSHIRO(seed)
+
+        if parent1.gender() == 0 or parent2.gender() == 1 or (parent1.species() == 132 and parent2.gender() != 0):
+            Male = parent1
+            Female = parent2
+        else:
+            Female = parent1
+            Male = parent2
+        base = Male if Female.species() == 132 else Female
+        parentpi = FrameGenerator.PT.getFormeEntry(base.species(),base.altForm())
+        self.species = parentpi.BaseSpecies()
+
+        # Gender
+        self.NidoType = False
+        if base.species() in [29,32]:
+            self.species = 29 if r.quickrand1(0x1) else 32
+            self.NidoType = True
+        if base.species() in [313,314]:
+            self.species = 314 if r.quickrand1(0x1) else 313
+            self.NidoType = True
+        if base.species() == 490:
+            self.species = 489
+        self.forme = parentpi.BaseSpeciesForm()
+        childpi = FrameGenerator.PT.getFormeEntry(self.species,self.forme)
+        self.GenderRatio = childpi.Gender()
+        if self.GenderRatio == 255:
+            self.Gender = 2
+        elif self.GenderRatio == 254:
+            self.Gender = 1
+        elif self.GenderRatio == 0:
+            self.Gender = 0
+        else:
+            self.RandomGender = True
+            self.Gender = 1 if r.quickrand2(252,0xFF) + 1 < self.GenderRatio else 0
+
+        # Nature
+        self.Nature = r.quickrand2(25,0x1F)
+        self.BOTH_EVERSTONE = Male.helditem() == EVERSTONE and Female.helditem() == EVERSTONE
+        self.FEMALE_STONE = Female.helditem() == EVERSTONE
+        self.HAS_STONE = Male.helditem() == EVERSTONE or self.FEMALE_STONE
+        if self.HAS_STONE:
+            self.MALE_NATURE = Male.nature()
+            self.FEMALE_NATURE = Female.nature()
+            if self.BOTH_EVERSTONE:
+                self.Nature = self.FEMALE_NATURE if r.quickrand1(0x1) else self.MALE_NATURE
+            else :
+                self.Nature = self.FEMALE_NATURE if self.FEMALE_STONE else self.MALE_NATURE
+
+        # Ability
+        self.baseAbility = base.abilityNum()
+        self.Ability = Egg.getAbilityNum(self.baseAbility, r.quickrand2(100,0x7F))
+
+        # IVs
+        self.InheritIVsCnt = 5 if Male.helditem() == DESTINYKNOT or Female.helditem() == DESTINYKNOT else 3
+
+        ## Power Item
+        self.InheritIVs = [-1, -1, -1, -1, -1, -1]
+        self.FEMALE_POWER = Egg.getPowerItem(Female.helditem())
+        self.MALE_POWER = Egg.getPowerItem(Male.helditem())
+        self.BOTH_POWER = self.MALE_POWER >= 0 and self.FEMALE_POWER >= 0
+        if self.BOTH_POWER:
+            if r.quickrand1(0x1):
+                self.InheritIVs[self.FEMALE_POWER] = 1
+            else:
+                self.InheritIVs[self.MALE_POWER] = 0
+        elif self.MALE_POWER >= 0:
+            self.InheritIVs[self.MALE_POWER] = 0
+        elif self.FEMALE_POWER >= 0:
+            self.InheritIVs[self.FEMALE_POWER] = 1
+
+        ## Find Inherit IV slots
+        if self.MALE_POWER >= 0 or self.FEMALE_POWER >= 0:
+            self.InheritIVsCnt -= 1
+        for ii in range(self.InheritIVsCnt):
+            tmp = r.quickrand2(6,0x7)
+            while self.InheritIVs[tmp] < -1:
+                tmp = r.quickrand2(6,0x7)
+            self.InheritIVs[tmp] = r.quickrand1(1)
+
+        ## Random IV
+        self.MaleIVs = Male.ivs
+        self.FemaleIVs = Female.ivs
+        self.IVs = [-1, -1, -1, -1, -1, -1]
+        for j in range(6):
+            self.IVs[j] = r.quickrand1(0x1F)
+            if self.InheritIVs[j] == 0:
+                self.IVs[j] = self.MaleIVs[j]
+            elif self.InheritIVs[j] == 1:
+                self.IVs[j] = self.FemaleIVs[j]
+
+        # EC
+        self.EC = r.nextuint()
+
+        # PID and shiny
+        self.txor = tid ^ sid
+        self.ShinyType = 'None'
+        reroll = 6 if Male.language() == Female.language() else 0
+        self.ShinyChram = shinycharm
+        if shinycharm:
+            reroll += 2
+        self.PID_REROLL = reroll
+        for ii in range(self.PID_REROLL):
+            self.PID = r.nextuint()
+            self.XOR = (self.PID >> 16) ^ (self.PID & 0xFFFF) ^ self.txor
+            if self.XOR < 16:
+                self.ShinyType = 'Star' if self.XOR else 'Square'
+                break
+
+        # Ball
+        self.ball = base.ball()
+        if Male.species() == Female.species(): # Same dex number
+            self.RandBall = True
+            self.BASE_BALL = base.ball()
+            self.MALE_BALL = Male.ball()
+            if r.quickrand2(100,0x7F) >= 50:
+                self.ball =  self.MALE_BALL
+        if self.ball == 16 or self.ball == 1:
+            self.ball = 4
+
+    def reseed(self, seed):
+        # Asssume that parents doesn't change. Quick version
+        self.seed = seed
+        r = XOROSHIRO(seed)
+
+        # Gender
+        if self.NidoType:
+            if self.species in [29,32]:
+                self.species = 29 if r.quickrand1(0x1) else 32
+            if self.species in [313,314]:
+                self.species = 314 if r.quickrand1(0x1) else 313
+        if self.RandomGender:
+            self.Gender = 1 if r.quickrand2(252,0xFF) + 1 < self.GenderRatio else 0
+
+        # Nature
+        self.Nature = r.quickrand2(25,0x1F)
+        if self.HAS_STONE:
+            if self.BOTH_EVERSTONE:
+                self.Nature = self.FEMALE_NATURE if r.quickrand1(0x1) else self.MALE_NATURE
+            else:
+                self.Nature = self.FEMALE_NATURE if self.FEMALE_STONE else self.MALE_NATURE
+
+        # Ability
+        self.Ability = Egg.getAbilityNum(self.baseAbility, r.quickrand2(100,0x7F))
+
+        # IVs
+        self.InheritIVs = [-1, -1, -1, -1, -1, -1]
+        if self.BOTH_POWER:
+            if r.quickrand1(0x1):
+                self.InheritIVs[self.FEMALE_POWER] = 1
+            else:
+                self.InheritIVs[self.MALE_POWER] = 0
+        elif self.MALE_POWER >= 0:
+            self.InheritIVs[self.MALE_POWER] = 0
+        elif self.FEMALE_POWER >= 0:
+            self.InheritIVs[self.FEMALE_POWER] = 1
+
+        for ii in range(self.InheritIVsCnt):
+            tmp = r.quickrand2(6,0x7)
+            while self.InheritIVs[tmp] < -1:
+                tmp = r.quickrand2(6,0x7)
+            self.InheritIVs[tmp] = r.quickrand1(1)
+
+        self.IVs = [-1, -1, -1, -1, -1, -1]
+        for j in range(6):
+            self.IVs[j] = r.quickrand1(0x1F)
+            if self.InheritIVs[j] == 0:
+                self.IVs[j] = self.MaleIVs[j]
+            elif self.InheritIVs[j] == 1:
+                self.IVs[j] = self.FemaleIVs[j]
+
+        # EC
+        self.EC = r.nextuint()
+
+        # PID
+        for ii in range(self.PID_REROLL):
+            self.PID = r.nextuint()
+            self.XOR = (self.PID >> 16) ^ (self.PID & 0xFFFF) ^ self.txor
+            if self.XOR < 16:
+                self.ShinyType = 'Star' if self.XOR else 'Square'
+                break
+
+        # Ball
+        if self.RandBall:
+            self.ball = self.MALE_BALL if r.quickrand2(100,0x7F) >= 50 else self.BASE_BALL
+            if self.ball == 16 or self.ball == 1:
+                self.ball = 4
 
 class Raid(FrameGenerator):
     toxtricityAmpedNatures = [3, 4, 2, 8, 9, 19, 22, 11, 13, 14, 0, 6, 24]
