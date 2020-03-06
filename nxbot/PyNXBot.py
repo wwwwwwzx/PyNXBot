@@ -1,6 +1,6 @@
 import socket
-import time
 import binascii
+from time import sleep
 from enum import Enum
 
 class SystemLanguage(Enum):
@@ -44,6 +44,7 @@ class NXBot(object):
 		self.s.close()
 		print('Bot Disconnected')
 
+	# A/B/X/Y/LSTICK/RSTICK/L/R/ZL/ZR/PLUS/MINUS/DLEFT/DUP/DDOWN/DRIGHT/HOME/CAPTURE
 	def click(self,button):
 		self.sendCommand('click '+ button)
 
@@ -55,7 +56,7 @@ class NXBot(object):
 	
 	def read(self,address,size,filename = None):
 		self.sendCommand(f'peek 0x{address:X} 0x{size:X}')
-		time.sleep(size/0x8000)
+		sleep(size/0x8000)
 		buf = self.s.recv(2 * size + 1)
 		buf = binascii.unhexlify(buf[0:-1])
 		if filename is not None:
@@ -70,9 +71,25 @@ class NXBot(object):
 
 	def getSystemLanguage(self):
 		self.sendCommand('getSystemLanguage')
-		time.sleep(0.005)
+		sleep(0.005)
 		buf = self.s.recv(4)
 		return SystemLanguage(int(buf[0:-1]))
+
+	def quit_app(self):
+		self.click("HOME")
+		sleep(0.6)
+		self.click("X")
+		sleep(0.3)
+		self.click("A")
+		sleep(1)
+
+	def enter_app(self):
+		self.click("A")
+		sleep(1)
+		self.click("A")
+
+	def pause(self,duration):
+		sleep(duration)
 
 class SWSHBot(NXBot):
 	PK8STOREDSIZE = 0x148
