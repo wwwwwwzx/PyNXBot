@@ -9,9 +9,9 @@ import flatbuffers
 from flatbuffers.compat import import_numpy
 np = import_numpy()
 
-ReadFromConsole = True
+ReadFromConsole = False
 DumpPath = 'Event/Current/'
-LocalPath = 'Event/Index 12/'
+LocalPath = 'Event/Index 14/'
 IP = '192.168.0.10'
 
 pmtext = PKMString()
@@ -44,6 +44,78 @@ if ReadFromConsole:
 else:
 	buf = bytearray(open(LocalPath + 'dai_encount','rb').read())
 crystalencounter = NestHoleCrystalEncounter8Archive.GetRootAsNestHoleCrystalEncounter8Archive(buf,0x20)
+
+def printdrop(dropid, rank):
+# look up local drop tables
+	for jj in range(drop.TablesLength()):
+		ldt = drop.Tables(jj)
+		if dropid == ldt.TableID():
+			msg = 'Drop: '
+			for kk in range(ldt.EntriesLength()):
+				ldte = ldt.Entries(kk)
+				if ldte.Values(rank) > 0:
+					msg += pmtext.items[ldte.ItemID()] + f'({ldte.Values(rank)}%)' + '  \t'
+			print(msg)
+	# look up event drop tables
+	for jj in range(dropreward.TablesLength()):
+		edt = dropreward.Tables(jj) # event drop table
+		if dropid == edt.TableID():
+			msg = 'Drop(E): '
+			for kk in range(edt.EntriesLength()):
+				edte = edt.Entries(kk)
+				if rank == 0:
+				 	value = edte.Value0()
+				elif rank == 1:
+				 	value = edte.Value1()
+				elif rank == 2:
+					value = edte.Value2()
+				elif rank == 3:
+					value = edte.Value3()
+				else:
+					value = edte.Value4()
+				if value > 0:
+					msg += pmtext.items[edt.Entries(kk).ItemID()] + f'({value}%)' + '  \t'
+			print(msg)
+
+def printbonus(bonusid,rank):
+# look up local bonus tables
+	for jj in range(bonus.TablesLength()):
+		lbt = bonus.Tables(jj)
+		if bonusid == lbt.TableID():
+			msg = 'Bonus: ' 
+			for kk in range(lbt.EntriesLength()):
+				lbte = lbt.Entries(kk)
+				if lbte.Values(rank) > 0:
+					msg += f'{lbte.Values(rank)} x ' + pmtext.items[lbte.ItemID()] + '\t\t'
+			print(msg)
+	# look up event bonus tables
+	for jj in range(bonusreward.TablesLength()):
+		ebt = bonusreward.Tables(jj) # event bonus table
+		if bonusid == ebt.TableID():
+			msg = 'Bonus(E): ' 
+			for kk in range(ebt.EntriesLength()):
+				ebte = ebt.Entries(kk)
+				if rank == 0:
+				 	value = ebte.Value0()
+				elif rank == 1:
+				 	value = ebte.Value1()
+				elif rank == 2:
+					value = ebte.Value2()
+				elif rank == 3:
+					value = ebte.Value3()
+				else:
+					value = ebte.Value4()
+				if value > 0:
+					msg += f'{value} x ' + pmtext.items[ebt.Entries(kk).ItemID()] + '\t\t'
+			print(msg)
+
+def getMoves(entry):
+	msg = f"{pmtext.moves[entry.Move0()]} / {pmtext.moves[entry.Move1()]} / {pmtext.moves[entry.Move2()]} / {pmtext.moves[entry.Move3()]}  \t"
+	if entry.AdditionalMove1Rate() > 0:
+		msg += f"({pmtext.moves[entry.AdditionalMove1()]}-{entry.AdditionalMove1Rate()}%-{entry.AdditionalMove1PP()}PP)"
+	if entry.AdditionalMove2Rate() > 0:
+		msg += f" ({pmtext.moves[entry.AdditionalMove2()]}-{entry.AdditionalMove2Rate()}%-{entry.AdditionalMove2PP()}PP)"
+	return msg
 
 print('Raid Encounter Table')
 if eventencounter.TablesIsNone():
@@ -80,79 +152,11 @@ else:
 			rank = np.nonzero(entry.ProbabilitiesAsNumpy())[0][0]
 			msg += f"{entry.ProbabilitiesAsNumpy()}\t"
 			# msg += f"Drop:{entry.DropTableID():X} Bonus:{entry.BonusTableID():X}\t"
-			msg += f"{pmtext.moves[entry.Move0()]} / {pmtext.moves[entry.Move1()]} / {pmtext.moves[entry.Move2()]} / {pmtext.moves[entry.Move3()]}  \t"
-			if entry.AdditionalMove1Rate() > 0:
-				msg += f"({pmtext.moves[entry.AdditionalMove1()]}-{entry.AdditionalMove1Rate()}%-{entry.AdditionalMove1PP()})"
-			if entry.AdditionalMove2Rate() > 0:
-				msg += f"({pmtext.moves[entry.AdditionalMove2()]}-{entry.AdditionalMove2Rate()}%-{entry.AdditionalMove2PP()})"
+			msg += getMoves(entry)
 
 			print(msg)
-
-			dropid = entry.DropTableID()
-			
-			# look up local drop tables
-			for jj in range(drop.TablesLength()):
-				ldt = drop.Tables(jj)
-				if dropid == ldt.TableID():
-					msg = 'Drop: '
-					for kk in range(ldt.EntriesLength()):
-						ldte = ldt.Entries(kk)
-						if ldte.Values(rank) > 0:
-							msg += pmtext.items[ldte.ItemID()] + f'({ldte.Values(rank)}%)' + '  \t'
-					print(msg)
-			# look up event drop tables
-			for jj in range(dropreward.TablesLength()):
-				edt = dropreward.Tables(jj) # event drop table
-				if dropid == edt.TableID():
-					msg = 'Drop(E): '
-					for kk in range(edt.EntriesLength()):
-						edte = edt.Entries(kk)
-						if rank == 0:
-						 	value = edte.Value0()
-						elif rank == 1:
-						 	value = edte.Value1()
-						elif rank == 2:
-							value = edte.Value2()
-						elif rank == 3:
-							value = edte.Value3()
-						else:
-							value = edte.Value4()
-						if value > 0:
-							msg += pmtext.items[edt.Entries(kk).ItemID()] + f'({value}%)' + '  \t'
-					print(msg)
-
-
-			bonusid = entry.BonusTableID()
-			# look up local bonus tables
-			for jj in range(bonus.TablesLength()):
-				lbt = bonus.Tables(jj)
-				if bonusid == lbt.TableID():
-					msg = 'Bonus: ' 
-					for kk in range(lbt.EntriesLength()):
-						lbte = lbt.Entries(kk)
-						if lbte.Values(rank) > 0:
-							msg += f'{lbte.Values(rank)} x ' + pmtext.items[lbte.ItemID()] + '\t\t'
-					print(msg)
-			# look up event bonus tables
-			for jj in range(bonusreward.TablesLength()):
-				ebt = bonusreward.Tables(jj) # event bonus table
-				if bonusid == ebt.TableID():
-					msg = 'Bonus(E): ' 
-					for kk in range(ebt.EntriesLength()):
-						ebte = ebt.Entries(kk)
-						if rank == 0:
-						 	value = ebte.Value0()
-						elif rank == 1:
-						 	value = ebte.Value1()
-						elif rank == 2:
-							value = ebte.Value2()
-						elif rank == 3:
-							value = ebte.Value3()
-						else:
-							value = ebte.Value4()
-						if value > 0:
-							msg += f'{value} x ' + pmtext.items[ebt.Entries(kk).ItemID()] + '\t\t'
-					print(msg)
+			printdrop(entry.DropTableID(),rank)
+			printbonus(entry.BonusTableID(),rank)
 			print()
 
 print('\n\nCrystal Encounter Table')
@@ -167,11 +171,12 @@ else:
 			entry = table.Entries(jj)
 			if entry.Species() == 0:	# Skip eggs
 				continue
+			print("Dynamax Crystal:" + pmtext.items[1279+jj])
 			msg = f"{entry.EntryIndex()}:\t{'G-' if entry.IsGigantamax() else ''}{pmtext.species[entry.Species()]}{('-' + str(entry.AltForm())) if entry.AltForm() > 0 else ''}  Lv:{entry.Level()}"
 			msg = f"{msg:25}\t"
 			msg += f"N:{entry.Nature()}\t"
 			msg += f"{entry.IVHp()}/{entry.IVAtk()}/{entry.IVDef()}/{entry.IVSpAtk()}/{entry.IVSpDef()}/{entry.IVSpe()}\t"
-			msg += f"{pmtext.moves[entry.Move0()]} / {pmtext.moves[entry.Move1()]} / {pmtext.moves[entry.Move2()]} / {pmtext.moves[entry.Move3()]}\t"
+			msg += getMoves(entry)
 			print(msg)
 
 # print('\n\nDropTable')

@@ -134,9 +134,9 @@ def getmsg2(entry,rank):
 	elif entry.Ability() == 2:
 		comment +=f"锁隐藏特性: [[{pmtext.abilities[pi.AbilityH()]}]]<br>"
 	elif entry.Ability() == 1:
-		comment +=f"锁特性2: [[{pmtext.abilities[pi.Ability2()]}]]<br>"
+		comment +=f"锁第二特性: [[{pmtext.abilities[pi.Ability2()]}]]<br>"
 	else:
-		comment +=f"锁特性1: [[{pmtext.abilities[pi.Ability1()]}]]<br>"
+		comment +=f"锁第一特性: [[{pmtext.abilities[pi.Ability1()]}]]<br>"
 	if entry.Nature() == 25:
 		pass # random nature
 	else:

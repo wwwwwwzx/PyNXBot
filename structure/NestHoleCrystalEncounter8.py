@@ -224,49 +224,49 @@ class NestHoleCrystalEncounter8(object):
         return 0
 
     # NestHoleCrystalEncounter8
-    def Field1D(self):
+    def Shield(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(62))
         if o != 0:
             return self._tab.Get(flatbuffers.number_types.Uint32Flags, o + self._tab.Pos)
         return 0
 
     # NestHoleCrystalEncounter8
-    def Field1E(self):
+    def AdditionalMove1Rate(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(64))
         if o != 0:
             return self._tab.Get(flatbuffers.number_types.Uint32Flags, o + self._tab.Pos)
         return 0
 
     # NestHoleCrystalEncounter8
-    def Field1F(self):
+    def AdditionalMove1(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(66))
         if o != 0:
             return self._tab.Get(flatbuffers.number_types.Uint32Flags, o + self._tab.Pos)
         return 0
 
     # NestHoleCrystalEncounter8
-    def Field20(self):
+    def AdditionalMove1PP(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(68))
         if o != 0:
             return self._tab.Get(flatbuffers.number_types.Uint32Flags, o + self._tab.Pos)
         return 0
 
     # NestHoleCrystalEncounter8
-    def Field21(self):
+    def AdditionalMove2Rate(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(70))
         if o != 0:
             return self._tab.Get(flatbuffers.number_types.Uint32Flags, o + self._tab.Pos)
         return 0
 
     # NestHoleCrystalEncounter8
-    def Field22(self):
+    def AdditionalMove2(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(72))
         if o != 0:
             return self._tab.Get(flatbuffers.number_types.Uint32Flags, o + self._tab.Pos)
         return 0
 
     # NestHoleCrystalEncounter8
-    def Field23(self):
+    def AdditionalMove2PP(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(74))
         if o != 0:
             return self._tab.Get(flatbuffers.number_types.Uint32Flags, o + self._tab.Pos)
@@ -302,11 +302,11 @@ def NestHoleCrystalEncounter8AddMove3(builder, Move3): builder.PrependUint32Slot
 def NestHoleCrystalEncounter8AddDynamaxBoost(builder, DynamaxBoost): builder.PrependFloat32Slot(26, DynamaxBoost, 0.0)
 def NestHoleCrystalEncounter8AddField1B(builder, Field1B): builder.PrependUint32Slot(27, Field1B, 0)
 def NestHoleCrystalEncounter8AddField1C(builder, Field1C): builder.PrependUint32Slot(28, Field1C, 0)
-def NestHoleCrystalEncounter8AddField1D(builder, Field1D): builder.PrependUint32Slot(29, Field1D, 0)
-def NestHoleCrystalEncounter8AddField1E(builder, Field1E): builder.PrependUint32Slot(30, Field1E, 0)
-def NestHoleCrystalEncounter8AddField1F(builder, Field1F): builder.PrependUint32Slot(31, Field1F, 0)
-def NestHoleCrystalEncounter8AddField20(builder, Field20): builder.PrependUint32Slot(32, Field20, 0)
-def NestHoleCrystalEncounter8AddField21(builder, Field21): builder.PrependUint32Slot(33, Field21, 0)
-def NestHoleCrystalEncounter8AddField22(builder, Field22): builder.PrependUint32Slot(34, Field22, 0)
-def NestHoleCrystalEncounter8AddField23(builder, Field23): builder.PrependUint32Slot(35, Field23, 0)
+def NestHoleCrystalEncounter8AddShield(builder, Shield): builder.PrependUint32Slot(29, Shield, 0)
+def NestHoleCrystalEncounter8AddAdditionalMove1Rate(builder, AdditionalMove1Rate): builder.PrependUint32Slot(30, AdditionalMove1Rate, 0)
+def NestHoleCrystalEncounter8AddAdditionalMove1(builder, AdditionalMove1): builder.PrependUint32Slot(31, AdditionalMove1, 0)
+def NestHoleCrystalEncounter8AddAdditionalMove1PP(builder, AdditionalMove1PP): builder.PrependUint32Slot(32, AdditionalMove1PP, 0)
+def NestHoleCrystalEncounter8AddAdditionalMove2Rate(builder, AdditionalMove2Rate): builder.PrependUint32Slot(33, AdditionalMove2Rate, 0)
+def NestHoleCrystalEncounter8AddAdditionalMove2(builder, AdditionalMove2): builder.PrependUint32Slot(34, AdditionalMove2, 0)
+def NestHoleCrystalEncounter8AddAdditionalMove2PP(builder, AdditionalMove2PP): builder.PrependUint32Slot(35, AdditionalMove2PP, 0)
 def NestHoleCrystalEncounter8End(builder): return builder.EndObject()
