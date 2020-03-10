@@ -31,11 +31,13 @@ class RaidBot(SWSHBot):
                         print("Closing game...")
                         self.quit_app(need_home)
                         
-        def skipAnimation(self):
+        def skipAnimation(self, luxray = False):
                 self.enter_app()
-                sleep(16.5) 
-                self.click("A") #A to skip anim
+                sleep(16.5)
+                if luxray:
+                        sleep(1)
                 print("Skip animation")
+                self.click("A") #A to skip anim
                 sleep(0.5)
                 self.click("A")
                 sleep(0.5)

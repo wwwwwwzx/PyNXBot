@@ -3,7 +3,7 @@
 #Go to System Settings, check your Switch IP and write it below
 #Set game text speed to normal
 #Save in front of an empty Den. You must have at least one Wishing Piece in your bag
-#Start the script with you game opened
+#Start the script with your game opened
 #r.Ability == 1/2/'H'
 #r.Nature == 'NATURE'
 #r.ShinyType == 'None'/'Star'/'Square' (!= 'None' for both square/star)
@@ -43,13 +43,13 @@ denId = int(input("Den Id: "))
 b.setTargetDen(denId)
 
 rb_research = input("Are you looking for a Rare Beam Raid? (y/n) ")
-if rb_research == "y":
+if rb_research == "y" or rb_research == "Y":
     rb_research = 1
     ev_research = 0
 else:
     rb_research = 0
     ev_research = input("Are you looking for an Event Raid? (y/n) ")
-    if ev_research == "y":
+    if ev_research == "y" or ev_research == "Y":
         ev_research = 1
     else:
         ev_research = 0
@@ -57,31 +57,31 @@ else:
 flawlessiv = int(input("How many fixed IVs will the Pokemon have? (1 to 5) "))
 
 ability = input("Is Hidden Ability possible? (y/n) ")
-if ability == 'y':
+if ability == 'y' or ability == 'Y':
     ability = 4
 else:
     ability = 3
     
 species = input("Are you looking for Toxtricity? (y/n) ")
-if species == 'y':
+if species == 'y' or species == 'Y':
     species = 849
     gender = 0
 else:
     species = 25
     gender = input("Are you looking for a Random Gender Pokémon? (y/n) ")
-    if gender == 'y':
+    if gender == 'y' or gender == 'Y':
         gender = 0
     else:
         gender = input("Is it male, female or genderless? (m/f/-)")
-        if gender == 'm':
+        if gender == 'm' or gender == 'M':
             gender = 1
-        elif gender == 'f':
+        elif gender == 'f' or gender == 'F':
             gender = 2
         else:
             gender = 3
 
 altform = 0
-isSword = b.TrainerSave.isSword()
+isSword = b.isPlayingSword
 if species == 849 and isSword == False:
     altform = 1
 
@@ -134,7 +134,7 @@ while True:
         r = Raid(seed,flawlessiv,ability,gender,species,altform)
         seed = XOROSHIRO(seed).next()
         if ivfilter:
-            if r.ShinyType != 'None' and PKMString().natures[r.Nature] == 'Bold' and r.Ability == 'H': #and (r.IVs == V6 or r.IVs == A0 or r.IVs == S0):
+            if r.ShinyType != 'None' and PKMString().natures[r.Nature] == 'Timid': #and (r.IVs == V6 or  or r.IVs == S0):
                 print("Frame:", j)
                 r.print()
                 if found != 1:
@@ -149,7 +149,7 @@ while True:
     if found:
         print("Found after", reset, "resets")
         a = input("Continue searching? (y/n): ")
-        if a != "y" or a != "Y":
+        if a != "y" and a != "Y":
             b.closeGame()
             print("Exiting...")
             b.close()

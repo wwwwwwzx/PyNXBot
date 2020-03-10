@@ -86,7 +86,7 @@ class NXBot(object):
 
         def enter_app(self):
                 self.click("A")
-                sleep(1)
+                sleep(1.2)
                 self.click("A")
 
         def pause(self,duration):

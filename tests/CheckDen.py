@@ -1,5 +1,5 @@
 # Settings
-IP = '192.168.0.10'
+IP = '192.168.1.4'
 
 # Desired IVs
 V6 = [31,31,31,31,31,31]
@@ -23,7 +23,7 @@ for ii in range(RaidBot.DENCOUNT):
 	den = Den(b.readDen(ii))
 	if den.isActive():
 		spawn = den.getSpawn(denID = ii, isSword = b.isPlayingSword)
-		info = f"denID {ii}:0x{den.seed():X}\t{den.stars()}★\tSpecies: {Util.STRINGS.species[spawn.Species()]}\t"
+		info = f"denID {ii+1}:0x{den.seed():X}\t{den.stars()}★\tSpecies: {Util.STRINGS.species[spawn.Species()]}\t"
 		if spawn.IsGigantamax():
 			info += "G-Max\t"
 		if den.isEvent():
