@@ -171,8 +171,8 @@ else:
 			entry = table.Entries(jj)
 			if entry.Species() == 0:	# Skip eggs
 				continue
-			print("Dynamax Crystal:" + pmtext.items[1279+jj])
-			msg = f"{entry.EntryIndex()}:\t{'G-' if entry.IsGigantamax() else ''}{pmtext.species[entry.Species()]}{('-' + str(entry.AltForm())) if entry.AltForm() > 0 else ''}  Lv:{entry.Level()}"
+			print(f"{entry.EntryIndex()}:\tDynamax Crystal:" + pmtext.items[1279+jj] + f"\t{'G-' if entry.IsGigantamax() else ''}{pmtext.species[entry.Species()]}{('-' + str(entry.AltForm())) if entry.AltForm() > 0 else ''}")
+			msg =  f"Lv:{entry.Level()}"
 			msg = f"{msg:25}\t"
 			msg += f"N:{entry.Nature()}\t"
 			msg += f"{entry.IVHp()}/{entry.IVAtk()}/{entry.IVDef()}/{entry.IVSpAtk()}/{entry.IVSpDef()}/{entry.IVSpe()}\t"
