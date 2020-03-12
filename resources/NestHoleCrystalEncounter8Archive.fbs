@@ -40,13 +40,13 @@ table NestHoleCrystalEncounter8 {
     DynamaxBoost:float;
     Field_1B:uint;
     Field_1C:uint;
-    Field_1D:uint;
-    Field_1E:uint;
-    Field_1F:uint;
-    Field_20:uint;
-    Field_21:uint;
-    Field_22:uint;
-    Field_23:uint;
+    Shield:uint;
+    AdditionalMove1Rate:uint;
+    AdditionalMove1:uint;
+    AdditionalMove1PP:uint;
+    AdditionalMove2Rate:uint;
+    AdditionalMove2:uint;
+    AdditionalMove2PP:uint;
 }
 
 root_type NestHoleCrystalEncounter8Archive;
