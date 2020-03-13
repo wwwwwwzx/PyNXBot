@@ -143,6 +143,9 @@ class SWSHBot(NXBot):
                 address = 0x4293D8B0 + box * 30 + slot * self.PK8PARTYSIZE
                 return self.read(address,self.PK8STOREDSIZE)
 
+        def readTrade(self):
+                return self.read(0x2E32206A,self.PK8STOREDSIZE)
+
         def readWild(self):
                 return self.read(0x8D45C648,self.PK8STOREDSIZE)
 
