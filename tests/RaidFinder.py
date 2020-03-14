@@ -5,7 +5,7 @@
 #Save in front of an empty Den. You must have at least one Wishing Piece in your bag
 #Start the script with your game opened
 #r.Ability == 1/2/'H'
-#r.Nature == 'NATURE'
+#r.Nature == 'Nature'
 #r.ShinyType == 'None'/'Star'/'Square' (!= 'None' for both square/star)
 #r.IVs == spread_name (spread_name = [x,x,x,x,x,x])
 
@@ -22,7 +22,6 @@ from rng import XOROSHIRO,Raid
 def signal_handler(signal, frame): #CTRL+C handler
     print("Stop request")
     b.closeGame()
-    b.close()
     sys.exit(0)
 
 IP = '192.168.1.4' #write the IP of your Switch here
@@ -30,7 +29,7 @@ b = RaidBot(IP)
 
 signal.signal(signal.SIGINT, signal_handler)
 
-ivfilter = 1 #set 0 to disable filter
+usefilters = 1 #set 0 to disable filter
 
 V6 = [31,31,31,31,31,31] #add here the spreads you need
 A0 = [31,0,31,31,31,31]
@@ -85,7 +84,7 @@ isSword = b.isPlayingSword
 if species == 849 and isSword == False:
     altform = 1
 
-Maxresults = int(input("Input Max Results: "))
+MaxResults = int(input("Input Max Results: "))
 sleep(0.5)
 print()
 
@@ -115,7 +114,7 @@ while True:
         print("No event Raid")
         
     #spreads research
-    j = 0
+    i = 0
     found = 0
     do_research = 1
     
@@ -126,36 +125,34 @@ while True:
     elif rb_research == 0 and ev_research == 0:
         if rb_research != den.isRare() or ev_research != den.isEvent():
             do_research = 0
-    
-    while j < Maxresults and do_research:        
-        if j < 1:
-            print("Searching...")
+    else:
+        print("Searching...")
 
-        r = Raid(seed,flawlessiv,ability,gender,species,altform)
-        seed = XOROSHIRO(seed).next()
-        if ivfilter:
-            if r.ShinyType != 'None' and PKMString().natures[r.Nature] == 'Timid': #and (r.IVs == V6 or  or r.IVs == S0):
-                print("Frame:", j)
+    if do_research:
+        while i < MaxResults:
+            r = Raid(seed,flawlessiv,ability,gender,species,altform)
+            seed = XOROSHIRO(seed).next()
+            if usefilters:
+                if r.ShinyType != 'None' and PKMString().natures[r.Nature] == 'Quiet' and r.Ability == 'H': #and (r.IVs == V6 or  or r.IVs == S0):
+                    print(f"Frame:{i}")
+                    r.print()
+                    if found != 1:
+                        found = 1
+            else:
+                print(f"Frame:{i}")
                 r.print()
                 if found != 1:
                     found = 1
-        else:
-            if found != 1:
-                found = 1
-            print("Frame:", j)
-            r.print()
-        j += 1
+            i += 1
 
     if found:
         print("Found after", reset, "resets")
         a = input("Continue searching? (y/n): ")
         if a != "y" and a != "Y":
             b.closeGame()
-            print("Exiting...")
-            b.close()
             break
     else:
-        if j == 0:
+        if i == 0:
             print("Research skipped")
         reset = reset + 1
         print("Nothing found - Resets:", reset)
@@ -163,7 +160,6 @@ while True:
     #game closing
     print("Resetting...")
     b.quit_app(need_home = False)
-    sleep(2.5) 
     print()
 
     print("Starting the game")
