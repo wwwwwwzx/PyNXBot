@@ -1,7 +1,6 @@
 import z3
 import sys,os
 from enum import Enum
-sys.path.append(os.path.dirname(os.path.realpath(__file__)) + '/..')
 
 class XOROSHIRO(object):
     ulongmask = 2 ** 64 - 1

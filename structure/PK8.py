@@ -73,6 +73,9 @@ class PK8(ByteStruct):
 	def ball(self):
 		return self.getbyte(0x124)
 
+	def homeTracker(self):
+		return self.getulong(0x135)
+
 	def isEgg(self):
 		return ((self.iv32() >> 31) & 1) == 1
 
