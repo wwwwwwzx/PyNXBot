@@ -12,7 +12,7 @@ MaxResults = 10000
 import sys
 sys.path.append('../')
 
-from lookups import Util
+from lookups import Util,PKMString
 from nxbot import RaidBot
 from rng import XOROSHIRO,Raid
 from structure import Den
