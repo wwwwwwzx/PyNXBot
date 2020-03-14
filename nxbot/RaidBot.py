@@ -13,9 +13,7 @@ class RaidBot(SWSHBot):
                 Den.EVENTTABLE = NestHoleDistributionEncounter8Archive.GetRootAsNestHoleDistributionEncounter8Archive(buf,0x20)
 
         def setTargetDen(self, denId):
-                if denId <= 16:
-                        denId -= 1
-                self.denID = denId
+                self.denID = denId - 1
 
         def getDenData(self):
                 return Den(self.readDen(self.denID))
