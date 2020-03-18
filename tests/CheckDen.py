@@ -1,5 +1,5 @@
 # Settings
-IP = '192.168.1.4'
+IP = '192.168.1.8'
 
 # Desired IVs
 V6 = [31,31,31,31,31,31]
@@ -45,7 +45,7 @@ if seed is not None:
 		r = Raid(seed, flawlessiv = 1)
 		seed = XOROSHIRO(seed).next()
 		if usefilters:
-			if r.ShinyType != 'None' or r.IVs == V6 or r.IVs == S0 or r.IVs == A0:
+			if (r.ShinyType != 'None' or r.IVs == V6 or r.IVs == S0 or r.IVs == A0) and Util.STRINGS.natures[r.Nature] == 'Careful':
 				print(f"Frame:{i}")
 				r.print()
 		else:

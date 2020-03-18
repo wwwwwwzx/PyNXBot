@@ -16,7 +16,6 @@ from nxbot import RaidBot
 def signal_handler(signal, frame): #CTRL+C handler
     print("Stop request")
     b.closeGame()
-    b.close()
     sys.exit(0)
 
 IP = '192.168.1.4' #write the IP of your Switch here
@@ -34,10 +33,11 @@ else:
     gigantamax = False
 
 stars = int(input("Which number of Stars are you looking for? (1 to 5) "))
+sleep(0.5)
 
 while True:
     b.click('R') #R on Luxray "+3" button
-    sleep(1.5)
+    sleep(1.7)
 
     for ii in range(RaidBot.DENCOUNT):
         den = Den(b.readDen(ii))
@@ -55,8 +55,6 @@ while True:
         a = input('Continue searching? (y/n): ')
         if a != "y" and a != "Y":
             b.closeGame()
-            print("Exiting...")
-            b.close()
             break
     else:
         reset = reset + 1
@@ -64,9 +62,9 @@ while True:
 
     #game closing
     print("Resetting...")
-    b.quit_app(need_home = True)
-    sleep(2.5)
+    b.quit_app()
     print()
 
     print("Starting the game")
     b.skipAnimation(luxray = True)
+    sleep(0.6)

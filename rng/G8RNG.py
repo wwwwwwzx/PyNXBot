@@ -343,6 +343,8 @@ class Raid(FrameGenerator):
                 self.Gender = 0
             else:
                 self.Gender = 1 if r.quickrand2(253,0xFF) + 1 < ratio else 0
+        else:
+            self.Gender = gender - 1
 
         if species != 849:
             self.Nature = r.quickrand2(25,0x1F)

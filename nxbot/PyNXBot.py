@@ -78,15 +78,23 @@ class NXBot(object):
         def quit_app(self,need_home = True):
                 if need_home:
                         self.click("HOME")
-                        sleep(0.6)
+                        sleep(0.8)
                 self.click("X")
-                sleep(0.3)
+                sleep(0.2)
+                self.click("X")
+                sleep(0.6)
                 self.click("A")
-                sleep(1)
+                sleep(0.2)
+                self.click("A")
+                sleep(3)
 
         def enter_app(self):
                 self.click("A")
-                sleep(1.2)
+                sleep(0.2)
+                self.click("A")
+                sleep(1.3)
+                self.click("A")
+                sleep(0.2)
                 self.click("A")
 
         def pause(self,duration):
