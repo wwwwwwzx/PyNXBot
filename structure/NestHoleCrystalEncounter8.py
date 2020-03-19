@@ -55,6 +55,9 @@ class NestHoleCrystalEncounter8(object):
             return self._tab.Get(flatbuffers.number_types.Int8Flags, o + self._tab.Pos)
         return 0
 
+    def Ability(self):
+        return self.Field05()
+
     # NestHoleCrystalEncounter8
     def Field05(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
@@ -167,6 +170,9 @@ class NestHoleCrystalEncounter8(object):
             return self._tab.Get(flatbuffers.number_types.Int16Flags, o + self._tab.Pos)
         return 0
 
+    def ShinyFlag(self):
+        return self.Field15()
+    
     # NestHoleCrystalEncounter8
     def Field15(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(46))

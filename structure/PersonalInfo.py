@@ -59,6 +59,7 @@ class PersonalInfoSWSH(PersonalInfo):
 		return self.getushort(0x58)
 
 class PersonalTable(object):
+	Galarlist = [52,77,78,79,83,110,122,222,263,264,554,555,562,618]
 	def __init__(self,buf,ver = GameVersion.SWSH):
 		length = len(buf)
 		self.table = []
@@ -76,10 +77,12 @@ class PersonalTable(object):
 		return self.table[self.getFormeIndex(species,forme)]
 
 	def getFormeNameIndex(self, species, forme):
+		if species == 678 or species == 876:
+			return 1004 if forme else 678
 		if forme == 0:
 			return species
 		if species == 849 and forme == 1:
 			return 1072
-		if  species == 869:
+		if species == 869:
 			return 1072 + forme
 		return -1

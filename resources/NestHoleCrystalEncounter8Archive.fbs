@@ -16,7 +16,7 @@ table NestHoleCrystalEncounter8 {
     AltForm:uint;
     Level:uint;
     DynamaxLevel:byte;
-    Field_05:byte;
+    Ability:byte;
     IsGigantamax:uint;
     DropTableID:ulong;
     BonusTableID:ulong;
