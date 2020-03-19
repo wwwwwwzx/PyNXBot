@@ -1,5 +1,5 @@
-Path = 'Event/Index 12/'
-ShortVersion = False
+Path = 'Event/Index 15/'
+ShortVersion = True
 
 # Go to root of PyNXBot
 import sys
@@ -27,6 +27,10 @@ def getspecies(species, isgmax = False, formid = 0, isShiny = False):
 		t = '{{MSP|' + f'{species:03}' + '}}<br>{{p|' + pmtext.species[species] + '}}' + ('<br />[[File:Dynamax icon.png|link=Gigantamax]]' if isgmax else '')
 	elif species == 869:
 		t = '{{MSP|' + f'{species:03}' +('Gi' if isgmax else '') + '}}<br>{{p|' + pmtext.species[species] + '}}<br><small>' + formtext + '</small>'
+	elif species == 678 or species == 876:
+		t = '{{MSP|' + f'{species:03}' +('F' if formid else '') + '}}<br>{{p|' + pmtext.species[species] + '}}<br><small>' + formtext + '</small>'
+	elif species in PersonalTable.Galarlist:
+		t = '{{MSP|' + f'{species:03}' +('G' if formid else '') + '}}<br>{{p|' + pmtext.species[species] + '}}<br><small>Galarian Form</small>'
 	else:
 		t = '{{MSP|' + f'{species:03}' +('Gi' if isgmax else '') + '}}<br>{{p|' + pmtext.species[species] + '}}' + (f'<br>FormeID:{formid}' if formid > 0 else '')
 	if isShiny:
@@ -38,6 +42,10 @@ def getspecies_short(species, isgmax = False, formid = 0):
 		t = f'{species:03}' + ('Gi' if isgmax else ('L' if formid == 1 else '')) + '|' + pmtext.species[species]
 	elif species == 868:
 		t = f'{species:03}' + '|' + pmtext.species[species]
+	elif species == 678 or species == 876:
+		t = f'{species:03}' + ('F' if formid else '') +'|' + pmtext.species[species]
+	elif species in PersonalTable.Galarlist:
+		t = f'{species:03}' + ('G' if formid else '') +'|' + pmtext.species[species]
 	else:
 		t = f'{species:03}' + ('Gi' if isgmax else '') +'|' + pmtext.species[species]
 	return t
@@ -45,10 +53,12 @@ def getspecies_short(species, isgmax = False, formid = 0):
 def getform_short(species, isgmax = False, formid = 0, isShiny = False):
 	t = ''
 	formtext = pmtext.forms[pt.getFormeNameIndex(species,formid)]
-	if species == 849 or species == 869:
+	if species == 849 or species == 869 or species == 678 or species == 876:
 		t = f"|form={formtext}"
-	elif species == 868:
-		t = '|form=Gigantamax Factor' if isgmax else ''
+	elif species == 868 and isgmax:
+		t = '|form=Gigantamax Factor'
+	elif species in PersonalTable.Galarlist and formid == 1:
+		t = '|form=Galarian Form'
 	if isgmax and species != 868:
 		t = "|form=Gigantamax" if t == '' else (t + '<br>Gigantamax|formlink=Gigantamax')
 	if isShiny:
