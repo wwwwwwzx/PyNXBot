@@ -60,6 +60,7 @@ class PersonalInfoSWSH(PersonalInfo):
 
 class PersonalTable(object):
 	Galarlist = [52,77,78,79,83,110,122,222,263,264,554,555,562,618]
+	Alolalist = [19,20,26,27,28,37,38,50,51,52,53,74,75,76,88,89,103,105]
 	def __init__(self,buf,ver = GameVersion.SWSH):
 		length = len(buf)
 		self.table = []
@@ -79,6 +80,10 @@ class PersonalTable(object):
 	def getFormeNameIndex(self, species, forme):
 		if species == 678 or species == 876:
 			return 1004 if forme else 678
+		if species in self.Alolalist and forme <= 1: # Skip Galarian Meowth
+			return 810 if forme else 1
+		if species in self.Galarlist:
+			return 1068 if forme else 1
 		if forme == 0:
 			return species
 		if species == 849 and forme == 1:

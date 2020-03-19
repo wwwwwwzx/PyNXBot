@@ -29,8 +29,10 @@ def getspecies(species, isgmax = False, formid = 0, isShiny = False):
 		t = '{{MSP|' + f'{species:03}' +('Gi' if isgmax else '') + '}}<br>{{p|' + pmtext.species[species] + '}}<br><small>' + formtext + '</small>'
 	elif species == 678 or species == 876:
 		t = '{{MSP|' + f'{species:03}' +('F' if formid else '') + '}}<br>{{p|' + pmtext.species[species] + '}}<br><small>' + formtext + '</small>'
-	elif species in PersonalTable.Galarlist:
-		t = '{{MSP|' + f'{species:03}' +('G' if formid else '') + '}}<br>{{p|' + pmtext.species[species] + '}}<br><small>Galarian Form</small>'
+	elif species in PersonalTable.Alolalist and formid == 1:
+		t = '{{MSP|' + f'{species:03}' + 'A}}<br>{{p|' + pmtext.species[species] + '}}<br><small>' + formtext + '</small>'
+	elif species in PersonalTable.Galarlist and formid:
+		t = '{{MSP|' + f'{species:03}' + 'G}}<br>{{p|' + pmtext.species[species] + '}}<br><small>' + formtext + '</small>'
 	else:
 		t = '{{MSP|' + f'{species:03}' +('Gi' if isgmax else '') + '}}<br>{{p|' + pmtext.species[species] + '}}' + (f'<br>FormeID:{formid}' if formid > 0 else '')
 	if isShiny:
@@ -44,6 +46,8 @@ def getspecies_short(species, isgmax = False, formid = 0):
 		t = f'{species:03}' + '|' + pmtext.species[species]
 	elif species == 678 or species == 876:
 		t = f'{species:03}' + ('F' if formid else '') +'|' + pmtext.species[species]
+	elif species in PersonalTable.Alolalist and formid <= 1:
+		t = f'{species:03}' + ('A' if formid else '') +'|' + pmtext.species[species]
 	elif species in PersonalTable.Galarlist:
 		t = f'{species:03}' + ('G' if formid else '') +'|' + pmtext.species[species]
 	else:
@@ -53,12 +57,10 @@ def getspecies_short(species, isgmax = False, formid = 0):
 def getform_short(species, isgmax = False, formid = 0, isShiny = False):
 	t = ''
 	formtext = pmtext.forms[pt.getFormeNameIndex(species,formid)]
-	if species == 849 or species == 869 or species == 678 or species == 876:
+	if species == 849 or species == 869 or species == 678 or species == 876 or ((species in pt.Galarlist or species in pt.Alolalist) and formid):
 		t = f"|form={formtext}"
 	elif species == 868 and isgmax:
 		t = '|form=Gigantamax Factor'
-	elif species in PersonalTable.Galarlist and formid == 1:
-		t = '|form=Galarian Form'
 	if isgmax and species != 868:
 		t = "|form=Gigantamax" if t == '' else (t + '<br>Gigantamax|formlink=Gigantamax')
 	if isShiny:

@@ -38,8 +38,10 @@ def getspecies(species, isgmax = False, formid = 0, isShiny = False):
 		t = '{{MSP|' + f'{species:03}' +('GM' if isgmax else '') + '}}<br>[[' + pmtext.species[species] + ']]<br><small>' + formtext + '</small>'
 	elif species == 678 or species == 876:
 		t = '{{MSP|' + f'{species:03}' +('F' if formid else '') + '}}<br>[[' + pmtext.species[species] + ']]<br><small>' + formtext + '</small>'
-	elif species in PersonalTable.Galarlist and formid == 1:
-		t = '{{MSP|' + f'{species:03}' + 'G}}<br>[[' + pmtext.species[species] + ']]'
+	elif species in PersonalTable.Alolalist and formid == 1:
+		t = '{{MSP|' + f'{species:03}' + 'A}}<br>[[' + pmtext.species[species] + ']]<br><small>' + formtext + '</small>'
+	elif species in PersonalTable.Galarlist and formid:
+		t = '{{MSP|' + f'{species:03}' + 'G}}<br>[[' + pmtext.species[species] + ']]<br><small>' + formtext + '</small>'
 	else:
 		t = '{{MSP|' + f'{species:03}' +('GM' if isgmax else '') + '}}<br>[[' + pmtext.species[species] + ']]' + (f'<br>形态数:{formid}' if formid > 0 else '')
 	if isShiny:
@@ -55,7 +57,7 @@ def getmsg2(entry, rank, isCrystal = False):
 	msg += (f"{entry.IVHp()}/{entry.IVAtk()}/{entry.IVDef()}/{entry.IVSpAtk()}/{entry.IVSpDef()}/{entry.IVSpe()} || " if isCrystal else (f'{entry.FlawlessIVs()}' + ' || '))
 	msg += f'{entry.Shield()}' + ' || '
 	msg += f'{entry.DynamaxLevel()}' + ' || '
-	msg += f'{entry.DynamaxBoost():0.1f}' + 'x || '
+	msg += f'{entry.DynamaxBoost():0.1f}' + '× || '
 	Sep = '}}<br>{{m|'
 	msg += '{{m|'
 	if entry.Move3() > 0:
@@ -112,7 +114,7 @@ def getmsg2(entry, rank, isCrystal = False):
 			for kk in range(lbt.EntriesLength()):
 				lbte = lbt.Entries(kk)
 				if lbte.Values(rank) > 0:
-					msg += f'{lbte.Values(rank)}x ' + getitem(lbte.ItemID()) + "<br>"
+					msg += f'{lbte.Values(rank)}×' + getitem(lbte.ItemID()) + "<br>"
 	# look up event bonus tables
 	for jj in range(bonusreward.TablesLength()):
 		ebt = bonusreward.Tables(jj) # event bonus table
@@ -131,7 +133,7 @@ def getmsg2(entry, rank, isCrystal = False):
 				else:
 					value = ebte.Value4()
 				if value > 0:
-					msg += f'{value}x' + getitem(ebte.ItemID()) + "<br>"
+					msg += f'{value}×' + getitem(ebte.ItemID()) + "<br>"
 	msg = msg[:-4] + ' || '
 
 	comment = ''
@@ -144,11 +146,11 @@ def getmsg2(entry, rank, isCrystal = False):
 	elif entry.Ability() == 3:
 		comment +=f"不可能有隐藏特性<br>"
 	elif entry.Ability() == 2:
-		comment +=f"锁隐藏特性: [[{pmtext.abilities[pi.AbilityH()]}]]<br>"
+		comment +=f"必定为隐藏特性: [[{pmtext.abilities[pi.AbilityH()]}]]<br>"
 	elif entry.Ability() == 1:
-		comment +=f"锁第二特性: [[{pmtext.abilities[pi.Ability2()]}]]<br>"
+		comment +=f"必定为第二特性: [[{pmtext.abilities[pi.Ability2()]}]]<br>"
 	else:
-		comment +=f"锁第一特性: [[{pmtext.abilities[pi.Ability1()]}]]<br>"
+		comment +=f"必定为第一特性: [[{pmtext.abilities[pi.Ability1()]}]]<br>"
 	if entry.Nature() == 25:
 		pass # random nature
 	else:
@@ -163,8 +165,6 @@ def getmsg2(entry, rank, isCrystal = False):
 def getspecies_short(species, isgmax = False, formid = 0):
 	if species == 849:
 		t = f'{species:03}' +('GM' if isgmax else '') + '|' + pmtext.species[species]
-	elif species in PersonalTable.Galarlist and formid == 1:
-		t = f'{species:03}G' + '|' + pmtext.species[species]
 	else:
 		t = f'{species:03}' + '|' + pmtext.species[species]
 	return t
@@ -172,7 +172,7 @@ def getspecies_short(species, isgmax = False, formid = 0):
 def getform_short(species, isgmax = False, formid = 0, isShiny = False):
 	t = ''
 	formtext = pmtext.forms[pt.getFormeNameIndex(species,formid)]
-	if species == 849 or species == 869 or species == 678 or species == 876:
+	if species == 849 or species == 869 or species == 678 or species == 876 or ((species in pt.Galarlist or species in pt.Alolalist) and formid):
 		t = f"|form={formtext}"
 	if isgmax:
 		t = "|form=超极巨化" if t == '' else (t + '<br>超极巨化')
