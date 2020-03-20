@@ -1,4 +1,4 @@
-Path = 'Event/Index 12/'
+Path = 'Event/Index 15/'
 lang = 'en'
 useLargeImage = True
 eventstyle = ' style = "background-color:#ffe4c3"'
@@ -37,6 +37,13 @@ def getpmimage(species,forme,cangmax,isShiny):
 		filename += "-l"
 	if cangmax and species != 868:
 		filename += "-gi"
+	if forme >= 1:
+		if species == 678 or species == 876:
+			filename += '-f'
+		if species in pt.Alolalist and forme == 1:
+			filename += '-a'
+		if species in pt.Galarlist:
+			filename += '-g'
 	if useLargeImage:
 		if isShiny:
 			url = f"https://www.serebii.net/Shiny/SWSH/{filename}.png"
@@ -49,10 +56,11 @@ def getpmimage(species,forme,cangmax,isShiny):
 
 GMAXSTR = "Gigantamax" if lang == "en" else "超极巨化"
 SHINYSTR = "Shiny" if lang == "en" else "异色"
+
 def getpmname(species,forme,cangmax,isShiny):
 	formtext = pmtext.forms[pt.getFormeNameIndex(species,forme)]
 	t = pmtext.species[species]
-	if species == 849 or species == 869:
+	if species == 849 or species == 869 or species == 678 or species == 876 or ((species in pt.Galarlist or species in pt.Alolalist) and forme):
 		t += '<br><small>' + formtext + '</small>'
 	if cangmax:
 		t += f'<br><small>{GMAXSTR}</small>'
@@ -62,7 +70,7 @@ def getpmname(species,forme,cangmax,isShiny):
 
 pmtexten = PKMString('en')
 def getitemimage(itemid):
-	filename = pmtexten.items[itemid].replace(" ","").lower()
+	filename = pmtexten.items[itemid].replace(" ","").replace("’","'").lower()
 	url = f"https://www.serebii.net/itemdex/sprites/{filename}.png"
 	return f'<img src="{url}" alt="{filename}">'
 

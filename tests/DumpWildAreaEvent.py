@@ -45,6 +45,19 @@ else:
 	buf = bytearray(open(LocalPath + 'dai_encount','rb').read())
 crystalencounter = NestHoleCrystalEncounter8Archive.GetRootAsNestHoleCrystalEncounter8Archive(buf,0x20)
 
+def getCrystalRank(level):
+	if 15 <= level and level <= 20:
+		return 0
+	if 25 <= level and level <= 30:
+		return 1
+	if 35 <= level and level <= 40:
+		return 2
+	if 45 <= level and level <= 50:
+		return 3
+	if 55 <= level and level <= 60:
+		return 4
+	return -1
+
 def printdrop(dropid, rank):
 # look up local drop tables
 	for jj in range(drop.TablesLength()):
@@ -177,7 +190,13 @@ else:
 			msg += f"N:{entry.Nature()}\t"
 			msg += f"{entry.IVHp()}/{entry.IVAtk()}/{entry.IVDef()}/{entry.IVSpAtk()}/{entry.IVSpDef()}/{entry.IVSpe()}\t"
 			msg += getMoves(entry)
+			rank = getCrystalRank(entry.Level())
+
 			print(msg)
+			print(entry.Species())
+			printdrop(entry.DropTableID(),rank)
+			printbonus(entry.BonusTableID(),rank)
+			print()
 
 # print('\n\nDropTable')
 # if dropreward.TablesIsNone():

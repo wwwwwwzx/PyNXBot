@@ -74,6 +74,19 @@ class Den(ByteStruct):
 						if randroll < 0:
 							return entry
 
+	@staticmethod
+	def getCrystalRank(level):
+		if 15 <= level and level <= 20:
+			return 0
+		if 25 <= level and level <= 30:
+			return 1
+		if 35 <= level and level <= 40:
+			return 2
+		if 45 <= level and level <= 50:
+			return 3
+		if 55 <= level and level <= 60:
+			return 4
+		return -1
 
 	EVENTHASH = 1721953670860364124;
 	DENHASHES = [
