@@ -121,10 +121,16 @@ class ACNHBot():
         if isinstance(bot , Bot):
             self.bot = bot
 
-    def ResetCanvas(self):
+    def ResetCanvas(self, Pro = False):
         b = self.bot
+        if Pro:
+            b.L() 
+            b.L()
+            b.L() # White
+        else:
+            b.L() # Transparent
+
         b.X() # Tool
-        b.L() # Transparent
         b.d()
         b.d()
         b.d()
@@ -142,6 +148,9 @@ class ACNHBot():
         b.l(3) # Move cursor to top-left
         b.u(3)
 
+        if Pro:
+            b.L() # Black
+
     def SetPalette(self, colorlist):
         b = self.bot
         if len(colorlist) > 15:
@@ -154,12 +163,12 @@ class ACNHBot():
         for ii in range(len(colorlist)):
             if ii > 0:
                 b.L()
-                b.l(2)
-                b.d()
-                b.l(2)
-                b.d()
-                b.l(2)
-                b.d()
+            b.l(2)
+            b.d()
+            b.l(2)
+            b.d()
+            b.l(2)
+            b.d()
             C = colorlist[ii]
             for V in C:
                 for jj in range(V):
@@ -200,16 +209,20 @@ class ACNHBot():
             if not hsv_array[r,:,3].any(): # Skip transparent row
                 self.Move2NextRow()
                 continue
-            for c in range(w):
+            for ii in range(w):
                 if direction < 0:
-                    c = w - c - 1
+                    c = w - ii - 1
+                else:
+                    c = ii
                 hsv = hsv_array[r,c]
                 if hsv[3] == 0: # Skip transparent pixel
-                    self.MoveToNextPixel(direction)
+                    if ii < w - 1:
+                        self.MoveToNextPixel(direction)
                     continue
                 self.ChooseColor(last_hsv,hsv)
                 last_hsv = hsv
                 self.PrintPIX()
-                self.MoveToNextPixel(direction)
+                if ii < w - 1:
+                    self.MoveToNextPixel(direction)
             self.Move2NextRow()
             direction = - direction

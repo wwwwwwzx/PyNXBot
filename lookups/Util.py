@@ -31,25 +31,25 @@ class Util():
 		return hsv_array
 
 	@staticmethod
-	def generatePallete(hsv_array):
+	def generatePallete(hsv_array, size = 32):
 		# Crop the image
 		import numpy
 		h , w , d = hsv_array.shape
-		if h > 32:
-			top = (h - 32) // 2
-			bottom = h - 32 - top
+		if h > size:
+			top = (h - size) // 2
+			bottom = h - size - top
 			if hsv_array[:top,:,3].any() or hsv_array[-bottom:,:,3].any():
 				print("Image is too large")
 			hsv_array = hsv_array[top:-bottom, : , :]
-			h = 32
+			h = size
 
-		if w > 32:
-			left = (w - 32) // 2
-			right = w - 32 - left
+		if w > size:
+			left = (w - size) // 2
+			right = w - size - left
 			if hsv_array[:,:left,3].any() or hsv_array[:,-right:,3].any():
 				print("Image is too large")
 			hsv_array = hsv_array[:,left:-right, :]
-			w = 32
+			w = size
 
 		# Find all colors
 		Colorlist = numpy.empty((0,3),int)
