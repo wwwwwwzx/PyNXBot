@@ -55,11 +55,15 @@ else:
 
 flawlessiv = int(input("How many fixed IVs will the Pokemon have? (1 to 5) "))
 
-ability = input("Is Hidden Ability possible? (y/n) ")
+ability = input("Is it Hidden Ability fixed? (y/n) ")
 if ability == 'y' or ability == 'Y':
-    ability = 4
+    ability = 2
 else:
-    ability = 3
+    ability = input("Is Hidden Ability possible? (y/n) ")
+    if ability == 'y' or ability == 'Y':
+        ability = 4
+    else:
+        ability = 3
     
 species = input("Are you looking for Toxtricity? (y/n) ")
 if species == 'y' or species == 'Y':
