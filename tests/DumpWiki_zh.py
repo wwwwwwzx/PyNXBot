@@ -1,7 +1,8 @@
-Path = 'Event/Index 15/'
+Path = 'Event/Index 16/'
 ShortVersion = False
 OneTable = False
 DumpCrystal = False
+eventstyle = 'style = "background:#ffe4c3" |'
 
 # Go to root of PyNXBot
 import sys
@@ -88,7 +89,7 @@ def getmsg2(entry, rank, isCrystal = False):
 	for jj in range(dropreward.TablesLength()):
 		edt = dropreward.Tables(jj) # event drop table
 		if dropid == edt.TableID():
-			msg += 'style = "background:#ffe4c3" |'
+			msg += eventstyle
 			for kk in range(edt.EntriesLength()):
 				edte = edt.Entries(kk)
 				if rank == 0:
@@ -119,7 +120,7 @@ def getmsg2(entry, rank, isCrystal = False):
 	for jj in range(bonusreward.TablesLength()):
 		ebt = bonusreward.Tables(jj) # event bonus table
 		if bonusid == ebt.TableID():
-			msg += 'style = "background:#ffe4c3" |'
+			msg += eventstyle
 			for kk in range(ebt.EntriesLength()):
 				ebte = ebt.Entries(kk)
 				if rank == 0:
@@ -146,11 +147,11 @@ def getmsg2(entry, rank, isCrystal = False):
 	elif entry.Ability() == 3:
 		comment +=f"不可能有隐藏特性<br>"
 	elif entry.Ability() == 2:
-		comment +=f"必定为隐藏特性: [[{pmtext.abilities[pi.AbilityH()]}]]<br>"
+		comment +=f"必定为隐藏特性（{{{{a|{pmtext.abilities[pi.AbilityH()]}}}}}）<br>"
 	elif entry.Ability() == 1:
-		comment +=f"必定为第二特性: [[{pmtext.abilities[pi.Ability2()]}]]<br>"
+		comment +=f"必定为第二特性（{{{{a|{pmtext.abilities[pi.Ability2()]}}}}}）<br>"
 	else:
-		comment +=f"必定为第一特性: [[{pmtext.abilities[pi.Ability1()]}]]<br>"
+		comment +=f"必定为第一特性（{{{{a|{pmtext.abilities[pi.Ability1()]}}}}}）<br>"
 	if entry.Nature() == 25:
 		pass # random nature
 	else:
@@ -297,12 +298,13 @@ else: # Full version
 		print('|}\n\n\n')
 
 if DumpCrystal:
+	eventstyle = ''
 	tablelength = crystalencounter.Tables(0).EntriesLength()
 	print('{| class="roundy bg-Sw bd-Sh" style="text-align:center; margin:auto; border:3px solid')
 	print('! 极巨结晶 !! 宝可梦 !! ★ !! 版本 !! 等级 !! 个体 !! 护盾数 !! 极巨化<br>等级 !! 极巨化<br>提升 !! 招式  !! 可能获得的奖励道具  !! 奖励糖果 !! 备注')
 	header0 = '|- style="background:white"\n'
 	for ii in range(tablelength):
-		header = header0 + '|' + getitem(1279+ii) + ' |'
+		header = header0 + '| {{i|' + pmtext.items[1279+ii] + '}} |'
 		entry1 = crystalencounter.Tables(0).Entries(ii)
 		if entry1.Species() == 0:
 			continue
