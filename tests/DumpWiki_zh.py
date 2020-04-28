@@ -1,4 +1,4 @@
-Path = 'Event/Index 16/'
+Path = 'Event/Index 19/'
 ShortVersion = False
 OneTable = False
 DumpCrystal = False
@@ -43,6 +43,12 @@ def getspecies(species, isgmax = False, formid = 0, isShiny = False):
 		t = '{{MSP|' + f'{species:03}' + 'A}}<br>[[' + pmtext.species[species] + ']]<br><small>' + formtext + '</small>'
 	elif species in PersonalTable.Galarlist and formid:
 		t = '{{MSP|' + f'{species:03}' + 'G}}<br>[[' + pmtext.species[species] + ']]<br><small>' + formtext + '</small>'
+	elif species == 479 and formid > 0:
+		if formid == 1:
+			rotomform = 'H'
+		else:
+			rotomform = 'W'
+		t = '{{MSP|' + f'{species:03}' + rotomform + '}}<br>[[' + pmtext.species[species] + ']]<br><small>' + formtext + '</small>'
 	else:
 		t = '{{MSP|' + f'{species:03}' +('GM' if isgmax else '') + '}}<br>[[' + pmtext.species[species] + ']]' + (f'<br>形态数:{formid}' if formid > 0 else '')
 	if isShiny:
@@ -70,9 +76,9 @@ def getmsg2(entry, rank, isCrystal = False):
 	else:
 		msg += f"{pmtext.moves[entry.Move0()]}"
 	msg += "}}"
-	if entry.AdditionalMove1Rate() > 0:
+	if entry.AdditionalMove1Rate() > 0 and entry.AdditionalMove1PP() > 0:
 		msg += "<br><br>{{m|" + f"{pmtext.moves[entry.AdditionalMove1()]}" + "}}<br>" + f"({entry.AdditionalMove1Rate()}% - {entry.AdditionalMove1PP()}PP)"
-	if entry.AdditionalMove2Rate() > 0:
+	if entry.AdditionalMove2Rate() > 0 and entry.AdditionalMove2PP() > 0:
 		msg += "<br>{{m|" + f"{pmtext.moves[entry.AdditionalMove2()]}" + "}}<br>" + f"({entry.AdditionalMove2Rate()}% - {entry.AdditionalMove2PP()}PP)"
 	msg += ' || '
 

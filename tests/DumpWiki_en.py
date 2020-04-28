@@ -1,4 +1,4 @@
-Path = 'Event/Index 15/'
+Path = 'Event/Index 16/'
 ShortVersion = True
 
 # Go to root of PyNXBot
@@ -97,9 +97,9 @@ def getmsg2(entry, rank):
 	else:
 		msg += f"{pmtext.moves[entry.Move0()]}"
 	msg += "}}"
-	if entry.AdditionalMove1Rate() > 0:
+	if entry.AdditionalMove1Rate() > 0 and entry.AdditionalMove1PP() > 0:
 		msg += "<br><br>{{m|" + f"{pmtext.moves[entry.AdditionalMove1()]}" + "}}<br>" + f"({entry.AdditionalMove1Rate()}% - {entry.AdditionalMove1PP()}PP)"
-	if entry.AdditionalMove2Rate() > 0:
+	if entry.AdditionalMove2Rate() > 0 and entry.AdditionalMove2PP() > 0:
 		msg += "<br>{{m|" + f"{pmtext.moves[entry.AdditionalMove2()]}" + "}}<br>" + f"({entry.AdditionalMove2Rate()}% - {entry.AdditionalMove2PP()}PP)"
 	msg += ' || '
 
