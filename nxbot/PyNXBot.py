@@ -103,7 +103,7 @@ class NXBot(object):
 class SWSHBot(NXBot):
         PK8STOREDSIZE = 0x148
         PK8PARTYSIZE = 0x158
-        DENCOUNT = 111
+        DENCOUNT = 191
 
         def __init__(self,ip,port = 6000):
                 NXBot.__init__(self,ip,port)
@@ -117,30 +117,32 @@ class SWSHBot(NXBot):
         
         def getEventOffset(self, language = SystemLanguage.ENUS):
                 if language == SystemLanguage.ZHCN or language == SystemLanguage.ZHHANS:
-                        self.eventoffset = -0xDB0
+                        self.eventoffset = -0xE00
                 elif language == SystemLanguage.ZHTW or language == SystemLanguage.ZHHANT:
-                        self.eventoffset = -0xE10
+                        self.eventoffset = -0xE60
                 elif language == SystemLanguage.KO:
-                        self.eventoffset = -0x9C0
+                        self.eventoffset = -0xA00
                 elif language == SystemLanguage.IT:
-                        self.eventoffset = -0x70
+                        self.eventoffset = -0x80
                 elif language == SystemLanguage.JA:
-                        self.eventoffset = +0x180
-                elif language == SystemLanguage.FR or language == SystemLanguage.FRCA or language == SystemLanguage.ES or language == SystemLanguage.ES419:
+                        self.eventoffset = +0x160
+                elif language == SystemLanguage.FR or language == SystemLanguage.FRCA:
+                        self.eventoffset = +0x1F0
+                elif language == SystemLanguage.ES or language == SystemLanguage.ES419:
                         self.eventoffset = +0x1C0
                 elif language == SystemLanguage.DE:
-                        self.eventoffset = +0x2C0 
+                        self.eventoffset = +0x2D0 
                 else: # English
                         pass
                 return self.eventoffset
 
         def readTrainerBlock(self):
-                return self.read(0x42935E48, 0x110)
+                return self.read(0x45061108, 0x110)
 
-        def readParty(self,slot=0):
-                if slot > 5:
-                        slot = 5
-                address = 0x4298E8E0 + slot * self.PK8PARTYSIZE
+        def readParty(self,slot=1):
+                if slot > 6:
+                        slot = 6
+                address = 0x450BE8C0 + (slot - 1) * self.PK8PARTYSIZE
                 return self.read(address,self.PK8STOREDSIZE)
 
         def readBox(self,box = 0,slot = 0):
@@ -148,36 +150,36 @@ class SWSHBot(NXBot):
                         box = 31
                 if slot > 29:
                         slot = 29
-                address = 0x4293D8B0 + box * 30 + slot * self.PK8PARTYSIZE
+                address = 0x4506D890 + box * 30 + slot * self.PK8PARTYSIZE
                 return self.read(address,self.PK8STOREDSIZE)
 
         def readTrade(self):
-                return self.read(0x2E32206A,self.PK8STOREDSIZE)
+                return self.read(0xAF285F68,self.PK8STOREDSIZE)
 
         def readWild(self):
-                return self.read(0x8D45C648,self.PK8STOREDSIZE)
+                return self.read(0x8FEA3358,self.PK8STOREDSIZE)
 
         def readRaid(self):
-                return self.read(0x85C7AB08,self.PK8STOREDSIZE)
+                return self.read(0x886C1BD8,self.PK8STOREDSIZE)
 
         def readLegend(self):
                 return self.read(0x85C74F88,self.PK8STOREDSIZE)
 
         def readEventBlock_RaidEncounter(self,path=''):
-                return self.read(0x2E5E58B8 + self.eventoffset, 0x23D4, path + 'normal_encount')
+                return self.read(0x2F9EB1F0 + self.eventoffset, 0x23D4, path + 'normal_encount')
 
         def readEventBlock_CrystalEncounter(self,path=''):
-                return self.read(0x2E5E7D40 + self.eventoffset, 0x1241C, path + 'dai_encount')
+                return self.read(0x2F9ED678 + self.eventoffset, 0x1241C, path + 'dai_encount')
 
         def readEventBlock_DropRewards(self,path=''):
-                return self.read(0x2E5FA210 + self.eventoffset, 0x426C, path + 'drop_rewards')
+                return self.read(0x2F9FFB48 + self.eventoffset, 0x426C, path + 'drop_rewards')
 
         def readEventBlock_BonusRewards(self,path=''):
-                return self.read(0x2E5FE530 + self.eventoffset, 0x116C4, path + 'bonus_rewards')
+                return self.read(0x2FA03E68 + self.eventoffset, 0x116C4, path + 'bonus_rewards')
 
         def readDen(self,denID):
                 denDataSize = 0x18;
                 if denID > SWSHBot.DENCOUNT - 1:
                         denID = SWSHBot.DENCOUNT - 1
-                address = 0x4298FA80 + denID * denDataSize
+                address = 0x450C0A80 + denID * denDataSize
                 return self.read(address,denDataSize)

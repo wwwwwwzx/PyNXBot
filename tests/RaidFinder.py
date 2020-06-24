@@ -24,7 +24,7 @@ def signal_handler(signal, frame): #CTRL+C handler
     b.closeGame()
     sys.exit(0)
 
-IP = '192.168.1.4' #write the IP of your Switch here
+IP = '192.168.1.6' #write the IP of your Switch here
 b = RaidBot(IP)
 
 signal.signal(signal.SIGINT, signal_handler)
@@ -75,7 +75,7 @@ else:
     if gender == 'y' or gender == 'Y':
         gender = 0
     else:
-        gender = input("Is it male, female or genderless? (m/f/-)")
+        gender = input("Is it male, female or genderless? (m/f/-) ")
         if gender == 'm' or gender == 'M':
             gender = 1
         elif gender == 'f' or gender == 'F':
@@ -137,7 +137,7 @@ while True:
             r = Raid(seed,flawlessiv,ability,gender,species,altform)
             seed = XOROSHIRO(seed).next()
             if usefilters:
-                if r.ShinyType != 'None' and PKMString().natures[r.Nature] == 'Quiet' and r.Ability == 'H': #and (r.IVs == V6 or  or r.IVs == S0):
+                if r.ShinyType != 'None' and PKMString().natures[r.Nature] == 'Timid' and r.Ability == 2 and r.IVs == A0: #and (r.IVs == V6 or  or r.IVs == S0):
                     print(f"Frame:{i}")
                     r.print()
                     if found != 1:
