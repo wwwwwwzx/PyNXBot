@@ -1,5 +1,5 @@
-Path = 'Event/Index 16/'
-ShortVersion = False
+Path = 'Event/Index 24/'
+ShortVersion = True
 OneTable = False
 DumpCrystal = False
 eventstyle = 'style = "background:#ffe4c3" |'
@@ -43,6 +43,12 @@ def getspecies(species, isgmax = False, formid = 0, isShiny = False):
 		t = '{{MSP|' + f'{species:03}' + 'A}}<br>[[' + pmtext.species[species] + ']]<br><small>' + formtext + '</small>'
 	elif species in PersonalTable.Galarlist and formid:
 		t = '{{MSP|' + f'{species:03}' + 'G}}<br>[[' + pmtext.species[species] + ']]<br><small>' + formtext + '</small>'
+	elif species == 479 and formid > 0:
+		if formid == 1:
+			rotomform = 'H'
+		else:
+			rotomform = 'W'
+		t = '{{MSP|' + f'{species:03}' + rotomform + '}}<br>[[' + pmtext.species[species] + ']]<br><small>' + formtext + '</small>'
 	else:
 		t = '{{MSP|' + f'{species:03}' +('GM' if isgmax else '') + '}}<br>[[' + pmtext.species[species] + ']]' + (f'<br>形态数:{formid}' if formid > 0 else '')
 	if isShiny:
@@ -70,9 +76,9 @@ def getmsg2(entry, rank, isCrystal = False):
 	else:
 		msg += f"{pmtext.moves[entry.Move0()]}"
 	msg += "}}"
-	if entry.AdditionalMove1Rate() > 0:
+	if entry.AdditionalMove1Rate() > 0 and entry.AdditionalMove1PP() > 0:
 		msg += "<br><br>{{m|" + f"{pmtext.moves[entry.AdditionalMove1()]}" + "}}<br>" + f"({entry.AdditionalMove1Rate()}% - {entry.AdditionalMove1PP()}PP)"
-	if entry.AdditionalMove2Rate() > 0:
+	if entry.AdditionalMove2Rate() > 0 and entry.AdditionalMove2PP() > 0:
 		msg += "<br>{{m|" + f"{pmtext.moves[entry.AdditionalMove2()]}" + "}}<br>" + f"({entry.AdditionalMove2Rate()}% - {entry.AdditionalMove2PP()}PP)"
 	msg += ' || '
 
@@ -156,15 +162,15 @@ def getmsg2(entry, rank, isCrystal = False):
 		pass # random nature
 	else:
 		comment += f"性格:{pmtext.natures[entry.Nature()]}<br>"
-	if not isCrystal and entry.Field13() > 4:
-		comment += f"不能捕获<br>"
+	# if not isCrystal and entry.Field13() > 4:
+		# comment += f"不能捕获<br>"
 	# if entry.AltForm() > 0:
 	# 	comment += f"形态数:{entry.AltForm()}<br>"
 	msg += ('-' if comment == '' else comment[:-4])
 	return msg
 
 def getspecies_short(species, isgmax = False, formid = 0):
-	if species == 849:
+	if species == 849 or species == 869:
 		t = f'{species:03}' +('GM' if isgmax else '') + '|' + pmtext.species[species]
 	else:
 		t = f'{species:03}' + '|' + pmtext.species[species]
@@ -226,19 +232,21 @@ if ShortVersion:
 		print('{{捕捉/div|红|'+ stars +'}}')
 		for ii in range(tablelength):
 			entry1 = eventencounter.Tables(0).Entries(ii)
-			if entry1.Probabilities(star) > 0:
-				entry2 = eventencounter.Tables(1).Entries(ii)
-				if entry1.Species() == entry2.Species() and entry1.AltForm() == entry2.AltForm() and entry1.IsGigantamax() == entry2.IsGigantamax() and entry1.ShinyFlag() == entry2.ShinyFlag():
-					# Same entry
+			entry2 = eventencounter.Tables(1).Entries(ii)
+			if entry1.Species() == entry2.Species() and entry1.AltForm() == entry2.AltForm() and entry1.IsGigantamax() == entry2.IsGigantamax() and entry1.ShinyFlag() == entry2.ShinyFlag() and entry1.Probabilities(star) == entry2.Probabilities(star):
+				# Same entry
+				if entry1.Probabilities(star) > 0:
 					msg = header + getspecies_short(entry1.Species(),entry1.IsGigantamax(),entry1.AltForm())
 					msg += '|yes|yes'
 					msg += getmsg2_short(entry1,star)
 					print(msg)
-				else:
+			else:
+				if entry1.Probabilities(star) > 0:
 					msg = header + getspecies_short(entry1.Species(),entry1.IsGigantamax(),entry1.AltForm())
 					msg += '|yes|no'
 					msg += getmsg2_short(entry1,star)
 					print(msg)
+				elif entry2.Probabilities(star) > 0:
 					msg = header + getspecies_short(entry2.Species(),entry2.IsGigantamax(),entry2.AltForm())
 					msg += '|no|yes'
 					msg += getmsg2_short(entry2,star)
@@ -287,14 +295,15 @@ else: # Full version
 		for jj in range(table.EntriesLength()):
 			entry = table.Entries(table.EntriesLength() - jj - 1)
 			rank = np.nonzero(entry.ProbabilitiesAsNumpy())[0]
-			print('|- style="background:white"')
-			msg = '| '
-			for r in rank:
-				msg += getstars(r) + '<br>(' + f'{entry.Probabilities(r)}%)<br>'
-			msg =  msg[:-4] + ' || ' 
-			msg += getspecies(entry.Species(),entry.IsGigantamax(),entry.AltForm(),entry.ShinyFlag() == 2) + ' || '
-			msg += getmsg2(entry,rank)
-			print(msg)
+			if rank.size > 0:
+				print('|- style="background:white"')
+				msg = '| '
+				for r in rank:
+					msg += getstars(r) + '<br>(' + f'{entry.Probabilities(r)}%)<br>'
+				msg =  msg[:-4] + ' || ' 
+				msg += getspecies(entry.Species(),entry.IsGigantamax(),entry.AltForm(),entry.ShinyFlag() == 2) + ' || '
+				msg += getmsg2(entry,rank)
+				print(msg)
 		print('|}\n\n\n')
 
 if DumpCrystal:
