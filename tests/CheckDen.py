@@ -5,8 +5,9 @@ IP = '192.168.1.11'
 V6 = [31,31,31,31,31,31]
 S0 = [31,31,31,31,31,00]
 A0 = [31,00,31,31,31,31]
-usefilters = True
+useFilters = True
 MaxResults = 10000
+doResearch = True
 
 # Go to root of PyNXBot
 import sys
@@ -45,16 +46,17 @@ for ii in range(RaidBot.DENCOUNT):
                 print()
 
 # Choose RNGable den to calculate frames
-if seed is not None:
+if seed is not None and doResearch:
         print('Wishing Piece Den Prediction:')
         i = 0
         while i < MaxResults:
                 r = Raid(seed, flawlessiv = 1)
                 seed = XOROSHIRO(seed).next()
-                if usefilters:
+                if useFilters:
                         if (r.ShinyType != 'None' or r.IVs == V6 or r.IVs == S0 or r.IVs == A0) and Util.STRINGS.natures[r.Nature] == 'Careful':
                                 print(f"Frame:{i}")
                                 r.print()
                 else:
+                        print(f"Frame:{i}")
                         r.print()
                 i += 1
