@@ -22,7 +22,7 @@ class PersonalInfo(ByteStruct):
 		return self.FormStatsIndex() + forme - 1
 
 class PersonalInfoSWSH(PersonalInfo):
-	SIZE = 0xA8
+	SIZE = 0xB0
 
 	def __init__(self,buf):
 		self.data = bytearray(PersonalInfoSWSH.SIZE)
@@ -59,7 +59,7 @@ class PersonalInfoSWSH(PersonalInfo):
 		return self.getushort(0x58)
 
 class PersonalTable(object):
-	Galarlist = [52,77,78,79,83,110,122,222,263,264,554,555,562,618]
+	Galarlist = [52,77,78,79,80,83,110,122,144,145,146,199,222,263,264,554,555,562,618]
 	Alolalist = [19,20,26,27,28,37,38,50,51,52,53,74,75,76,88,89,103,105]
 	def __init__(self,buf,ver = GameVersion.SWSH):
 		length = len(buf)
