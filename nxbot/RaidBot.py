@@ -34,7 +34,7 @@ class RaidBot(SWSHBot):
                         
         def skipAnimation(self, luxray = False):
                 self.enter_app()
-                sleep(19.5)
+                sleep(20.5)
                 if luxray:
                         sleep(1.3)
                 print("Skip animation")

@@ -18,7 +18,7 @@ def signal_handler(signal, frame): #CTRL+C handler
     b.closeGame()
     sys.exit(0)
 
-IP = '192.168.1.4' #write the IP of your Switch here
+IP = '10.0.0.54' #write the IP of your Switch here
 b = RaidBot(IP)
 
 signal.signal(signal.SIGINT, signal_handler)
@@ -40,10 +40,17 @@ while True:
     sleep(1.7)
 
     for ii in range(RaidBot.DENCOUNT):
-        den = Den(b.readDen(ii))
+        if ii > 99:
+                den = Den(b.readDen(ii + 11))
+        else:
+                den = Den(b.readDen(ii))
         if den.isActive() and den.isWishingPiece():
             spawn = den.getSpawn(denID = ii, isSword = b.isPlayingSword)
-            info = f"denID {ii+1}:0x{den.seed():X}\t{den.stars()}★\tSpecies: {Util.STRINGS.species[spawn.Species()]}\t"
+            if ii > 99:
+                    info = f"[IoA] denID {ii-99}"
+            else:
+                    info = f"denID {ii+1}"
+            info += f":0x{den.seed():X}\t{den.stars()}★\tSpecies: {Util.STRINGS.species[spawn.Species()]}\t"
             if spawn.IsGigantamax():
                 info += "G-Max\t"
             print(info)
