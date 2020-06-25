@@ -1,5 +1,5 @@
 # Settings
-IP = '192.168.1.11'
+IP = '192.168.1.7'
 
 # Desired IVs
 V6 = [31,31,31,31,31,31]
@@ -40,6 +40,7 @@ for ii in range(RaidBot.DENCOUNT):
                         info += f"Next Shiny Frame: {Raid.getNextShinyFrame(den.seed())}\t"
                         seed = den.seed()
                         info = "!!!\t" + info
+                        piecedSpawn = spawn
                 print(info)
                 r = Raid(seed = den.seed(), flawlessiv = spawn.FlawlessIVs(), ability = spawn.Ability(), gender = spawn.Gender(), species = spawn.Species(), altform = spawn.AltForm())
                 r.print()
@@ -50,7 +51,7 @@ if seed is not None and doResearch:
         print('Wishing Piece Den Prediction:')
         i = 0
         while i < MaxResults:
-                r = Raid(seed, flawlessiv = 1)
+                r = Raid(seed, flawlessiv = piecedSpawn.FlawlessIVs(), ability = piecedSpawn.Ability(), gender = piecedSpawn.Gender(), species = piecedSpawn.Species(), altform = piecedSpawn.AltForm())
                 seed = XOROSHIRO(seed).next()
                 if useFilters:
                         if (r.ShinyType != 'None' or r.IVs == V6 or r.IVs == S0 or r.IVs == A0) and Util.STRINGS.natures[r.Nature] == 'Careful':
