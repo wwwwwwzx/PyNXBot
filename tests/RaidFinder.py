@@ -24,7 +24,7 @@ def signal_handler(signal, frame): #CTRL+C handler
     b.closeGame()
     sys.exit(0)
 
-IP = '192.168.1.11' #write the IP of your Switch here
+IP = '192.168.1.7' #write the IP of your Switch here
 b = RaidBot(IP)
 
 signal.signal(signal.SIGINT, signal_handler)
@@ -62,15 +62,21 @@ else:
 
 flawlessiv = int(input("How many fixed IVs will the Pokémon have? (1 to 5) "))
 
-ability = input("Is Hidden Ability possible? (y/n) ")
+ability = input("Is it Ability locked? (y/n) ")
 if ability == 'y' or ability == 'Y':
-    ability = input("Is it forced Hidden Ability? (y/n) ")
-    if ability == 'y' or ability == 'Y':
+    ability = input("Ability 1, 2 or H? (1/2/h) ")
+    if ability == '1':
+        ability = 0
+    elif ability == '2':
+        ability = 1
+    elif ability == 'h' or ability == 'H':
         ability = 2
-    else:
-        ability = 4
 else:
-    ability = 3
+    ability = input("Is it Hidden Ability possible? (y/n) ")
+    if ability == 'y' or ability == 'Y':
+        ability = 4
+    else:
+        ability = 3
     
 species = input("Are you looking for Toxtricity? (y/n) ")
 if species == 'y' or species == 'Y':
