@@ -24,7 +24,7 @@ def signal_handler(signal, frame): #CTRL+C handler
     b.closeGame()
     sys.exit(0)
 
-IP = '192.168.1.7' #write the IP of your Switch here
+IP = '10.0.0.54' #write the IP of your Switch here
 b = RaidBot(IP)
 
 signal.signal(signal.SIGINT, signal_handler)
@@ -57,7 +57,7 @@ elif den_type == "e" or den_type == "E":
     rb_research = 0
     ev_research = 1
 else:
-    ev_research = 0
+    rb_research = 0
     ev_research = 0
 
 flawlessiv = int(input("How many fixed IVs will the Pokémon have? (1 to 5) "))
@@ -95,6 +95,16 @@ else:
             gender = 2
         else:
             gender = 3
+
+shinylock = input("Is the Pokémon shiny locked? (y/n) ")
+if shinylock == 'y' or shinylock == 'Y':
+    shinylock = 1
+else:
+    shinylock = input("Is the Pokémon forced shiny? (y/n) ")
+    if shinylock == 'y' or shinylock == 'Y':
+        shinylock = 2
+    else:
+        shinylock = 0
 
 if species == 849 and isSword == False:
     altform = 1
@@ -145,10 +155,10 @@ while True:
 
     if do_research:
         while i < MaxFrame:
-            r = Raid(seed,flawlessiv,ability,gender,species,altform)
+            r = Raid(seed,b.TrainerSave.TID(),b.TrainerSave.SID(),flawlessiv,shinylock,ability,gender,species,altform)
             seed = XOROSHIRO(seed).next()
             if usefilters:
-                if r.ShinyType != 'None' and PKMString().natures[r.Nature] == 'Timid' and r.Ability == 2 and r.IVs == A0: #and (r.IVs == V6 or  or r.IVs == S0):
+                if r.ShinyType != 'None': #and (r.IVs == V6 or  or r.IVs == S0):
                     print(f"Frame:{i}")
                     r.print()
                     if found != 1:

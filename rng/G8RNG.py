@@ -312,13 +312,13 @@ class Raid(FrameGenerator):
             FTSV = self.getShinyValue(OTID)
             PSV = self.getShinyValue(self.PID)
             if FTSV == PSV: # force shiny
-                type = getShinyType(OTID,self.PID)
-                if type == 1:
+                stype = self.getShinyType(OTID,self.PID)
+                if stype == 1:
                     self.ShinyType = 'Star'
                 else:
                     self.ShinyType = 'Square'
                 if PSV != TSV:
-                    highPID = (pid & 0xFFFF) ^ TID ^ SID ^ (2 - type)
+                    highPID = (self.PID & 0xFFFF) ^ TID ^ SID ^ (2 - stype)
                     self.PID = (highPID << 16) | (self.PID & 0xFFFF)
             else: #force non-shiny
                 self.ShinyType = 'None'
