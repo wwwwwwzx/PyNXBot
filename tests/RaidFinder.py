@@ -24,7 +24,7 @@ def signal_handler(signal, frame): #CTRL+C handler
     b.closeGame()
     sys.exit(0)
 
-IP = '192.168.1.6' #write the IP of your Switch here
+IP = '192.168.1.11' #write the IP of your Switch here
 b = RaidBot(IP)
 
 signal.signal(signal.SIGINT, signal_handler)
@@ -36,34 +36,41 @@ A0 = [31,0,31,31,31,31]
 S0 = [31,31,31,31,31,0]
 TRA0 = [31,0,31,31,31,0]
 
+altform = 0
+isSword = b.isPlayingSword
+
 reset = 0
 
 denId = int(input("Den Id: "))
+
+IoA_check = (input("Is your den in the Isle of Armor? (y/n) "))
+if IoA_check == "y" or IoA_check == "Y":
+    denId += 111
+
 b.setTargetDen(denId)
 
-rb_research = input("Are you looking for a Rare Beam Raid? (y/n) ")
-if rb_research == "y" or rb_research == "Y":
+den_type = input("Are you looking for a Rare Beam, Event or Normal Raid? (r/e/n) ")
+if den_type == "r" or den_type == "R":
     rb_research = 1
     ev_research = 0
-else:
+elif den_type == "e" or den_type == "E":
     rb_research = 0
-    ev_research = input("Are you looking for an Event Raid? (y/n) ")
-    if ev_research == "y" or ev_research == "Y":
-        ev_research = 1
-    else:
-        ev_research = 0
-
-flawlessiv = int(input("How many fixed IVs will the Pokemon have? (1 to 5) "))
-
-ability = input("Is it Hidden Ability fixed? (y/n) ")
-if ability == 'y' or ability == 'Y':
-    ability = 2
+    ev_research = 1
 else:
-    ability = input("Is Hidden Ability possible? (y/n) ")
+    ev_research = 0
+    ev_research = 0
+
+flawlessiv = int(input("How many fixed IVs will the Pokémon have? (1 to 5) "))
+
+ability = input("Is Hidden Ability possible? (y/n) ")
+if ability == 'y' or ability == 'Y':
+    ability = input("Is it forced Hidden Ability? (y/n) ")
     if ability == 'y' or ability == 'Y':
-        ability = 4
+        ability = 2
     else:
-        ability = 3
+        ability = 4
+else:
+    ability = 3
     
 species = input("Are you looking for Toxtricity? (y/n) ")
 if species == 'y' or species == 'Y':
@@ -71,7 +78,7 @@ if species == 'y' or species == 'Y':
     gender = 0
 else:
     species = 25
-    gender = input("Are you looking for a Random Gender Pokémon? (y/n) ")
+    gender = input("Are you looking for a random gender Pokémon? (y/n) ")
     if gender == 'y' or gender == 'Y':
         gender = 0
     else:
@@ -83,12 +90,10 @@ else:
         else:
             gender = 3
 
-altform = 0
-isSword = b.isPlayingSword
 if species == 849 and isSword == False:
     altform = 1
 
-MaxResults = int(input("Input Max Results: "))
+MaxFrame = int(input("Input Max Frame: "))
 sleep(0.5)
 print()
 
@@ -133,7 +138,7 @@ while True:
         print("Searching...")
 
     if do_research:
-        while i < MaxResults:
+        while i < MaxFrame:
             r = Raid(seed,flawlessiv,ability,gender,species,altform)
             seed = XOROSHIRO(seed).next()
             if usefilters:
