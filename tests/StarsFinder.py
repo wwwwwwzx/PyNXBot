@@ -32,7 +32,16 @@ if gigantamax == 'y' or gigantamax == 'Y':
 else:
     gigantamax = False
 
-stars = int(input("Which number of Stars are you looking for? (1 to 5) "))
+starsMin = int(input("Minimum Star Number (1-5): "))
+if(starsMin == 5):
+    starsMax = 5
+else:
+    tmp = int(input("Maximum Star Number (min-5): "))
+    if(tmp <= starsMin):
+        starsMax = starsMin
+    else:
+        starsMax = tmp
+        
 sleep(0.5)
 
 while True:
@@ -57,7 +66,7 @@ while True:
             sleep(0.5)
             break
 
-    if den.stars() == stars and species == Util.STRINGS.species[spawn.Species()] and gigantamax == spawn.IsGigantamax():
+    if den.stars() <= starsMax and den.stars() >= starsMin and species == Util.STRINGS.species[spawn.Species()] and gigantamax == spawn.IsGigantamax():
         print("Found after", reset, "resets")
         a = input('Continue searching? (y/n): ')
         if a != "y" and a != "Y":
