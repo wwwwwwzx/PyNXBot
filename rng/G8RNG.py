@@ -308,7 +308,7 @@ class Raid(FrameGenerator):
         self.PID = r.nextuint()
         TSV = (TID  ^ SID) >> 4
 
-        if shinylock == 0: #random shiny chance
+        if shinylock == 0: # random shiny chance
             FTSV = self.getShinyValue(OTID)
             PSV = self.getShinyValue(self.PID)
             if FTSV == PSV: # force shiny
@@ -320,16 +320,16 @@ class Raid(FrameGenerator):
                 if PSV != TSV:
                     highPID = (self.PID & 0xFFFF) ^ TID ^ SID ^ (2 - stype)
                     self.PID = (highPID << 16) | (self.PID & 0xFFFF)
-            else: #force non-shiny
+            else: # force non-shiny
                 self.ShinyType = 'None'
                 if PSV == TSV:
                     self.PID ^= 0x10000000
-        elif shinylock == 1: #forced non-shiny
+        elif shinylock == 1: # forced non-shiny chance
             self.ShinyType = 'None'
             PSV = self.getShinyValue(self.PID)
             if PSV == TSV:
                 self.PID ^= 0x10000000
-        else: #forced shiny
+        else: # forced shiny chance
             val = (self.PID >> 16 ) ^ (self.PID & 0xFFFF) ^ TID ^ SID
             if val >= 16:
                 highPID = (self.PID & 0xFFFF) ^ TID ^ SID
@@ -340,7 +340,6 @@ class Raid(FrameGenerator):
                     self.ShinyType = 'Square'
                 else:
                     self.ShinyType = 'Star'
-                    
 
         i = 0
         self.IVs = [0,0,0,0,0,0]

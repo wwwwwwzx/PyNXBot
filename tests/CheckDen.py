@@ -1,5 +1,5 @@
 # Settings
-IP = '192.168.1.7'
+IP = '192.168.1.6'
 
 # Desired IVs
 V6 = [31,31,31,31,31,31]
@@ -20,8 +20,7 @@ from structure import Den
 
 b = RaidBot(IP)
 seed = None
-print(b.TrainerSave.TID())
-print(b.TrainerSave.SID())
+
 for ii in range(RaidBot.DENCOUNT):
         if ii > 99:
                 den = Den(b.readDen(ii + 11))
@@ -47,7 +46,7 @@ for ii in range(RaidBot.DENCOUNT):
                         piecedSpawn = spawn
                         piecedShinylock = currShinylock
                 print(info)
-                r = Raid(seed = den.seed(), TID = b.TrainerSave.TID(), SID = b.TrainerSave.SID(), flawlessiv = spawn.FlawlessIVs(), shinylock = currShinylock, ability = spawn.Ability(), gender = spawn.Gender(), species = spawn.Species(), altform = spawn.AltForm())
+                r = Raid(seed = den.seed(), TID = b.TID, SID = b.SID, flawlessiv = spawn.FlawlessIVs(), shinylock = currShinylock, ability = spawn.Ability(), gender = spawn.Gender(), species = spawn.Species(), altform = spawn.AltForm())
                 r.print()
                 print()
 
@@ -56,7 +55,7 @@ if seed is not None and doResearch:
         print('Wishing Piece Den Prediction:')
         i = 0
         while i < MaxResults:
-                r = Raid(seed, TID = b.TrainerSave.TID(), SID = b.TrainerSave.SID(), flawlessiv = piecedSpawn.FlawlessIVs(), shinylock = piecedShinylock, ability = piecedSpawn.Ability(), gender = piecedSpawn.Gender(), species = piecedSpawn.Species(), altform = piecedSpawn.AltForm())
+                r = Raid(seed, TID = b.TID, SID = b.SID, flawlessiv = piecedSpawn.FlawlessIVs(), shinylock = piecedShinylock, ability = piecedSpawn.Ability(), gender = piecedSpawn.Gender(), species = piecedSpawn.Species(), altform = piecedSpawn.AltForm())
                 seed = XOROSHIRO(seed).next()
                 if useFilters:
                         if (r.ShinyType != 'None' or r.IVs == V6 or r.IVs == S0 or r.IVs == A0) and Util.STRINGS.natures[r.Nature] == 'Careful':

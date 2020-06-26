@@ -114,6 +114,8 @@ class SWSHBot(NXBot):
                         print(f"Game:{self.TrainerSave.GameVersion()} OT: {self.TrainerSave.OT()} ID:{self.TrainerSave.displayID()}\n")
                         self.isPlayingSword = self.TrainerSave.isSword()
                         self.getEventOffset(self.getSystemLanguage())
+                        self.TID = self.TrainerSave.TID()
+                        self.SID = self.TrainerSave.SID()
         
         def getEventOffset(self, language = SystemLanguage.ENUS):
                 if language == SystemLanguage.ZHCN or language == SystemLanguage.ZHHANS:
@@ -163,7 +165,7 @@ class SWSHBot(NXBot):
                 return self.read(0x886C1BD8,self.PK8STOREDSIZE)
 
         def readLegend(self):
-                return self.read(0x85C74F88,self.PK8STOREDSIZE)
+                return self.read(0x886BC058,self.PK8STOREDSIZE)
 
         def readEventBlock_RaidEncounter(self,path=''):
                 return self.read(0x2F9EB1F0 + self.eventoffset, 0x23D4, path + 'normal_encount')

@@ -14,7 +14,7 @@ import signal
 import sys
 sys.path.append('../')
 
-from lookups import PKMString
+from lookups import Util
 from structure import Den
 from nxbot import RaidBot
 from rng import XOROSHIRO,Raid
@@ -24,7 +24,7 @@ def signal_handler(signal, frame): #CTRL+C handler
     b.closeGame()
     sys.exit(0)
 
-IP = '10.0.0.54' #write the IP of your Switch here
+IP = '192.168.1.6' #write the IP of your Switch here
 b = RaidBot(IP)
 
 signal.signal(signal.SIGINT, signal_handler)
@@ -37,7 +37,6 @@ S0 = [31,31,31,31,31,0]
 TRA0 = [31,0,31,31,31,0]
 
 altform = 0
-isSword = b.isPlayingSword
 
 reset = 0
 
@@ -60,7 +59,7 @@ else:
     rb_research = 0
     ev_research = 0
 
-flawlessiv = int(input("How many fixed IVs will the Pokémon have? (1 to 5) "))
+flawlessiv = int(input("How many fixed IVs will the Pokémon have? (1 to 6) "))
 
 ability = input("Is it Ability locked? (y/n) ")
 if ability == 'y' or ability == 'Y':
@@ -72,7 +71,7 @@ if ability == 'y' or ability == 'Y':
     elif ability == 'h' or ability == 'H':
         ability = 2
 else:
-    ability = input("Is it Hidden Ability possible? (y/n) ")
+    ability = input("Is Hidden Ability possible? (y/n) ")
     if ability == 'y' or ability == 'Y':
         ability = 4
     else:
@@ -106,7 +105,7 @@ else:
     else:
         shinylock = 0
 
-if species == 849 and isSword == False:
+if species == 849 and b.isPlayingSword == False:
     altform = 1
 
 MaxFrame = int(input("Input Max Frame: "))
@@ -155,10 +154,10 @@ while True:
 
     if do_research:
         while i < MaxFrame:
-            r = Raid(seed,b.TrainerSave.TID(),b.TrainerSave.SID(),flawlessiv,shinylock,ability,gender,species,altform)
+            r = Raid(seed,b.TID,b.SID,flawlessiv,shinylock,ability,gender,species,altform)
             seed = XOROSHIRO(seed).next()
             if usefilters:
-                if r.ShinyType != 'None': #and (r.IVs == V6 or  or r.IVs == S0):
+                if r.ShinyType != 'None' and Util.STRINGS.natures[r.Nature] == 'Adamant' and r.Ability == 'H' and r.IVs == V6: #and (r.IVs == V6 or  or r.IVs == S0):
                     print(f"Frame:{i}")
                     r.print()
                     if found != 1:
