@@ -9,7 +9,6 @@
 #r.ShinyType == 'None'/'Star'/'Square' (!= 'None' for both square/star)
 #r.IVs == spread_name (spread_name = [x,x,x,x,x,x])
 
-from time import sleep
 import signal
 import sys
 sys.path.append('../')
@@ -37,8 +36,6 @@ S0 = [31,31,31,31,31,0]
 TRA0 = [31,0,31,31,31,0]
 
 altform = 0
-
-reset = 0
 
 denId = int(input("Den Id: "))
 
@@ -109,7 +106,7 @@ if species == 849 and b.isPlayingSword == False:
     altform = 1
 
 MaxFrame = int(input("Input Max Frame: "))
-sleep(0.5)
+b.pause(0.5)
 print()
 
 while True:
@@ -120,7 +117,7 @@ while True:
     else:
         print("No watts in Den")
 
-    sleep(0.5)
+    b.pause(0.5)
     b.throwPiece()
 
     den = b.getDenData()
@@ -128,14 +125,11 @@ while True:
     seed = den.seed()
 
     if den.isRare():
-        print("Rare beam")
-    else:
-        print("No rare beam")
-
-    if den.isEvent():
+        print("Rare beam Raid")
+    elif den.isEvent():
         print("Event Raid")
     else:
-        print("No event Raid")
+        print("Normal Raid")
         
     #spreads research
     i = 0
@@ -170,20 +164,13 @@ while True:
             i += 1
 
     if found:
-        print("Found after", reset, "resets")
-        a = input("Continue searching? (y/n): ")
-        if a != "y" and a != "Y":
-            b.closeGame()
-            break
+        b.foundActions()
     else:
-        if i == 0:
-            print("Research skipped")
-        reset = reset + 1
-        print("Nothing found - Resets:", reset)
+        b.notfoundActions(i)
 
     #game closing
     print("Resetting...")
-    b.quit_app(need_home = False)
+    b.quitGame(needHome = False)
     print()
 
     print("Starting the game")

@@ -4,7 +4,6 @@
 #Save in front of an Den whose beam has been generated through Wishing Piece
 #Start the script with your game opened
 
-from time import sleep
 import signal
 import sys
 sys.path.append('../')
@@ -18,7 +17,7 @@ def signal_handler(signal, frame): #CTRL+C handler
     b.closeGame()
     sys.exit(0)
 
-IP = '10.0.0.54' #write the IP of your Switch here
+IP = '192.168.1.6' #write the IP of your Switch here
 b = RaidBot(IP)
 
 signal.signal(signal.SIGINT, signal_handler)
@@ -32,21 +31,21 @@ if gigantamax == 'y' or gigantamax == 'Y':
 else:
     gigantamax = False
 
-starsMin = int(input("Minimum Star Number (1-5): "))
+starsMin = int(input("Minimum Star Number (1 to 5): "))
 if(starsMin == 5):
     starsMax = 5
 else:
-    tmp = int(input("Maximum Star Number (min-5): "))
+    tmp = int(input("Maximum Star Number (min to 5): "))
     if(tmp <= starsMin):
         starsMax = starsMin
     else:
         starsMax = tmp
         
-sleep(0.5)
+b.pause(0.5)
 
 while True:
     b.click('R') #R on Luxray "+3" button
-    sleep(1.7)
+    b.pause(1.7)
 
     for ii in range(RaidBot.DENCOUNT):
         if ii > 99:
@@ -63,24 +62,19 @@ while True:
             if spawn.IsGigantamax():
                 info += "G-Max\t"
             print(info)
-            sleep(0.5)
+            b.pause(0.5)
             break
 
-    if den.stars() <= starsMax and den.stars() >= starsMin and species == Util.STRINGS.species[spawn.Species()] and gigantamax == spawn.IsGigantamax():
-        print("Found after", reset, "resets")
-        a = input('Continue searching? (y/n): ')
-        if a != "y" and a != "Y":
-            b.closeGame()
-            break
+    if den.stars() >= starsMin and den.stars() <= starsMax and species == Util.STRINGS.species[spawn.Species()] and gigantamax == spawn.IsGigantamax():
+        b.foundActions()
     else:
-        reset = reset + 1
-        print("Wrong Stars - Resets:", reset)
+        b.notfoundActions(bot='stars')
 
     #game closing
     print("Resetting...")
-    b.quit_app()
+    b.quitGame()
     print()
 
     print("Starting the game")
     b.skipAnimation(luxray = True)
-    sleep(0.6)
+    b.pause(0.6)
