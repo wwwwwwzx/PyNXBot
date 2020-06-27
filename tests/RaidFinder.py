@@ -170,7 +170,7 @@ while True:
 
     #game closing
     print("Resetting...")
-    b.quitGame(needHome = False)
+    b.quitGame(needHome=False)
     print()
 
     print("Starting the game")

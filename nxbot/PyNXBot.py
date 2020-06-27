@@ -163,3 +163,9 @@ class SWSHBot(NXBot):
                         denID = SWSHBot.DENCOUNT - 1
                 address = 0x450C0A80 + denID * denDataSize
                 return self.read(address,denDataSize)
+
+        def readScreenOff(self):
+                return self.read(0x6B30F9E0, 4)
+
+        def readOverworldCheck(self):
+                return self.read(0x2F770528 + self.eventoffset, 4)
