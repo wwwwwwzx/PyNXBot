@@ -49,7 +49,7 @@ while True:
 
     for ii in range(RaidBot.DENCOUNT):
         if ii > 99:
-                den = Den(b.readDen(ii + 11))
+                den = Den(b.readDen(ii+11))
         else:
                 den = Den(b.readDen(ii))
         if den.isActive() and den.isWishingPiece():
@@ -76,5 +76,5 @@ while True:
     print()
 
     print("Starting the game")
-    b.skipAnimation(luxray = True)
+    b.skipAnimation() #luxray=True
     b.pause(0.6)

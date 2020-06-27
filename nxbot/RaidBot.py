@@ -1,6 +1,6 @@
 import sys
 from nxbot import SWSHBot
-from structure import Den
+from structure import Den,Screen
 
 class RaidBot(SWSHBot):
         
@@ -29,7 +29,7 @@ class RaidBot(SWSHBot):
                 self.click("X")
                 self.pause(0.2)
                 self.click("X")
-                self.pause(0.6)
+                self.pause(0.5)
                 self.click("A")
                 self.pause(0.2)
                 self.click("A")
@@ -58,18 +58,29 @@ class RaidBot(SWSHBot):
                 self.pause(0.5)
                 self.close()
                         
-        def skipAnimation(self, luxray = False):
+        def skipAnimation(self): #luxray = False
                 self.enterGame()
-                self.pause(20.5)
-                if luxray:
-                        self.pause(1.3)
+                skip = False
+                while skip == False:
+                        self.currScreen = Screen(self.readScreenOff())
+                        if self.currScreen.isIntroAnimationSkippable():
+                                skip = True
+                        self.pause(0.3)
+                #self.pause(20.5)
+                #self.currScreen.isIntroAnimationSkippable()
+                #if luxray:
+                        #self.pause(1.3)
                 print("Skip animation")
-                self.click("A") #A to skip anim
-                self.pause(0.5)
-                self.click("A")
-                self.pause(0.5)
-                self.click("A")
-                self.pause(8)
+                for i in range(0,5):
+                        self.click("A") #A to skip anim
+                        self.pause(0.5)
+                #self.pause(8)
+                skipped = False
+                while skipped == False:
+                        self.currScreen = Screen(self.readOverworldCheck())
+                        if self.currScreen.overworldCheck():
+                                skipped = True
+                        self.pause(0.5)
 
         def saveGame(self):
                 print("Saving...")
