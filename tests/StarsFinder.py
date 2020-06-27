@@ -22,8 +22,6 @@ b = RaidBot(IP)
 
 signal.signal(signal.SIGINT, signal_handler)
 
-reset = 0
-
 species = input("Which Pokémon are you looking for? (e.g.: Gengar) ")
 gigantamax = input("Are you looking for a Gigantamax form? (y/n) ")
 if gigantamax == 'y' or gigantamax == 'Y':
