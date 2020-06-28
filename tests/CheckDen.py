@@ -1,5 +1,7 @@
+import json
+
 # Settings
-IP = '192.168.1.6'
+config = json.load(open("../config.json"))
 
 # Desired IVs
 V6 = [31,31,31,31,31,31]
@@ -18,7 +20,7 @@ from nxbot import RaidBot
 from rng import XOROSHIRO,Raid
 from structure import Den
 
-b = RaidBot(IP)
+b = RaidBot(config["IP"])
 seed = None
 
 for ii in range(RaidBot.DENCOUNT):

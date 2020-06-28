@@ -4,6 +4,7 @@
 
 import signal
 import sys
+import json
 sys.path.append('../')
 
 from nxbot import BerryBot
@@ -13,8 +14,8 @@ def signal_handler(signal, frame): #CTRL+C handler
     b.stopBot()
     sys.exit(0)
 
-IP = '192.168.1.6' #write the IP of your Switch here
-b = BerryBot(IP)
+config = json.load(open("../config.json"))
+b = BerryBot(config["IP"])
 
 signal.signal(signal.SIGINT, signal_handler)
 

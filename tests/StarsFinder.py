@@ -6,6 +6,7 @@
 
 import signal
 import sys
+import json 
 sys.path.append('../')
 
 from lookups import Util
@@ -17,8 +18,9 @@ def signal_handler(signal, frame): #CTRL+C handler
     b.closeGame()
     sys.exit(0)
 
-IP = '192.168.1.6' #write the IP of your Switch here
-b = RaidBot(IP)
+config = json.load(open("../config.json"))
+
+b = RaidBot(config["IP"])
 
 signal.signal(signal.SIGINT, signal_handler)
 

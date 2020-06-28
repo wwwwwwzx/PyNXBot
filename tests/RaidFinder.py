@@ -17,14 +17,16 @@ from lookups import Util
 from structure import Den
 from nxbot import RaidBot
 from rng import XOROSHIRO,Raid
+import json
 
 def signal_handler(signal, frame): #CTRL+C handler
     print("Stop request")
     b.closeGame()
     sys.exit(0)
 
-IP = '192.168.1.6' #write the IP of your Switch here
-b = RaidBot(IP)
+config = json.load(open("../config.json"))
+
+b = RaidBot(config["IP"])
 
 signal.signal(signal.SIGINT, signal_handler)
 
