@@ -23,7 +23,7 @@ class BerryBot(SWSHBot):
         menu = False
         i = 0
         while menu is not True and i <= 20:
-            self.currScreen = Screen(self.readBattleMenuAppear())
+            self.currScreen = Screen(self.readBattleStart())
             if self.currScreen.battleMenuAppeared():
                 menu = True
             else:

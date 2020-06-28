@@ -173,5 +173,5 @@ class SWSHBot(NXBot):
         def readBattleStart(self):
                 return self.read(0x69B99418, 8)
 
-        def readBattleMenuAppear(self):
+        def readCram_o_MaticEnd(self):
                 return self.read(0x6b30f9e0, 8)

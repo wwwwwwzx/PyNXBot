@@ -3,7 +3,7 @@ from structure.ByteStruct import ByteStruct
 class Screen(ByteStruct):
     OVERWORLD = 0x5127
     BATTLE = 0x0
-    BATTLEMENU = 0xFFFFFFFFFFFFFFFF
+    BATTLEMENU = 0x000000FF000000FF
 
     def getScreenOffShort(self):
         return self.getushort(0x0)
