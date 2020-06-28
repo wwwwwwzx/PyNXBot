@@ -169,3 +169,9 @@ class SWSHBot(NXBot):
 
         def readOverworldCheck(self):
                 return self.read(0x2F770528 + self.eventoffset, 4)
+
+        def readBattleStart(self):
+                return self.read(0x69B99418, 8)
+
+        def readBattleMenuAppear(self):
+                return self.read(0x6b30f9e0, 8)

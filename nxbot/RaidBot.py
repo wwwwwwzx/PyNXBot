@@ -29,7 +29,7 @@ class RaidBot(SWSHBot):
                 self.click("X")
                 self.pause(0.2)
                 self.click("X")
-                self.pause(0.5)
+                self.pause(0.4)
                 self.click("A")
                 self.pause(0.2)
                 self.click("A")
@@ -71,7 +71,7 @@ class RaidBot(SWSHBot):
                 #if luxray:
                         #self.pause(1.3)
                 print("Skip animation")
-                for i in range(0,5):
+                for i in range(5):
                         self.click("A") #A to skip anim
                         self.pause(0.5)
                 #self.pause(8)

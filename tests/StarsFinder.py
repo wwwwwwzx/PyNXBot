@@ -40,6 +40,7 @@ else:
         starsMax = tmp
         
 b.pause(0.5)
+print()
 
 while True:
     b.click('R') #R on Luxray "+3" button

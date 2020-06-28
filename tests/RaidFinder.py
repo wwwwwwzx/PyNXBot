@@ -106,6 +106,7 @@ if species == 849 and b.isPlayingSword == False:
     altform = 1
 
 MaxFrame = int(input("Input Max Frame: "))
+
 b.pause(0.5)
 print()
 
