@@ -1,6 +1,6 @@
+import sys
 from nxbot import SWSHBot
-from structure import Den
-from time import sleep
+from structure import Den,Screen
 
 class RaidBot(SWSHBot):
         
@@ -11,6 +11,10 @@ class RaidBot(SWSHBot):
                 Den.LOCALTABLE = EncounterNest8Archive.GetRootAsEncounterNest8Archive(buf,0)
                 buf = self.readEventBlock_RaidEncounter('Event/Current/')
                 Den.EVENTTABLE = NestHoleDistributionEncounter8Archive.GetRootAsNestHoleDistributionEncounter8Archive(buf,0x20)
+                self.resets = 0
+
+        def increaseResets(self):
+                self.resets += 1
 
         def setTargetDen(self, denId):
                 self.denID = denId - 1
@@ -18,64 +22,115 @@ class RaidBot(SWSHBot):
         def getDenData(self):
                 return Den(self.readDen(self.denID))
 
+        def quitGame(self,needHome = True):
+                if needHome:
+                        self.click("HOME")
+                        self.pause(0.8)
+                self.click("X")
+                self.pause(0.2)
+                self.click("X")
+                self.pause(0.4)
+                self.click("A")
+                self.pause(0.2)
+                self.click("A")
+                self.pause(3)
+
+        def enterGame(self):
+                self.click("A")
+                self.pause(0.2)
+                self.click("A")
+                self.pause(1.3)
+                self.click("A")
+                self.pause(0.2)
+                self.click("A")
+
         def closeGame(self):
                 c = input("Close the game? (y/n): ")
                 if c == 'y' or c == 'Y':
                         h = input("Need HOME button pressing? (y/n): ")
                         if h == 'y' or h == 'Y':
-                                need_home = True
+                                needHome = True
                         else:
-                                need_home = False
+                                needHome = False
                         print("Closing game...")
-                        self.quit_app(need_home)
+                        self.quitGame(needHome)
                 print("Exiting...")
-                sleep(0.5)
+                self.pause(0.5)
                 self.close()
                         
-        def skipAnimation(self, luxray = False):
-                self.enter_app()
-                sleep(20.5)
-                if luxray:
-                        sleep(1.3)
+        def skipAnimation(self): #luxray = False
+                self.enterGame()
+                skip = False
+                while skip == False:
+                        self.currScreen = Screen(self.readScreenOff())
+                        if self.currScreen.isIntroAnimationSkippable():
+                                skip = True
+                        self.pause(0.3)
+                #self.pause(20.5)
+                #self.currScreen.isIntroAnimationSkippable()
+                #if luxray:
+                        #self.pause(1.3)
                 print("Skip animation")
-                self.click("A") #A to skip anim
-                sleep(0.5)
-                self.click("A")
-                sleep(0.5)
-                self.click("A")
-                sleep(8)
+                for i in range(5):
+                        self.click("A") #A to skip anim
+                        self.pause(0.5)
+                #self.pause(8)
+                skipped = False
+                while skipped == False:
+                        self.currScreen = Screen(self.readOverworldCheck())
+                        if self.currScreen.overworldCheck():
+                                skipped = True
+                        self.pause(0.5)
 
         def saveGame(self):
                 print("Saving...")
                 self.click("X")
-                sleep(1.2)
+                self.pause(1.2)
                 self.click("R")
-                sleep(1.5)
+                self.pause(1.5)
                 self.click("A")
-                sleep(4)
+                self.pause(4)
 
         def getWatts(self):
                 self.click("A")
-                sleep(1.5)
+                self.pause(1.5)
                 self.click("A")
-                sleep(1.2)
+                self.pause(1.2)
                 self.click("A")
-                sleep(1.2)
+                self.pause(1.2)
                 self.saveGame()
 
         def throwPiece(self):
                 self.click("A") #A on den
                 print("A on den")
-                sleep(0.5)
+                self.pause(0.5)
                 self.click("A")
-                sleep(1.3)
+                self.pause(1.3)
                 self.click("A") #A to throw whishing piece
                 print("Throw Wishing Piece in den")
-                sleep(1.4)
+                self.pause(1.4)
                 self.click("A") #A to save
                 print("Saving...")
-                sleep(1)
+                self.pause(1)
                 self.click("HOME") #Home
                 print("HOME clicked")
-                sleep(0.5)
-                
+                self.pause(0.5)
+
+        def foundActions(self):
+                print("Found after", self.resets, "resets")
+                a = input("Continue searching? (y/n): ")
+                if a != "y" and a != "Y":
+                    self.closeGame()
+                    sys.exit(0)
+                else:
+                    self.increaseResets()
+                    print("Resets:", self.resets)
+
+        def notfoundActions(self,i=0,bot='raid'):
+                if i == 0 and bot == 'raid':
+                    print("Research skipped")
+                self.increaseResets()
+                if bot == 'raid':
+                        print("Nothing found - Resets:", self.resets)
+                else:
+                        print("Wrong Species / Stars - Resets:", self.resets)
