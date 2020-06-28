@@ -29,8 +29,8 @@ class BerryBot(SWSHBot):
             else:
                 self.click("B")
                 self.pause(0.5)
+            i += 1
         self.pause(0.3)
-        i += 1
         print("Running from battle...")
         self.click("DUP")
         self.pause(0.7)
