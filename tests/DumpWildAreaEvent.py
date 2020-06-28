@@ -7,12 +7,13 @@ from structure import NestHoleReward8Archive
 from structure import NestHoleDistributionEncounter8Archive, NestHoleCrystalEncounter8Archive, NestHoleDistributionReward8Archive
 import flatbuffers
 from flatbuffers.compat import import_numpy
+import json
 np = import_numpy()
 
 ReadFromConsole = False
 DumpPath = 'Event/Current/'
 LocalPath = 'Event/Index 14/'
-IP = '192.168.0.10'
+config = json.load(open("../config.json"))
 
 pmtext = PKMString()
 buf = bytearray(open('../resources/bytes/local_drop','rb').read())
@@ -21,7 +22,7 @@ buf = bytearray(open('../resources/bytes/local_bonus','rb').read())
 bonus = NestHoleReward8Archive.GetRootAsNestHoleReward8Archive(buf,0)
 
 if ReadFromConsole:
-	b = SWSHBot(IP)
+	b = SWSHBot(config["IP"])
 	buf = b.readEventBlock_RaidEncounter(DumpPath)
 else:
 	buf = bytearray(open(LocalPath + 'normal_encount','rb').read())
