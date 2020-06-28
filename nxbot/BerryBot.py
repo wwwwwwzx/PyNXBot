@@ -42,14 +42,15 @@ class BerryBot(SWSHBot):
             self.currScreen = Screen(self.readBattleStart())
             if self.currScreen.battleStarted():
                 j += 1
-            self.pause(0.2)
-            if j > 3:
-                print("Battle started!")
-                self.battleRun()
-                return True
+            self.pause(0.3)
+        if j > 3:
+            print("Battle started!")
+            self.battleRun()
+            return True
         return False
 
     def continueShaking(self,shakes = 0):
+        battle = False
         for i in range(shakes):
             self.click("A")
             print("Shaking...")
@@ -58,21 +59,28 @@ class BerryBot(SWSHBot):
             self.pause(1.6)
             if self.battleCheck():
                 self.pause(4.8)
+                battle = True
                 print("Picking what's left...")
                 break
             self.click("A")
             self.pause(1.3)
         self.click("B")
+        if battle is not True:
+            print("Picking everything...")
 
     def pickEverything(self):
         picked = False
-        while picked == False:
+        i = 0
+        while picked == False and i <= 20:
             self.currScreen = Screen(self.readOverworldCheck())
             if self.currScreen.overworldCheck():
                 picked = True
             else:
                 self.click("B")
                 self.pause(0.5)
+            i += 1
+        if i == 20:
+            self.battleRun()
 
     def stopBot(self):
         print("Exiting...")
