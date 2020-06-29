@@ -165,13 +165,10 @@ class SWSHBot(NXBot):
                 return self.read(address,denDataSize)
 
         def readScreenOff(self):
-                return self.read(0x6B30F9E0, 4)
+                return self.read(0x6B30F9E0, 8)
 
         def readOverworldCheck(self):
                 return self.read(0x2F770528 + self.eventoffset, 4)
 
         def readBattleStart(self):
                 return self.read(0x69B99418, 8)
-
-        def readCram_o_MaticEnd(self):
-                return self.read(0x6b30f9e0, 8)

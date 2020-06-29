@@ -1,6 +1,6 @@
 import sys
 from nxbot import SWSHBot
-from structure import Screen
+from structure import PK8,Screen
 
 class BerryBot(SWSHBot):
     def __init__(self,ip,port = 6000):
@@ -22,7 +22,7 @@ class BerryBot(SWSHBot):
     def battleRun(self):
         menu = False
         i = 0
-        while menu is not True and i <= 20:
+        while menu == False and i <= 20:
             self.currScreen = Screen(self.readBattleStart())
             if self.currScreen.battleMenuAppeared():
                 menu = True
@@ -30,23 +30,17 @@ class BerryBot(SWSHBot):
                 self.click("B")
                 self.pause(0.5)
             i += 1
-        self.pause(0.3)
+        self.pause(0.5)
         print("Running from battle...")
         self.click("DUP")
-        self.pause(0.7)
+        self.pause(0.5)
         self.click("A")
 
     def battleCheck(self):
-        j = 0
-        for i in range(10):
-            self.currScreen = Screen(self.readBattleStart())
-            if self.currScreen.battleStarted():
-                j += 1
-            self.pause(0.3)
-        if j > 3:
-            print("Battle started!")
-            self.battleRun()
-            return True
+        if PK8(self.readWild()).isValid():
+                print("Battle started!")
+                self.battleRun()
+                return True
         return False
 
     def continueShaking(self,shakes = 0):
@@ -58,7 +52,7 @@ class BerryBot(SWSHBot):
             print("Battle check")
             self.pause(1.6)
             if self.battleCheck():
-                self.pause(4.8)
+                self.pause(5.6)
                 battle = True
                 print("Picking what's left...")
                 break
@@ -79,10 +73,9 @@ class BerryBot(SWSHBot):
                 self.click("B")
                 self.pause(0.5)
             i += 1
-        if i == 20:
-            self.battleRun()
 
     def stopBot(self):
         print("Exiting...")
         self.pause(0.5)
+        self.pickEverything()
         self.close()
