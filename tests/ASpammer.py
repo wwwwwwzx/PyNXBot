@@ -41,4 +41,10 @@ while True:
     stop = input("Continue spamming? (y/n): ")
     if stop == 'n' or stop == 'N':
         break
+    else:
+        apricorns = input("Are you using Cram-o-Matic machine? (y/n): ")
+        if apricorns == 'y' or apricorns == 'Y':
+            apricorns = True
+        else:
+            apricorns = False
 b.stopBot()
