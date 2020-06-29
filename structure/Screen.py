@@ -1,6 +1,7 @@
 from structure.ByteStruct import ByteStruct
 
 class Screen(ByteStruct):
+    DIALOGENDED = 0x5127
     BATTLEMENU = 0xFF000000FF000000
 
     def getScreenOffShort(self):
@@ -20,3 +21,7 @@ class Screen(ByteStruct):
     def battleMenuAppeared(self):
         #print(f"{self.getScreenOff():0X}")
         return self.getScreenOff() == self.BATTLEMENU
+
+    def endedDialogue(self):
+        #print(f"{self.getScreenOffShort():0X}")
+        return self.getScreenOffShort() == self.DIALOGENDED
