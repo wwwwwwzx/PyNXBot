@@ -2,7 +2,6 @@ from .PK8 import PK8
 from .Den import Den
 from .MyStatus8 import MyStatus8
 from .PersonalInfo import PersonalTable
-from .Screen import Screen
 
 from .EncounterNest8 import EncounterNest8
 from .EncounterNest8Table import EncounterNest8Table
