@@ -22,7 +22,7 @@ class BerryBot(SWSHBot):
     def battleRun(self):
         menu = False
         i = 0
-        while menu == False and i <= 20:
+        while menu is not True and i <= 40:
             self.currScreen = Screen(self.readBattleStart())
             if self.currScreen.battleMenuAppeared():
                 menu = True
@@ -38,7 +38,7 @@ class BerryBot(SWSHBot):
 
     def battleCheck(self):
         if PK8(self.readWild()).isValid():
-                print("Battle started!")
+                print("Wild battle started!")
                 self.battleRun()
                 return True
         return False
@@ -48,11 +48,10 @@ class BerryBot(SWSHBot):
         for i in range(shakes):
             self.click("A")
             print("Shaking...")
-            self.pause(1.6)
-            print("Battle check")
-            self.pause(1.6)
+            self.pause(3.2)
+            #print("Battle check")
             if self.battleCheck():
-                self.pause(5.6)
+                self.pause(5.2)
                 battle = True
                 print("Picking what's left...")
                 break
@@ -65,7 +64,7 @@ class BerryBot(SWSHBot):
     def pickEverything(self):
         picked = False
         i = 0
-        while picked == False and i <= 20:
+        while picked is not True and i <= 30:
             self.currScreen = Screen(self.readOverworldCheck())
             if self.currScreen.overworldCheck():
                 picked = True

@@ -41,6 +41,6 @@ while i < cycles:
     b.pause(0.5)
     print()
     i += 1
-print(i+1, "cycles completed!")
+print(i+1, "Cycles completed!")
 print()
 b.stopBot()
