@@ -75,28 +75,6 @@ class NXBot(object):
                 buf = self.s.recv(4)
                 return SystemLanguage(int(buf[0:-1]))
 
-        def quit_app(self,need_home = True):
-                if need_home:
-                        self.click("HOME")
-                        sleep(0.8)
-                self.click("X")
-                sleep(0.2)
-                self.click("X")
-                sleep(0.6)
-                self.click("A")
-                sleep(0.2)
-                self.click("A")
-                sleep(3)
-
-        def enter_app(self):
-                self.click("A")
-                sleep(0.2)
-                self.click("A")
-                sleep(1.3)
-                self.click("A")
-                sleep(0.2)
-                self.click("A")
-
         def pause(self,duration):
                 sleep(duration)
 
@@ -114,6 +92,8 @@ class SWSHBot(NXBot):
                         print(f"Game:{self.TrainerSave.GameVersion()} OT: {self.TrainerSave.OT()} ID:{self.TrainerSave.displayID()}\n")
                         self.isPlayingSword = self.TrainerSave.isSword()
                         self.getEventOffset(self.getSystemLanguage())
+                        self.TID = self.TrainerSave.TID()
+                        self.SID = self.TrainerSave.SID()
         
         def getEventOffset(self, language = SystemLanguage.ENUS):
                 if language == SystemLanguage.ZHCN or language == SystemLanguage.ZHHANS:
@@ -163,7 +143,7 @@ class SWSHBot(NXBot):
                 return self.read(0x886C1BD8,self.PK8STOREDSIZE)
 
         def readLegend(self):
-                return self.read(0x85C74F88,self.PK8STOREDSIZE)
+                return self.read(0x886BC058,self.PK8STOREDSIZE)
 
         def readEventBlock_RaidEncounter(self,path=''):
                 return self.read(0x2F9EB1F0 + self.eventoffset, 0x23D4, path + 'normal_encount')
@@ -183,3 +163,12 @@ class SWSHBot(NXBot):
                         denID = SWSHBot.DENCOUNT - 1
                 address = 0x450C0A80 + denID * denDataSize
                 return self.read(address,denDataSize)
+
+        def readScreenOff(self):
+                return self.read(0x6B30F9E0, 8)
+
+        def readOverworldCheck(self):
+                return self.read(0x2F770528 + self.eventoffset, 4)
+
+        def readBattleStart(self):
+                return self.read(0x69B99418, 8)

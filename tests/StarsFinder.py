@@ -4,10 +4,9 @@
 #Save in front of an Den whose beam has been generated through Wishing Piece
 #Start the script with your game opened
 
-from time import sleep
 import signal
 import sys
-import json
+import json 
 sys.path.append('../')
 
 from lookups import Util
@@ -25,8 +24,6 @@ b = RaidBot(config["IP"])
 
 signal.signal(signal.SIGINT, signal_handler)
 
-reset = 0
-
 species = input("Which Pokémon are you looking for? (e.g.: Gengar) ")
 gigantamax = input("Are you looking for a Gigantamax form? (y/n) ")
 if gigantamax == 'y' or gigantamax == 'Y':
@@ -34,16 +31,26 @@ if gigantamax == 'y' or gigantamax == 'Y':
 else:
     gigantamax = False
 
-stars = int(input("Which number of Stars are you looking for? (1 to 5) "))
-sleep(0.5)
+starsMin = int(input("Minimum Star Number (1 to 5): "))
+if(starsMin == 5):
+    starsMax = 5
+else:
+    tmp = int(input("Maximum Star Number (min to 5): "))
+    if(tmp <= starsMin):
+        starsMax = starsMin
+    else:
+        starsMax = tmp
+        
+b.pause(0.5)
+print()
 
 while True:
     b.click('R') #R on Luxray "+3" button
-    sleep(1.7)
+    b.pause(1.7)
 
     for ii in range(RaidBot.DENCOUNT):
         if ii > 99:
-                den = Den(b.readDen(ii + 11))
+                den = Den(b.readDen(ii+11))
         else:
                 den = Den(b.readDen(ii))
         if den.isActive() and den.isWishingPiece():
@@ -56,24 +63,19 @@ while True:
             if spawn.IsGigantamax():
                 info += "G-Max\t"
             print(info)
-            sleep(0.5)
+            b.pause(0.5)
             break
 
-    if den.stars() == stars and species == Util.STRINGS.species[spawn.Species()] and gigantamax == spawn.IsGigantamax():
-        print("Found after", reset, "resets")
-        a = input('Continue searching? (y/n): ')
-        if a != "y" and a != "Y":
-            b.closeGame()
-            break
+    if den.stars() >= starsMin and den.stars() <= starsMax and species == Util.STRINGS.species[spawn.Species()] and gigantamax == spawn.IsGigantamax():
+        b.foundActions()
     else:
-        reset = reset + 1
-        print("Wrong Stars - Resets:", reset)
+        b.notfoundActions(bot='stars')
 
     #game closing
     print("Resetting...")
-    b.quit_app()
+    b.quitGame()
     print()
 
     print("Starting the game")
-    b.skipAnimation(luxray = True)
-    sleep(0.6)
+    b.skipAnimation() #luxray=True
+    b.pause(0.6)
