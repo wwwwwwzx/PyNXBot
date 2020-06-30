@@ -11,8 +11,8 @@ class Screen(ByteStruct):
         return self.getulong(0x0)
 
     def isIntroAnimationSkippable(self):
-        #print(f"{self.getScreenOffShort():0X}")
-        return self.getScreenOffShort() != 0x0
+        #print(f"{self.getScreenOff():0X}")
+        return self.getScreenOff() >= 0xFFFF
 
     def overworldCheck(self):
         #print(f"{self.getbyte(0x0):0X}")

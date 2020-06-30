@@ -22,10 +22,8 @@ import json
 def signal_handler(signal, frame): #CTRL+C handler
     print("Stop request")
     b.closeGame()
-    sys.exit(0)
 
 config = json.load(open("../config.json"))
-
 b = RaidBot(config["IP"])
 
 signal.signal(signal.SIGINT, signal_handler)
@@ -49,14 +47,14 @@ b.setTargetDen(denId)
 
 den_type = input("Are you looking for a Rare Beam, Event or Normal Raid? (r/e/n) ")
 if den_type == "r" or den_type == "R":
-    rb_research = 1
-    ev_research = 0
+    rb_research = True
+    ev_research = False
 elif den_type == "e" or den_type == "E":
-    rb_research = 0
-    ev_research = 1
+    rb_research = False
+    ev_research = True
 else:
-    rb_research = 0
-    ev_research = 0
+    rb_research = False
+    ev_research = False
 
 flawlessiv = int(input("How many fixed IVs will the Pokémon have? (1 to 6) "))
 
@@ -135,20 +133,21 @@ while True:
         print("Normal Raid")
         
     #spreads research
-    i = 0
-    found = 0
     do_research = 1
-    
-    if rb_research == 1 and rb_research != den.isRare(): #rare beam/event check
-        do_research = 0
-    elif ev_research == 1 and ev_research != den.isEvent():
-        do_research = 0
-    elif rb_research == 0 and ev_research == 0:
+
+    #rare beam/event check
+    if rb_research and rb_research != den.isRare():
+        do_research = False
+    elif ev_research and ev_research != den.isEvent():
+        do_research = False
+    elif rb_research is not True and ev_research is not True:
         if rb_research != den.isRare() or ev_research != den.isEvent():
-            do_research = 0
+            do_research = False
     else:
         print("Searching...")
 
+    i = 0
+    found = False
     if do_research:
         while i < MaxFrame:
             r = Raid(seed,b.TID,b.SID,flawlessiv,shinylock,ability,gender,species,altform)
@@ -157,13 +156,13 @@ while True:
                 if r.ShinyType != 'None' and Util.STRINGS.natures[r.Nature] == 'Adamant' and r.Ability == 'H' and r.IVs == V6: #and (r.IVs == V6 or  or r.IVs == S0):
                     print(f"Frame:{i}")
                     r.print()
-                    if found != 1:
-                        found = 1
+                    if found is not True:
+                        found = True
             else:
                 print(f"Frame:{i}")
                 r.print()
-                if found != 1:
-                    found = 1
+                if found is not True:
+                    found = True
             i += 1
 
     if found:
@@ -177,4 +176,4 @@ while True:
     print()
 
     print("Starting the game")
-    b.skipAnimation()
+    b.skipIntroAnimation()

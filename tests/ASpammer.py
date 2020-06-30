@@ -11,7 +11,7 @@ from nxbot import Cram_o_Matic
 
 def signal_handler(signal, frame): #CTRL+C handler
     print("Stop request")
-    b.stopBot()
+    b.close()
     sys.exit(0)
 
 config = json.load(open("../config.json"))
@@ -30,9 +30,7 @@ b.pause(0.5)
 while True:
     print("A spamming...")
     for i in range(sys.maxsize):
-        if apricorns and b.endApricornsCheck(apricorns):
-            break
-        elif b.endApricornsCheck():
+        if (apricorns and b.endApricornsCheck(apricorns)) or b.endApricornsCheck():
             break
         b.click('A')
         b.pause(0.5)
@@ -47,4 +45,6 @@ while True:
             apricorns = True
         else:
             apricorns = False
-b.stopBot()
+print("A spamming ended")
+print()
+b.close()

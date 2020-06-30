@@ -1,18 +1,15 @@
-import json
-
-# Settings
-config = json.load(open("../config.json"))
-
 # Desired IVs
 V6 = [31,31,31,31,31,31]
 S0 = [31,31,31,31,31,00]
 A0 = [31,00,31,31,31,31]
+
 useFilters = True
 MaxResults = 1000
 doResearch = True
 
 # Go to root of PyNXBot
 import sys
+import json
 sys.path.append('../')
 
 from lookups import Util
@@ -20,7 +17,9 @@ from nxbot import RaidBot
 from rng import XOROSHIRO,Raid
 from structure import Den
 
+config = json.load(open("../config.json"))
 b = RaidBot(config["IP"])
+
 seed = None
 
 for ii in range(RaidBot.DENCOUNT):
@@ -67,3 +66,5 @@ if seed is not None and doResearch:
                         print(f"Frame:{i}")
                         r.print()
                 i += 1
+
+b.close()

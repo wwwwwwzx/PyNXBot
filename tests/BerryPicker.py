@@ -11,7 +11,7 @@ from nxbot import BerryBot
 
 def signal_handler(signal, frame): #CTRL+C handler
     print("Stop request")
-    b.stopBot()
+    b.pickBeforeLeaving()
     sys.exit(0)
 
 config = json.load(open("../config.json"))
@@ -43,4 +43,4 @@ while i < cycles:
     i += 1
 print(i+1, "Cycles completed!")
 print()
-b.stopBot()
+b.close()

@@ -16,10 +16,8 @@ from nxbot import RaidBot
 def signal_handler(signal, frame): #CTRL+C handler
     print("Stop request")
     b.closeGame()
-    sys.exit(0)
 
 config = json.load(open("../config.json"))
-
 b = RaidBot(config["IP"])
 
 signal.signal(signal.SIGINT, signal_handler)
@@ -77,5 +75,5 @@ while True:
     print()
 
     print("Starting the game")
-    b.skipAnimation() #luxray=True
+    b.skipIntroAnimation() #luxray=True
     b.pause(0.6)

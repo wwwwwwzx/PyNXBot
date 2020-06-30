@@ -13,8 +13,3 @@ class Cram_o_Matic(SWSHBot):
         elif self.currScreen.endedDialogue():
             print("Dialogue ended!")
         return self.currScreen.endedDialogue()
-
-    def stopBot(self):
-        print("Exiting...")
-        self.pause(0.5)
-        self.close()

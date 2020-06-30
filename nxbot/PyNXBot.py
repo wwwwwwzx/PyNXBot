@@ -1,7 +1,9 @@
+import sys
 import socket
 import binascii
 from time import sleep
 from enum import Enum
+from structure import Screen
 
 class SystemLanguage(Enum):
         JA = 0
@@ -39,14 +41,20 @@ class NXBot(object):
                 self.sendCommand('detachController')
 
         def close(self):
+                print("Exiting...")
+                self.pause(0.5)
                 self.detach()
                 self.s.shutdown(socket.SHUT_RDWR)
                 self.s.close()
                 print('Bot Disconnected')
+                sys.exit(0)
 
         # A/B/X/Y/LSTICK/RSTICK/L/R/ZL/ZR/PLUS/MINUS/DLEFT/DUP/DDOWN/DRIGHT/HOME/CAPTURE
         def click(self,button):
                 self.sendCommand('click '+ button)
+
+        def moveStick(self,button,x,y):
+                self.sendCommand('setStick ' + button + ' ' + hex(x) + ' ' + hex(y))
 
         def press(self,button):
                 self.sendCommand('press '+ button)
@@ -88,6 +96,7 @@ class SWSHBot(NXBot):
                 from structure import MyStatus8
                 self.TrainerSave = MyStatus8(self.readTrainerBlock())
                 self.eventoffset = 0
+                self.resets = 0
                 if self.TrainerSave.isPokemonSave():
                         print(f"Game:{self.TrainerSave.GameVersion()} OT: {self.TrainerSave.OT()} ID:{self.TrainerSave.displayID()}\n")
                         self.isPlayingSword = self.TrainerSave.isSword()
@@ -172,3 +181,91 @@ class SWSHBot(NXBot):
 
         def readBattleStart(self):
                 return self.read(0x69B99418, 8)
+
+        def increaseResets(self):
+                self.resets += 1
+
+        def quitGame(self,needHome = True):
+                if needHome:
+                        self.click("HOME")
+                        self.pause(0.8)
+                self.click("X")
+                self.pause(0.2)
+                self.click("X")
+                self.pause(0.4)
+                self.click("A")
+                self.pause(0.2)
+                self.click("A")
+                self.pause(3)
+
+        def enterGame(self):
+                self.click("A")
+                self.pause(0.2)
+                self.click("A")
+                self.pause(1.3)
+                self.click("A")
+                self.pause(0.2)
+                self.click("A")
+
+        def skipIntroAnimation(self): #luxray = False
+                self.enterGame()
+                skip = False
+                while skip is not True:
+                        self.currScreen = Screen(self.readScreenOff())
+                        if self.currScreen.isIntroAnimationSkippable():
+                                skip = True
+                        self.pause(0.3)
+                #self.pause(20.5)
+                #self.currScreen.isIntroAnimationSkippable()
+                #if luxray:
+                        #self.pause(1.3)
+                print("Skip animation")
+                for i in range(10):
+                        self.click("A") #A to skip anim
+                        self.pause(0.5)
+                #self.pause(8)
+                skipped = False
+                while skipped is not True:
+                        self.currScreen = Screen(self.readOverworldCheck())
+                        if self.currScreen.overworldCheck():
+                                skipped = True
+                        self.pause(0.5)
+
+        def saveGame(self):
+                print("Saving...")
+                self.click("X")
+                self.pause(1.2)
+                self.click("R")
+                self.pause(1.5)
+                self.click("A")
+                self.pause(4)
+
+        def closeGame(self):
+                c = input("Close the game? (y/n): ")
+                if c == 'y' or c == 'Y':
+                        h = input("Need HOME button pressing? (y/n): ")
+                        if h == 'y' or h == 'Y':
+                                needHome = True
+                        else:
+                                needHome = False
+                        print("Closing game...")
+                        self.quitGame(needHome)
+                self.close()
+
+        def foundActions(self):
+                print("Found after", self.resets, "resets")
+                a = input("Continue searching? (y/n): ")
+                if a != "y" and a != "Y":
+                    self.closeGame()
+                else:
+                    self.increaseResets()
+                    print("Resets:", self.resets)
+
+        def notfoundActions(self,i=0,bot='raid'):
+                if i == 0 and bot == 'raid':
+                    print("Research skipped")
+                self.increaseResets()
+                if bot == 'raid':
+                        print("Nothing found - Resets:", self.resets)
+                else:
+                        print("Wrong Species / Stars - Resets:", self.resets)

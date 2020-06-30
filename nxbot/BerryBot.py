@@ -1,14 +1,9 @@
-import sys
 from nxbot import SWSHBot
 from structure import PK8,Screen
 
 class BerryBot(SWSHBot):
     def __init__(self,ip,port = 6000):
         SWSHBot.__init__(self,ip,port)
-        self.resets = 0
-
-    def increaseResets(self):
-                self.resets += 1
 
     def shakeTree(self):
         for i in range(3):
@@ -73,8 +68,9 @@ class BerryBot(SWSHBot):
                 self.pause(0.5)
             i += 1
 
-    def stopBot(self):
-        print("Exiting...")
-        self.pause(0.5)
-        self.pickEverything()
+    def pickBeforeLeaving(self):
+        pick = input("Picking before exiting? (y/n): ")
+        if pick == 'y' or pick == 'Y':
+            self.pickEverything()
+        print()
         self.close()
