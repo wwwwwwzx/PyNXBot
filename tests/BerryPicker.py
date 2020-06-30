@@ -10,9 +10,10 @@ sys.path.append('../')
 from nxbot import BerryBot
 
 def signal_handler(signal, frame): #CTRL+C handler
+    print()
     print("Stop request")
     b.pickBeforeLeaving()
-    sys.exit(0)
+    b.close()
 
 config = json.load(open("../config.json"))
 b = BerryBot(config["IP"])
@@ -41,6 +42,6 @@ while i < cycles:
     b.pause(0.5)
     print()
     i += 1
-print(i+1, "Cycles completed!")
+print(i, "Cycles completed!")
 print()
 b.close()

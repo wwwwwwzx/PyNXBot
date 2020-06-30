@@ -250,10 +250,12 @@ class SWSHBot(NXBot):
                                 needHome = False
                         print("Closing game...")
                         self.quitGame(needHome)
+                print()
                 self.close()
 
         def foundActions(self):
                 print("Found after", self.resets, "resets")
+                print()
                 a = input("Continue searching? (y/n): ")
                 if a != "y" and a != "Y":
                     self.closeGame()

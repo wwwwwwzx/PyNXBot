@@ -76,4 +76,3 @@ while True:
 
     print("Starting the game")
     b.skipIntroAnimation() #luxray=True
-    b.pause(0.6)

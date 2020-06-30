@@ -8,6 +8,7 @@ MaxResults = 1000
 doResearch = True
 
 # Go to root of PyNXBot
+import signal
 import sys
 import json
 sys.path.append('../')
@@ -17,8 +18,14 @@ from nxbot import RaidBot
 from rng import XOROSHIRO,Raid
 from structure import Den
 
+def signal_handler(signal, frame): #CTRL+C handler
+    print("Stop request")
+    b.close()
+
 config = json.load(open("../config.json"))
 b = RaidBot(config["IP"])
+
+signal.signal(signal.SIGINT, signal_handler)
 
 seed = None
 
@@ -66,5 +73,5 @@ if seed is not None and doResearch:
                         print(f"Frame:{i}")
                         r.print()
                 i += 1
-
+print()
 b.close()

@@ -10,9 +10,9 @@ sys.path.append('../')
 from nxbot import Cram_o_Matic
 
 def signal_handler(signal, frame): #CTRL+C handler
+    print()
     print("Stop request")
     b.close()
-    sys.exit(0)
 
 config = json.load(open("../config.json"))
 b = Cram_o_Matic(config["IP"])

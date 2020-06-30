@@ -20,6 +20,7 @@ from rng import XOROSHIRO,Raid
 import json
 
 def signal_handler(signal, frame): #CTRL+C handler
+    print()
     print("Stop request")
     b.closeGame()
 
