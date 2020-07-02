@@ -1,9 +1,10 @@
-Path = 'Event/Index 24/'
-ShortVersion = True
+Path = 'Event/Index 30/'
+ShortVersion = False
 OneTable = False
-DumpCrystal = False
-eventstyle = 'style = "background:#ffe4c3" |'
-
+DumpCrystal = True
+Island = 0
+# eventstyle = 'style = "background:#ffe4c3" |'
+eventstyle = ''
 # Go to root of PyNXBot
 import sys
 sys.path.append('../')
@@ -210,7 +211,7 @@ bonus = NestHoleReward8Archive.GetRootAsNestHoleReward8Archive(buf,0)
 buf = bytearray(open('../resources/bytes/personal_swsh','rb').read())
 pt = PersonalTable(buf)
 
-buf = bytearray(open(Path + 'normal_encount','rb').read())
+buf = bytearray(open(Path + 'normal_encount','rb').read()) if Island == 0 else bytearray(open(Path + f'normal_encount_rigel{Island}','rb').read())
 eventencounter = NestHoleDistributionEncounter8Archive.GetRootAsNestHoleDistributionEncounter8Archive(buf,0x20)
 buf = bytearray(open(Path + 'drop_rewards','rb').read())
 dropreward = NestHoleDistributionReward8Archive.GetRootAsNestHoleDistributionReward8Archive(buf,0x20)
@@ -304,34 +305,59 @@ else: # Full version
 				msg += getspecies(entry.Species(),entry.IsGigantamax(),entry.AltForm(),entry.ShinyFlag() == 2) + ' || '
 				msg += getmsg2(entry,rank)
 				print(msg)
-		print('|}\n\n\n')
-
+		print('|}\n')
+	print('==参见==\n{{旷野地带新闻列表}}\n\n')
 if DumpCrystal:
-	eventstyle = ''
 	tablelength = crystalencounter.Tables(0).EntriesLength()
-	print('{| class="roundy bg-Sw bd-Sh" style="text-align:center; margin:auto; border:3px solid')
-	print('! 极巨结晶 !! 宝可梦 !! ★ !! 版本 !! 等级 !! 个体 !! 护盾数 !! 极巨化<br>等级 !! 极巨化<br>提升 !! 招式  !! 可能获得的奖励道具  !! 奖励糖果 !! 备注')
-	header0 = '|- style="background:white"\n'
-	for ii in range(tablelength):
-		header = header0 + '| {{i|' + pmtext.items[1279+ii] + '}} |'
-		entry1 = crystalencounter.Tables(0).Entries(ii)
-		if entry1.Species() == 0:
-			continue
-		rank = Den.getCrystalRank(entry1.Level())
-		entry2 = crystalencounter.Tables(1).Entries(ii)
-		if entry1.Species() == entry2.Species() and entry1.AltForm() == entry2.AltForm() and entry1.IsGigantamax() == entry2.IsGigantamax() and entry1.ShinyFlag() == entry2.ShinyFlag():
-			# Same entry
-			msg = header + getmsg1(entry1,rank,isCrystal = True)
-			msg += '{{GameIconzh/8|SWSH}} || '
-			msg += getmsg2(entry1,rank,isCrystal = True)
-			print(msg)
-		else:
-			msg = header + getmsg1(entry1,rank,isCrystal = True)
-			msg += '{{GameIconzh/8|SW}} || '
-			msg += getmsg2(entry1,rank,isCrystal = True)
-			print(msg)
-			msg = header + getmsg1(entry2,rank,isCrystal = True)
-			msg += '{{GameIconzh/8|SH}} || '
-			msg += getmsg2(entry2,rank,isCrystal = True)
-			print(msg)
-	print('|}\n\n\n')
+	if ShortVersion:
+		header = '{{捕捉/entry8|'
+		for ii in range(tablelength):
+			entry1 = crystalencounter.Tables(0).Entries(ii)
+			if entry1.Species() == 0:
+				continue
+			rank = Den.getCrystalRank(entry1.Level())
+			entry2 = crystalencounter.Tables(1).Entries(ii)
+			if entry1.Species() == entry2.Species() and entry1.AltForm() == entry2.AltForm() and entry1.IsGigantamax() == entry2.IsGigantamax() and entry1.ShinyFlag() == entry2.ShinyFlag():
+				# Same entry
+				msg = header + getspecies_short(entry1.Species(),entry1.IsGigantamax(),entry1.AltForm())
+				msg += '|' + gettype_short(entry1.Species(),entry1.AltForm())
+				msg += getform_short(entry1.Species(),entry1.IsGigantamax(),entry1.AltForm(),False)
+				msg += f'|yes|yes|投放极巨结晶|{entry1.Level()}|{{{{tt|一只|兑换序列号}}}}}}}}'
+				print(msg)
+			else:
+				msg = header + getspecies_short(entry1.Species(),entry1.IsGigantamax(),entry1.AltForm())
+				msg += '|' + gettype_short(entry1.Species(),entry1.AltForm())
+				msg += f'|yes|no|投放极巨结晶|{entry1.Level()}|{{{{tt|一只|兑换序列号}}}}}}}}'
+				print(msg)
+				msg = header + getspecies_short(entry1.Species(),entry1.IsGigantamax(),entry1.AltForm())
+				msg += '|' + gettype_short(entry2.Species(),entry2.AltForm())
+				msg += f'|no|yes|投放极巨结晶|{entry1.Level()}|{{{{tt|一只|兑换序列号}}}}}}}}'
+				print(msg)
+	else:
+		eventstyle = ''
+		print('{| class="roundy bg-Sw bd-Sh" style="text-align:center; margin:auto; border:3px solid')
+		print('! 极巨结晶 !! 宝可梦 !! ★ !! 版本 !! 等级 !! 个体 !! 护盾数 !! 极巨化<br>等级 !! 极巨化<br>提升 !! 招式  !! 可能获得的奖励道具  !! 奖励糖果 !! 备注')
+		header0 = '|- style="background:white"\n'
+		for ii in range(tablelength):
+			header = header0 + '| {{i|' + pmtext.items[1279+ii] + '}} |'
+			entry1 = crystalencounter.Tables(0).Entries(ii)
+			if entry1.Species() == 0:
+				continue
+			rank = Den.getCrystalRank(entry1.Level())
+			entry2 = crystalencounter.Tables(1).Entries(ii)
+			if entry1.Species() == entry2.Species() and entry1.AltForm() == entry2.AltForm() and entry1.IsGigantamax() == entry2.IsGigantamax() and entry1.ShinyFlag() == entry2.ShinyFlag():
+				# Same entry
+				msg = header + getmsg1(entry1,rank,isCrystal = True)
+				msg += '{{GameIconzh/8|SWSH}} || '
+				msg += getmsg2(entry1,rank,isCrystal = True)
+				print(msg)
+			else:
+				msg = header + getmsg1(entry1,rank,isCrystal = True)
+				msg += '{{GameIconzh/8|SW}} || '
+				msg += getmsg2(entry1,rank,isCrystal = True)
+				print(msg)
+				msg = header + getmsg1(entry2,rank,isCrystal = True)
+				msg += '{{GameIconzh/8|SH}} || '
+				msg += getmsg2(entry2,rank,isCrystal = True)
+				print(msg)
+		print('|}\n\n\n')
