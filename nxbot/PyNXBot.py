@@ -75,7 +75,7 @@ class NXBot(object):
                 return buf
 
         def write(self,address,data):
-                self.sendCommand(f'poke 0x{address:X} {data}')
+                self.sendCommand(f'poke 0x{address:X} 0x{data}')
 
         def getSystemLanguage(self):
                 self.sendCommand('getSystemLanguage')
@@ -132,7 +132,7 @@ class SWSHBot(NXBot):
                 if slot > 6:
                         slot = 6
                 address = 0x450BE8C0 + (slot - 1) * self.PK8PARTYSIZE
-                return self.read(address,self.PK8STOREDSIZE)
+                return self.read(address,self.PK8PARTYSIZE)
 
         def readBox(self,box = 0,slot = 0):
                 if box > 31:
@@ -140,7 +140,7 @@ class SWSHBot(NXBot):
                 if slot > 29:
                         slot = 29
                 address = 0x4506D890 + box * 30 + slot * self.PK8PARTYSIZE
-                return self.read(address,self.PK8STOREDSIZE)
+                return self.read(address,self.PK8PARTYSIZE)
 
         def readTrade(self):
                 return self.read(0xAF285F68,self.PK8STOREDSIZE)

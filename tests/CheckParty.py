@@ -1,6 +1,6 @@
 # Go to root of PyNXBot
 import sys
-import  json
+import json
 sys.path.append('../')
 
 from structure import PK8

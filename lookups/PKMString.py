@@ -2,7 +2,7 @@ import os
 
 class PKMString(object):
 	def __init__(self,lang = 'en'):
-		currentfolder = os.path.dirname(os.path.realpath(__file__)) 
+		currentfolder = os.path.dirname(__file__) 
 		with open(currentfolder+ f'/text_Abilities_{lang}.txt','r', encoding="utf8") as file: 
 			self.abilities = file.read().splitlines()
 		with open(currentfolder + f'/text_Natures_{lang}.txt','r', encoding="utf8") as file: 

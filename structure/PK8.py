@@ -2,6 +2,7 @@ from structure.ByteStruct import ByteStruct
 
 class PK8(ByteStruct):
 	STOREDSIZE = 0x148
+	PARTYSIZE = 0x158
 	BLOCKSIZE = 0x50
 
 	def __init__(self,buf):
@@ -76,6 +77,9 @@ class PK8(ByteStruct):
 	def homeTracker(self):
 		return self.getulong(0x135)
 
+	def battleStats(self): # Lv,HP,Atk,Def,SpA,SpD,Spe
+		return self.getbyte(0x148),self.getushort(0x14A),self.getushort(0x14C),self.getushort(0x14E),self.getushort(0x152),self.getushort(0x154),self.getushort(0x150)
+
 	def isEgg(self):
 		return ((self.iv32() >> 31) & 1) == 1
 
@@ -131,24 +135,47 @@ class PK8(ByteStruct):
 		seed = self.ec()
 		sv = (seed >> 13) & 0x1F
 
-		# CryptPKM
-		i = 8
-		size = len(self.data)
-		while i < size:
+		self.__cryptPKM__(seed)
+		self.__shuffle__(sv)
+	
+	def __cryptPKM__(self,seed):
+		self.__crypt__(seed, 8, PK8.STOREDSIZE)
+		if len(self.data) == PK8.PARTYSIZE:
+			self.__crypt__(seed, PK8.STOREDSIZE, PK8.PARTYSIZE)
+
+	def __crypt__(self, seed, start, end):
+		i = start
+		while i < end:
 			seed = seed * 0x41C64E6D + 0x00006073
 			self.data[i] ^= (seed >> 16) & 0xFF
 			i += 1
 			self.data[i] ^= (seed >> 24) & 0xFF
 			i += 1
 
-		# Shuffle Array
+	def __shuffle__(self, sv):
 		idx = 4 * sv
-		sdata = bytearray(PK8.STOREDSIZE)
+		sdata = bytearray(len(self.data))
 		sdata[:] = self.data
 		for block in range(4):
 			ofs = PK8.BLOCKPOSITION[idx + block]
 			self.data[8 + PK8.BLOCKSIZE * block : 8 + PK8.BLOCKSIZE * (block + 1)] = sdata[8 + PK8.BLOCKSIZE * ofs : 8 + PK8.BLOCKSIZE * (ofs + 1)]
 
+	def refreshChecksum(self):
+		self.setushort(0x6, self.calChecksum())
+
+	def encrypt(self):
+		self.refreshChecksum()
+		seed = self.ec()
+		sv = (seed >> 13) & 0x1F
+
+		self.__shuffle__(PK8.blockPositionInvert[sv])
+		self.__cryptPKM__(seed)
+		return self.data
+
+	blockPositionInvert = [
+            0, 1, 2, 4, 3, 5, 6, 7, 12, 18, 13, 19, 8, 10, 14, 20, 16, 22, 9, 11, 15, 21, 17, 23,
+            0, 1, 2, 4, 3, 5, 6, 7,
+    ];
 
 	BLOCKPOSITION = [
         0, 1, 2, 3,

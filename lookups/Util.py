@@ -1,9 +1,10 @@
 from lookups import PKMString
 from structure import PersonalTable
+import os
 
 class Util():
 	STRINGS = PKMString()
-	PT = PersonalTable(bytearray(open('../resources/bytes/personal_swsh','rb').read()))
+	PT = PersonalTable(bytearray(open(os.path.dirname(__file__) + '/../resources/bytes/personal_swsh','rb').read()))
 	GenderSymbol = ['♂','♀','-']
 
 	@staticmethod
