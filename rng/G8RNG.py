@@ -409,7 +409,7 @@ class Raid(FrameGenerator):
         if len(seeds) > 0:
             for iv_count in range(IVs.count(31) + 1):
                 for seed in seeds:
-                    r = Raid(seed,iv_count)
+                    r = Raid(seed,0,0,iv_count)
                     if IVs == r.IVs:
                         result.append([seed,iv_count])
 

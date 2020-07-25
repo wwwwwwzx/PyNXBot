@@ -53,6 +53,9 @@ Stars Finder:
 4) Start the game, save in front of an Den whose beam has been generated through a Wishing Piece and leave the game opened
 5) Run the script
 
+## Features for fun
+Use the binaries and structures from your browsers (iOS, Android): [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/wwwwwwzx/PyNXBot/master?urlpath=lab/tree/test.ipynb). You may have to expose your switch to the internet.
+
 ## Always Remember!
 Sometimes button inputs of your joycons won't work. This because the fake controller isn't detached from your Switch. 
 So, everytime you want to stop the bot, always press CTRL+C and follow the instructions. The bot will detach the fake controller and buttons will work correctly. 

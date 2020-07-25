@@ -6,8 +6,7 @@ class PK8(ByteStruct):
 	BLOCKSIZE = 0x50
 
 	def __init__(self,buf):
-		self.data = bytearray(len(buf))
-		self.data[:] = buf
+		self.data = bytearray(buf[:])
 		if self.isEncrypted():
 		 	self.decrypt()
 
@@ -154,8 +153,7 @@ class PK8(ByteStruct):
 
 	def __shuffle__(self, sv):
 		idx = 4 * sv
-		sdata = bytearray(len(self.data))
-		sdata[:] = self.data
+		sdata = bytearray(self.data[:])
 		for block in range(4):
 			ofs = PK8.BLOCKPOSITION[idx + block]
 			self.data[8 + PK8.BLOCKSIZE * block : 8 + PK8.BLOCKSIZE * (block + 1)] = sdata[8 + PK8.BLOCKSIZE * ofs : 8 + PK8.BLOCKSIZE * (ofs + 1)]

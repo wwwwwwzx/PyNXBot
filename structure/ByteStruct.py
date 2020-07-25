@@ -1,8 +1,7 @@
 class ByteStruct(object):
 
 	def __init__(self,buf):
-		self.data = bytearray(len(buf))
-		self.data[:] = buf
+		self.data = bytearray(buf[:])
 
 	def getulong(self,offset):
 		return int.from_bytes(self.data[offset:offset + 8], byteorder='little') 
