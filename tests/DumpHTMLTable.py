@@ -1,4 +1,4 @@
-Path = 'Event/Index 15/'
+Path = 'Event/Index 31/'
 lang = 'en'
 useLargeImage = True
 eventstyle = ' style = "background-color:#ffe4c3"'
@@ -194,8 +194,6 @@ def getmsg2(entry, rank):
 		comment += ("Cannot be shiny" if lang == 'en' else '必定不闪') + "<br>"
 	elif entry.ShinyFlag() == 2:
 		pass # comment += SHINYSTR + "<br>"
-	if entry.Field13() > 4:
-		comment += ("Cannot be captured" if lang == 'en' else '不能捕获') + "<br>"
 	txt += td('-' if comment == '' else comment[:-4])
 	return txt
 
@@ -219,40 +217,48 @@ tablelength = eventencounter.Tables(0).EntriesLength()
 if tablenum != 2 or eventencounter.Tables(1).EntriesLength() != tablelength:
 	print('Not a standard table')
 
-print('<table border="1" class="table table-striped table-bordered table-condensed" style="text-align:center; margin:auto">')
-print('<tbody>')
+output = open(Path + "table.html","w") 
+output.write('<table border="1" class="table table-striped table-bordered table-condensed" style="text-align:center; margin:auto">')
+output.write('<tbody>')
 if lang == "en":
 	tableheader = th("") + th("Pokemon") + th("Chance") + th("Games") + th("Level") + th("Perfect<br>IVs") + th("Shield")
 	tableheader += th("Dynamax<br>Level") + th("Dynamax<br>Boost") + th("Moves") + th("Drop") + th("Bonus") + th("Comment")
 elif lang == "zh":
 	tableheader = th("") + th("宝可梦") + th("几率") + th("游戏") + th("等级") + th("完美<br>个体数") + th("护盾数")
 	tableheader += th("极巨化<br>等级") + th("极巨化<br>提升") + th("招式") + th("道具掉落") + th("经验糖果") + th("备注")
-print(tr(tableheader))
+output.write(tr(tableheader))
 for star in range(5):
 	star = 4 - star
 	stars = '★'
 	for pp in range(star):
 		stars += '★'
-	print('\t\t<td colspan="13">'+ stars +'</td>')
+	output.write('\t\t<td colspan="13">'+ stars +'</td>')
 	for ii in range(tablelength):
 		ii = tablelength - ii - 1
 		entry1 = eventencounter.Tables(0).Entries(ii)
-		if entry1.Probabilities(star) > 0:
-			entry2 = eventencounter.Tables(1).Entries(ii)
-			if isthesame(entry1,entry2):
-				# Same entry
+		entry2 = eventencounter.Tables(1).Entries(ii)
+		# Same entry
+		if isthesame(entry1,entry2) and entry1.Probabilities(star) == entry2.Probabilities(star):
+			if entry1.Probabilities(star) > 0:
 				msg = getmsg1(entry1,star)
 				msg += td("SHSW" if lang == 'en' else '剑盾') 
 				msg += getmsg2(entry1,star)
-				print(tr(msg))
-			else:
+				output.write(tr(msg))
+		else:
+			if entry1.Probabilities(star) > 0:
 				msg = getmsg1(entry1,star)
 				msg += td("SH" if lang == 'en' else '剑')
 				msg += getmsg2(entry1,star)
-				print(tr(msg))
+				output.write(tr(msg))
+			if entry2.Probabilities(star) > 0:
 				msg = getmsg1(entry2,star)
 				msg += td("SW" if lang == 'en' else '盾')
 				msg += getmsg2(entry2,star)
-				print(tr(msg))
-print('</tbody>')
-print('</table>')
+				output.write(tr(msg))
+output.write('</tbody>')
+output.write('</table>')
+output.close()
+
+import webbrowser,os
+webbrowser.open_new_tab('file:///'+os.getcwd()+'/' + Path + "table.html")
+
