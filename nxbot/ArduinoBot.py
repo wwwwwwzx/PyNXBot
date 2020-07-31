@@ -7,11 +7,16 @@ from nxbot import Bot
 class ArduinoBot(Bot):
     def __init__(self,serial_port = None,printout = False):
         if serial_port is None:
-            serial_port = ArduinoBot.find_port()
-            print(f'Using port: {serial_port[0]}')
-        self.ser = serial.Serial(serial_port[0], 9600)
+            serial_port = ArduinoBot.find_port()[0]
+            print(f'Using port: {serial_port}')
         self.buttondelay = 0.1
         self.printout = printout
+        try:
+            self.ser = serial.Serial(serial_port, 9600)
+        except:
+            self.isConnected = False
+        else:
+            self.isConnected = True
 
     @staticmethod
     def find_port():
@@ -112,6 +117,9 @@ class ArduinoBot(Bot):
     def d(self,duration = 0.1):
         self.send('HAT BOTTOM',duration)
 
+    def d_c(self):
+        self,send('HAT CENTER',-1)
+
     # LEFT STICK
     def ls_l(self,duration = 0.1):
         self.send('LX MIN',duration)
@@ -119,11 +127,17 @@ class ArduinoBot(Bot):
     def ls_r(self,duration = 0.1):
         self.send('LX MAX',duration)
 
+    def ls_xc(self):
+        self.send('LX CENTER', -1)
+
     def ls_d(self,duration = 0.1):
         self.send('LY MAX',duration)
 
     def ls_u(self,duration = 0.1):
         self.send('LY MIN',duration)
+
+    def ls_yc(self):
+        self.send('LY CENTER', -1)
 
     # RIGHT STICK
     def rs_l(self,duration = 0.1):
@@ -132,8 +146,14 @@ class ArduinoBot(Bot):
     def rs_r(self,duration = 0.1):
         self.send('RX MAX',duration)
 
+    def rs_xc(self):
+        self.send('RX CENTER', -1)
+
     def rs_d(self,duration = 0.1):
         self.send('RY MAX',duration)
 
     def rs_u(self,duration = 0.1):
         self.send('RY MIN',duration)
+
+    def rs_yc(self):
+        self.send('RY CENTER', -1)

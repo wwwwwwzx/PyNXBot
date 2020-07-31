@@ -1,25 +1,25 @@
 # PyNXBot
  Python Lib for Pokemon Sword and Shield, including many bots!
- 
+
  ![toxricity](https://i.imgur.com/iMho3F7.png) 
- 
+
 ## Warning
  I won't be liable if your Switch get damaged or banned. Use at your own risk.
- 
+
  ## Features
  * Check Dens info
  * Check Wilds info
  * Check Party Pokémon info
  * Check Box Pokémon info (incoming...)
  * Check Trainer info (incoming...)
- 
+
  ## Bots
 * RaidFinder - useful to softreset Den Seed (Event Raids, Rare Beam Raids, perfect IVs, Shininess at low frames, etc.)
 * StarsFinder - useful to softreset Den Species + Stars
 * BerryPicker - useful to farm berries/apricorns from trees
 * ASpammer - useful to spam A button during boring dialogues, can be used also to farm Items in Cram-o-Matic machine
 * LegendaryFinder - useful to softreset Legendary (incoming...)
- 
+
 ## Requirements
 * CFW
 * Internet Connection
@@ -32,7 +32,7 @@ Use [CaptureSight](https://github.com/zaksabeast/CaptureSight/)/CheckDen script 
 
 Raid Finder:
 1) Install the latest release of [Python](https://www.python.org/downloads/)
-2) Connect your Switch to Interet
+2) Connect your Switch to Internet
 3) Start sys-botbase and ldn_mitm
 4) Go to System Settings, check your Switch IP and write it inside config.json file
 5) Start the game and set game text speed to normal
@@ -47,11 +47,22 @@ Raid Finder:
 
 Stars Finder:
 1) Install the latest release of [Python](https://www.python.org/downloads/)
-2) Connect your Switch to Interet
+2) Connect your Switch to Internet
 2) Start sys-botbase, ldn_mitm and luxray (the yellow cursor of luxray has to be over "+3" button)
 3) Go to System Settings, check your Switch IP and write it inside config.json file
 4) Start the game, save in front of an Den whose beam has been generated through a Wishing Piece and leave the game opened
 5) Run the script
+
+### GUI in Python: NXController
+
+This is a port from C++, please check more details from [my prior project](https://github.com/wwwwwwzx/NXController).
+1) Install the latest release of [Python](https://www.python.org/downloads/) and install PyQt5 via [pip](https://pip.pypa.io/en/stable/):
+`pip install pyqt5`
+2) Connect your Switch to Internet or Arduino
+3) Go to System Settings, check your Switch IP
+4) Run the script. The Qt Gui will pop up.
+
+You may change the button setting by editing the json file according to [this website](https://doc.qt.io/qt-5/qt.html#Key-enum). Please note that only decimal numbers are allowed in json.
 
 ## Features for fun
 Use the binaries and structures from your browsers (iOS, Android): [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/wwwwwwzx/PyNXBot/master?urlpath=lab/tree/test.ipynb). You may have to expose your switch to the internet.

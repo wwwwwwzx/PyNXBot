@@ -26,9 +26,12 @@ class SystemLanguage(Enum):
 class NXBot(object):
         def __init__(self,ip,port = 6000):
                 self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                self.s.settimeout(1)
                 self.s.connect((ip, port))
                 print('Bot Connected')
                 self.configure()
+                self.moveLeftStick(0,0)
+                self.moveRightStick(0,0)
 
         def configure(self):
                 self.sendCommand('configure echoCommands 0')
@@ -40,28 +43,46 @@ class NXBot(object):
         def detach(self):
                 self.sendCommand('detachController')
 
-        def close(self):
+        def close(self,exitapp = True):
                 print("Exiting...")
                 self.pause(0.5)
                 self.detach()
                 self.s.shutdown(socket.SHUT_RDWR)
                 self.s.close()
                 print('Bot Disconnected')
-                sys.exit(0)
+                if exitapp:
+                    sys.exit(0)
 
         # A/B/X/Y/LSTICK/RSTICK/L/R/ZL/ZR/PLUS/MINUS/DLEFT/DUP/DDOWN/DRIGHT/HOME/CAPTURE
         def click(self,button):
                 self.sendCommand('click '+ button)
-
-        def moveStick(self,button,x,y):
-                self.sendCommand('setStick ' + button + ' ' + hex(x) + ' ' + hex(y))
 
         def press(self,button):
                 self.sendCommand('press '+ button)
 
         def release(self,button):
                 self.sendCommand('release '+ button)
-        
+
+        # setStick LEFT/RIGHT <xVal from -0x8000 to 0x7FFF> <yVal from -0x8000 to 0x7FFF
+        def moveStick(self,button,x,y):
+                self.sendCommand('setStick ' + button + ' ' + hex(x) + ' ' + hex(y))
+
+        def moveLeftStick(self,x = None, y = None):
+                if x is not None:
+                        self.ls_lastx = x
+                if y is not None:
+                        self.ls_lasty = y
+                self.moveStick('LEFT',self.ls_lastx,self.ls_lasty)
+
+        def moveRightStick(self,x = None, y = None):
+                if x is not None:
+                        self.rs_lastx = x
+                if y is not None:
+                        self.rs_lasty = y
+                self.moveStick('RIGHT',self.rs_lastx,self.rs_lasty)
+
+        #peek <address in hex, prefaced by 0x> <amount of bytes, dec or hex with 0x>
+        #poke <address in hex, prefaced by 0x> <data, if in hex prefaced with 0x>       
         def read(self,address,size,filename = None):
                 self.sendCommand(f'peek 0x{address:X} 0x{size:X}')
                 sleep(size/0x8000)
