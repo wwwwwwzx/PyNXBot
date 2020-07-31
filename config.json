@@ -1,3 +1,32 @@
 {
-	"IP": "127.0.0.1"
+    "IP": "192.168.0.1",
+    "SerialPort": "",
+    "ButtonSettings": {
+        "A": 65,
+        "B": 83,
+        "X": 90,
+        "Y": 88,
+        "L": 81,
+        "R": 87,
+        "ZL": 49,
+        "ZR": 50,
+        "LS": 51,
+        "RS": 52,
+        "Home": 66,
+        "Capture": 86,
+        "Plus": 78,
+        "Minus": 77,
+        "D_Left": 70,
+        "D_Right": 72,
+        "D_Up": 84,
+        "D_Down": 71,
+        "LS_Left": 16777234,
+        "LS_Right": 16777236,
+        "LS_Up": 16777235,
+        "LS_Down": 16777237,
+        "RS_Left": 74,
+        "RS_Right": 76,
+        "RS_Up": 73,
+        "RS_Down": 75
+    }
 }
