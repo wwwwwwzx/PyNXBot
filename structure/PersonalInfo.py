@@ -90,6 +90,8 @@ class PersonalTable(object):
 			return 1072
 		if species == 869:
 			return 1072 + forme
-		if species == 479 and forme > 0:
+		if species == 479:
 			return 916 + forme
+		if species in [422,423]:
+			return 911
 		return -1

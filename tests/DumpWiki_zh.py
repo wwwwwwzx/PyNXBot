@@ -1,7 +1,7 @@
-Path = 'Event/Index 30/'
+Path = 'Event/Index 33/'
 ShortVersion = False
 OneTable = False
-DumpCrystal = True
+DumpCrystal = False
 Island = 0
 # eventstyle = 'style = "background:#ffe4c3" |'
 eventstyle = ''
@@ -44,6 +44,8 @@ def getspecies(species, isgmax = False, formid = 0, isShiny = False):
 		t = '{{MSP|' + f'{species:03}' + 'A}}<br>[[' + pmtext.species[species] + ']]<br><small>' + formtext + '</small>'
 	elif species in PersonalTable.Galarlist and formid:
 		t = '{{MSP|' + f'{species:03}' + 'G}}<br>[[' + pmtext.species[species] + ']]<br><small>' + formtext + '</small>'
+	elif species in [422,423]:
+		t = '{{MSP|' + f'{species:03}' +('E' if formid else '') + '}}<br>[[' + pmtext.species[species] + ']]<br><small>' + formtext + '</small>'
 	elif species == 479 and formid > 0:
 		if formid == 1:
 			rotomform = 'H'
@@ -180,7 +182,7 @@ def getspecies_short(species, isgmax = False, formid = 0):
 def getform_short(species, isgmax = False, formid = 0, isShiny = False):
 	t = ''
 	formtext = pmtext.forms[pt.getFormeNameIndex(species,formid)]
-	if species == 849 or species == 869 or species == 678 or species == 876 or ((species in pt.Galarlist or species in pt.Alolalist) and formid):
+	if species in [422,423,849,869,678,876] or ((species in pt.Galarlist or species in pt.Alolalist) and formid):
 		t = f"|form={formtext}"
 	if isgmax:
 		t = "|form=超极巨化" if t == '' else (t + '<br>超极巨化')
