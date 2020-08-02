@@ -21,6 +21,10 @@
 * LegendaryFinder - useful to softreset Legendary (incoming...)
 
 ## Requirements
+* [Python](https://www.python.org/downloads/)
+	* Install z3-solver and pyserial via [pip](https://pip.pypa.io/en/stable/) if `ImportError` happens.
+	   `pip install z3-solver` 
+	   `pip install pyserial`
 * CFW
 * Internet Connection
 * [sys-botbase](https://github.com/olliz0r/sys-botbase) 1.5
@@ -31,14 +35,13 @@
 Use [CaptureSight](https://github.com/zaksabeast/CaptureSight/)/CheckDen script to check your Den id
 
 Raid Finder:
-1) Install the latest release of [Python](https://www.python.org/downloads/)
-2) Connect your Switch to Internet
-3) Start sys-botbase and ldn_mitm
-4) Go to System Settings, check your Switch IP and write it inside config.json file
-5) Start the game and set game text speed to normal
-6) Save in front of an empty Den and leave the game opened. You must have at least one Wishing Piece in your bag
-7) Modify research filters inside the script according to what is written below
-8) Run the script
+1) Connect your Switch to Internet
+2) Start sys-botbase and ldn_mitm
+3) Go to System Settings, check your Switch IP and write it inside config.json file
+4) Start the game and set game text speed to normal
+5) Save in front of an empty Den and leave the game opened. You must have at least one Wishing Piece in your bag
+6) Modify research filters inside the script according to what is written below
+7) Run the script
 
 * r.ShinyType == 'None'/'Star'/'Square' (!= 'None' for both Square/Star shiny type)
 * Util.STRINGS.natures[r.Nature] == 'Nature' (i.e. Util.STRINGS.natures[r.Nature] == 'Timid')
@@ -46,8 +49,7 @@ Raid Finder:
 * r.IVs == spread_name (spread_name = [x,x,x,x,x,x])
 
 Stars Finder:
-1) Install the latest release of [Python](https://www.python.org/downloads/)
-2) Connect your Switch to Internet
+1) Connect your Switch to Internet
 2) Start sys-botbase, ldn_mitm and luxray (the yellow cursor of luxray has to be over "+3" button)
 3) Go to System Settings, check your Switch IP and write it inside config.json file
 4) Start the game, save in front of an Den whose beam has been generated through a Wishing Piece and leave the game opened
@@ -56,7 +58,7 @@ Stars Finder:
 ### GUI in Python: NXController
 
 This is a port from C++, please check more details from [my prior project](https://github.com/wwwwwwzx/NXController).
-1) Install the latest release of [Python](https://www.python.org/downloads/) and install PyQt5 via [pip](https://pip.pypa.io/en/stable/):
+1) Install the PyQt5 module via [pip](https://pip.pypa.io/en/stable/):
 `pip install pyqt5`
 2) Connect your Switch to Internet or Arduino
 3) Go to System Settings, check your Switch IP
