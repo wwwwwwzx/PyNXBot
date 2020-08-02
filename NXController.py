@@ -153,7 +153,11 @@ class Ui_MainWindow(object):
         else:
             from nxbot import NXBot
             try:
-                self.b = NXBot(self.ipaddress.text())
+                if ':' in self.ipaddress.text():
+                    ip, port = self.ipaddress.text().split(':')
+                else:
+                    ip, port = self.ipaddress.text(), '6000'
+                self.b = NXBot(ip,int(port))
             except:
                 import sys
                 print("Can't connect to the console:",sys.exc_info()[1])
