@@ -213,7 +213,8 @@ class Ui_MainWindow(object):
     def readRAM(self):
         if self.B_Connect.isEnabled() or self.RB_Serial.isChecked():
             return
-        buf = self.b.read(int(self.ramaddress.text(),16), int(self.datasize.text()))
+        dumpfile = QtGui.QGuiApplication.keyboardModifiers() == QtCore.Qt.ShiftModifier
+        buf = self.b.read(int(self.ramaddress.text(),16), int(self.datasize.text()),filename = '' if dumpfile else None)
         import binascii
         self.data.setText(str(binascii.hexlify(buf))[2:-1])
         self.refresh()
@@ -401,9 +402,9 @@ class MyMainWindow(QtWidgets.QMainWindow):
             elif key == ui.keytable['RS_Up'] or key == ui.keytable['RS_Down']:
                 ui.a.rs_yc()
             elif key == ui.keytable['RS_Left'] or key == ui.keytable['RS_Right']:
-                ui.a.rs_xc(-1)
+                ui.a.rs_xc()
             elif key in { ui.keytable['D_Up'], ui.keytable['D_Down'], ui.keytable['D_Left'], ui.keytable['D_Right'] }:
-                ui.a.d_c(-1)
+                ui.a.d_c()
             elif key == ui.keytable['Home']:
                 ui.a.h()
             elif key == ui.keytable['Capture']:
