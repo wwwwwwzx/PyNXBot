@@ -25,6 +25,9 @@ class WC8(ByteStruct):
     def metLocation(self):
         return self.getushort(0x22A)
 
+    def isHome(self):
+        return self.metLocation() == 30018 or self.ownername(1) == 'HOME'
+
     def ball(self):
         return self.getushort(0x22C)
 
@@ -65,7 +68,7 @@ class WC8(ByteStruct):
         return self.getbyte(0x24B) != 0
 
     def isShiny(self):
-        return self.shinyType == 2 or self.shinyType == 3
+        return self.shinyType() == 2 or self.shinyType() == 3
 
     def ribbonflags(self):
         for ii in range(0x20):
