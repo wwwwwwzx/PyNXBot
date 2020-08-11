@@ -22,3 +22,15 @@ class PKMString(object):
 				self.trtypes = file.read().splitlines()
 			with open(currentfolder + f'/text_TRMoves_{lang}.txt','r', encoding="utf8") as file: 
 				self.trmoves = file.read().splitlines()
+		if lang == 'zh':
+			with open(currentfolder + f'/text_swsh_40000_{lang}.txt','r', encoding="utf8") as file: 
+				self.locations = file.read().splitlines()
+			with open(currentfolder + f'/MoveData.txt','r', encoding="utf8") as file: 
+				movedata = file.read().splitlines()
+				import re
+				self.movetypes = []
+				self.movecats = []
+				for move in movedata:
+					m = re.search(r'(\d+)\t(\d)',move)
+					self.movetypes.append(self.types[int(m.group(1))])
+					self.movecats.append(int(m.group(2)))

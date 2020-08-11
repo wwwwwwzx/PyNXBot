@@ -46,6 +46,9 @@ class PersonalInfoSWSH(PersonalInfo):
 	def AbilityH(self):
 		return self.getushort(0x1C)
 
+	def Abilities(self):
+		return [self.Ability1(),self.Ability2(),self.AbilityH()]
+
 	def FormStatsIndex(self):
 		return self.getushort(0x1E)
 
