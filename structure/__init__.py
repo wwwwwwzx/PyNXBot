@@ -3,6 +3,7 @@ from .WC8 import WC8
 from .Den import Den
 from .MyStatus8 import MyStatus8
 from .PersonalInfo import PersonalTable
+from .TextFile import TextFile
 from .Screen import Screen
 
 from .EncounterNest8 import EncounterNest8
