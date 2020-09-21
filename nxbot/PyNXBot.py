@@ -231,12 +231,14 @@ class SWSHBot(NXBot):
         def skipIntroAnimation(self): #luxray = False
                 self.enterGame()
                 skip = False
-                self.pause(15)
+                self.pause(14.7)
                 while skip is not True:
+                        self.pause(0.3)
                         self.currScreen = Screen(self.readScreenOff())
                         if self.currScreen.isIntroAnimationSkippable():
                                 skip = True
-                        self.pause(0.3)
+                        else:
+                                self.click("A")
                 #self.pause(20.5)
                 #self.currScreen.isIntroAnimationSkippable()
                 #if luxray:
