@@ -35,7 +35,7 @@ def getspecies(species, isgmax = False, formid = 0, isShiny = False):
 	if species == 849:
 		t = '{{MSP|' + f'{species:03}' +('GM' if isgmax else 'L' if formid == 1 else '') + '}}<br>[[' + pmtext.species[species] + ']]<br><small>' + formtext + '</small>'
 	elif species == 868:
-		t = '{{MSP|' + f'{species:03}' + '}}<br>[[' + pmtext.species[species] + ']]' + ('<br />[[File:Extreme Sprite.png|link=Extreme]]' if isgmax else '')
+		t = '{{MSP|' + f'{species:03}' + '}}<br>[[' + pmtext.species[species] + ']]' + ('<br />[[File:Dynamax Sprite.png|link=Gigantamax]]' if isgmax else '')
 	elif species == 869:
 		t = '{{MSP|' + f'{species:03}' +('GM' if isgmax else '') + '}}<br>[[' + pmtext.species[species] + ']]<br><small>' + formtext + '</small>'
 	elif species == 678 or species == 876:
