@@ -34,6 +34,15 @@ class PersonalInfoSWSH(PersonalInfo):
 	def Type2(self):
 		return self.getbyte(0x07)
 
+	def Item1(self):
+		return self.getushort(0xC)
+
+	def Item2(self):
+		return self.getushort(0xE)
+
+	def Item3(self):
+		return self.getushort(0x10)
+
 	def Gender(self):
 		return self.getbyte(0x12)
 
@@ -89,6 +98,10 @@ class PersonalTable(object):
 			return 1068 if forme else 1
 		if forme == 0:
 			return species
+		if species == 710:
+			return 1005 + forme
+		if species == 711:
+			return 1008 + forme
 		if species == 849 and forme == 1:
 			return 1072
 		if species == 869:
