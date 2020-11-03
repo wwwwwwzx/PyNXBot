@@ -110,7 +110,7 @@ class NXBot(object):
 class SWSHBot(NXBot):
         PK8STOREDSIZE = 0x148
         PK8PARTYSIZE = 0x158
-        DENCOUNT = 191
+        DENCOUNT = 276
 
         def __init__(self,ip,port = 6000):
                 NXBot.__init__(self,ip,port)
@@ -147,12 +147,12 @@ class SWSHBot(NXBot):
                 return self.eventoffset
 
         def readTrainerBlock(self):
-                return self.read(0x45061108, 0x110)
+                return self.read(0x45068F18, 0x110)
 
         def readParty(self,slot=1):
                 if slot > 6:
                         slot = 6
-                address = 0x450BE8C0 + (slot - 1) * self.PK8PARTYSIZE
+                address = 0x450C68B0 + (slot - 1) * self.PK8PARTYSIZE
                 return self.read(address,self.PK8PARTYSIZE)
 
         def readBox(self,box = 0,slot = 0):
@@ -160,48 +160,48 @@ class SWSHBot(NXBot):
                         box = 31
                 if slot > 29:
                         slot = 29
-                address = 0x4506D890 + box * 30 + slot * self.PK8PARTYSIZE
+                address = 0x45075880 + box * 30 + slot * self.PK8PARTYSIZE
                 return self.read(address,self.PK8PARTYSIZE)
 
         def readTrade(self):
-                return self.read(0xAF285F68,self.PK8STOREDSIZE)
+                return self.read(0xAF286078,self.PK8STOREDSIZE)
 
         def readWild(self):
-                return self.read(0x8FEA3358,self.PK8STOREDSIZE)
+                return self.read(0x8FEA3158,self.PK8STOREDSIZE)
 
         def readRaid(self):
-                return self.read(0x886C1BD8,self.PK8STOREDSIZE)
+                return self.read(0x886C1EC8,self.PK8STOREDSIZE)
 
         def readLegend(self):
-                return self.read(0x886BC058,self.PK8STOREDSIZE)
+                return self.read(0x886BC348,self.PK8STOREDSIZE)
 
         def readEventBlock_RaidEncounter(self,path=''):
-                return self.read(0x2F9EB1F0 + self.eventoffset, 0x23D4, path + 'normal_encount')
+                return self.read(0x2F9EB350 + self.eventoffset, 0x23D4, path + 'normal_encount')
 
         def readEventBlock_CrystalEncounter(self,path=''):
-                return self.read(0x2F9ED678 + self.eventoffset, 0x1241C, path + 'dai_encount')
+                return self.read(0x2F9ED7D8 + self.eventoffset, 0x1241C, path + 'dai_encount')
 
         def readEventBlock_DropRewards(self,path=''):
-                return self.read(0x2F9FFB48 + self.eventoffset, 0x426C, path + 'drop_rewards')
+                return self.read(0x2F9FFCA8 + self.eventoffset, 0x426C, path + 'drop_rewards')
 
         def readEventBlock_BonusRewards(self,path=''):
-                return self.read(0x2FA03E68 + self.eventoffset, 0x116C4, path + 'bonus_rewards')
+                return self.read(0x2FA03FC8 + self.eventoffset, 0x116C4, path + 'bonus_rewards')
 
         def readDen(self,denID):
                 denDataSize = 0x18;
-                if denID > SWSHBot.DENCOUNT - 1:
-                        denID = SWSHBot.DENCOUNT - 1
-                address = 0x450C0A80 + denID * denDataSize
+                if denID > SWSHBot.DENCOUNT + 31:
+                        denID = SWSHBot.DENCOUNT + 31
+                address = 0x450C8A70 + denID * denDataSize
                 return self.read(address,denDataSize)
 
         def readScreenOff(self):
-                return self.read(0x6B30F9E0, 8)
+                return self.read(0x6B30FA00, 8)
 
         def readOverworldCheck(self):
-                return self.read(0x2F770528 + self.eventoffset, 4)
+                return self.read(0x2F770638 + self.eventoffset, 4)
 
         def readBattleStart(self):
-                return self.read(0x69B99418, 8)
+                return self.read(0x6B578EDC, 8)
 
         def increaseResets(self):
                 self.resets += 1

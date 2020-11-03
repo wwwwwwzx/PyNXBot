@@ -40,9 +40,13 @@ altform = 0
 
 denId = int(input("Den Id: "))
 
-IoA_check = (input("Is your den in the Isle of Armor? (y/n) "))
-if IoA_check == "y" or IoA_check == "Y":
-    denId += 111
+IoA_CT_check = (input("Is your den in the Isle of Armor or in the Crown Tundra? (y/n) "))
+if IoA_CT_check == "y" or IoA_CT_check == "Y":
+    IoA_CT_check = (input("1 - Isle of Armor / 2 - Crown Tundra? (1/2): "))
+    if IoA_CT_check == 1:
+        denId += 111
+    else:
+        denID += 132
 
 b.setTargetDen(denId)
 

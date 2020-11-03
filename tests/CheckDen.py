@@ -30,14 +30,18 @@ signal.signal(signal.SIGINT, signal_handler)
 seed = None
 
 for ii in range(RaidBot.DENCOUNT):
-        if ii > 99:
+        if ii > 189:
+                den = Den(b.readDen(ii + 32))
+        elif ii > 99:
                 den = Den(b.readDen(ii + 11))
         else:
                 den = Den(b.readDen(ii))
-        if den.isActive():
+        if den.isActive() and not den.isEvent():
                 spawn = den.getSpawn(denID = ii, isSword = b.isPlayingSword)
                 currShinylock = 0
-                if ii > 99:
+                if ii > 189:
+                        info = f"[CT] denID {ii-189}"
+                elif ii > 99:
                         info = f"[IoA] denID {ii-99}"
                 else:
                         info = f"denID {ii+1}"
