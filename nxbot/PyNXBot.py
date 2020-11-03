@@ -167,7 +167,7 @@ class SWSHBot(NXBot):
                 return self.read(0xAF286078,self.PK8STOREDSIZE)
 
         def readWild(self):
-                return self.read(0x8FEA3158,self.PK8STOREDSIZE)
+                return self.read(0x8FEA3648,self.PK8STOREDSIZE)
 
         def readRaid(self):
                 return self.read(0x886C1EC8,self.PK8STOREDSIZE)
