@@ -1,6 +1,4 @@
-#Description
-#
-#
+#A button Spammer Bot
 
 import signal
 import sys

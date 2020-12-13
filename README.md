@@ -37,23 +37,36 @@ Use [CaptureSight](https://github.com/zaksabeast/CaptureSight/)/CheckDen script 
 Raid Finder:
 1) Connect your Switch to Internet
 2) Start sys-botbase and ldn_mitm
-3) Go to System Settings, check your Switch IP and write it inside config.json file
+3) Go to System Settings, check your Switch IP and write it inside the "config.json" file
 4) Start the game and set game text speed to normal
 5) Save in front of an empty Den and leave the game opened. You must have at least one Wishing Piece in your bag
 6) Modify research filters inside the script according to what is written below
 7) Run the script
 
-* r.ShinyType == 'None'/'Star'/'Square' (!= 'None' for both Square/Star shiny type)
 * Util.STRINGS.natures[r.Nature] == 'Nature' (i.e. Util.STRINGS.natures[r.Nature] == 'Timid')
 * r.Ability == 1/2/'H'
+* r.ShinyType == 'None'/'Star'/'Square' (!= 'None' for both Square/Star shiny type)
 * r.IVs == spread_name (spread_name = [x,x,x,x,x,x])
 
 Stars Finder:
 1) Connect your Switch to Internet
 2) Start sys-botbase, ldn_mitm and luxray (the yellow cursor of luxray has to be over "+3" button)
-3) Go to System Settings, check your Switch IP and write it inside config.json file
+3) Go to System Settings, check your Switch IP and write it inside "config.json" file
 4) Start the game, save in front of an Den whose beam has been generated through a Wishing Piece and leave the game opened
 5) Run the script
+
+Stationary Finder:
+1) Connect your Switch to Interet
+2) Start sys-botbase and ldn_mitm
+3) Go to System Settings, check your Switch IP and write it inside the "config.json" file
+4) Save in front of a stationary and leave the game opened
+5) Modify research filters inside the script according to what is written below
+6) Run the script
+
+* pk8.getAbilityString() == 1/2/'H'
+* Util.STRINGS.natures[pk8.nature()] == 'Nature'
+* pk8.shinyString() == 'None'/'Star'/'Square' (!= 'None' for both star/square)
+* pk8.IVs == spread_name (spread_name = [x,x,x,x,x,x])
 
 ### GUI in Python: NXController
 
@@ -81,3 +94,4 @@ So, everytime you want to stop the bot, always press CTRL+C and follow the instr
 * zaksabeast for his great SwSh Switch tool [CaptureSight](https://github.com/zaksabeast/CaptureSight/) (many addresses/checks are taken from there)
 * Leanny for his great plugin [PKHeX_Raid_Plugin](https://github.com/Leanny/PKHeX_Raid_Plugin/tree/master/PKHeX_Raid_Plugin) (many addresses/checks are taken from there)
 * Kurt for his great app [SysBot.NET](https://github.com/kwsch/SysBot.NET) (many addresses/checks are taken from there)
+* [Real96](https://github.com/Real96) for working on the various bots

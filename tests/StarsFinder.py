@@ -1,8 +1,8 @@
 #Connect your Switch to Interet
 #Start sys-botbase, ldn_mitm and luxray (the yellow cursor of luxray has to be over "+3" button)
-#Go to System Settings, check your Switch IP and write it below
-#Save in front of an Den whose beam has been generated through Wishing Piece
-#Start the script with your game opened
+#Go to System Settings, check your Switch IP and write it inside the "config.json" file
+#Start the game, save in front of an Den whose beam has been generated through a Wishing Piece and leave the game opened
+#Run the script
 
 import signal
 import sys

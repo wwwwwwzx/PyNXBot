@@ -1,11 +1,13 @@
 #Connect your Switch to Interet
 #Start sys-botbase and ldn_mitm
-#Go to System Settings, check your Switch IP and write it below
-#Set game text speed to normal
-#Save in front of an empty Den. You must have at least one Wishing Piece in your bag
-#Start the script with your game opened
+#Go to System Settings, check your Switch IP and write it inside the "config.json" file
+#Start the game and set game text speed to normal
+#Save in front of an empty Den and leave the game opened. You must have at least one Wishing Piece in your bag
+#Modify research filters inside the script according to what is written below
+#Run the script
+
+#Util.STRINGS.natures[r.Nature] == 'Nature'
 #r.Ability == 1/2/'H'
-#r.Nature == 'Nature'
 #r.ShinyType == 'None'/'Star'/'Square' (!= 'None' for both square/star)
 #r.IVs == spread_name (spread_name = [x,x,x,x,x,x])
 

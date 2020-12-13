@@ -1,8 +1,10 @@
 #Connect your Switch to Interet
 #Start sys-botbase and ldn_mitm
-#Go to System Settings, check your Switch IP and write it in the "config.json" file
-#Save in front of a stationary
-#Start the script with your game opened
+#Go to System Settings, check your Switch IP and write it inside the "config.json" file
+#Save in front of a stationary and leave the game opened
+#Modify research filters inside the script according to what is written below
+#Run the script
+
 #pk8.getAbilityString() == 1/2/'H'
 #Util.STRINGS.natures[pk8.nature()] == 'Nature'
 #pk8.shinyString() == 'None'/'Star'/'Square' (!= 'None' for both star/square)
@@ -76,4 +78,4 @@ while True:
     print()
 
     print("Starting the game")
-    b.skipIntroAnimation() #luxray=True
+    b.skipIntroAnimation()

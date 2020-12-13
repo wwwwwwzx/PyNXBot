@@ -1,6 +1,4 @@
-#Description
-#
-#
+#Berry Picker Bot
 
 import signal
 import sys
