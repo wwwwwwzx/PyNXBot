@@ -31,6 +31,9 @@ class PK8(ByteStruct):
 	def abilityNum(self):
 		return self.getbyte(0x16) & 0x7
 
+	def getAbilityString(self):
+                return self.abilityNum() if self.abilityNum() < 4 else 'H'
+
 	def canGigantamax(self):
 		return (self.getbyte(0x16) & 16) != 0
 
@@ -103,6 +106,9 @@ class PK8(ByteStruct):
 
 	def shinyType(self):
 		return self.getShinyType(self.sidtid(),self.pid())
+
+	def shinyString(self):
+                return 'None' if self.shinyType() == 0 else 'Star' if self.shinyType() == 1 else 'Square'
 
 	def save(self,filename):
 		with open(f'{filename}.pk8','wb') as fileOut:
