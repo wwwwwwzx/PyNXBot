@@ -35,7 +35,7 @@ A0 = [31,0,31,31,31,31]
 S0 = [31,31,31,31,31,0]
 TRA0 = [31,0,31,31,31,0]
 
-print("Modes:\n1) Ethernatus\n2)Registeel/Registeel/Regirock/Regice/Regidrago/Regieleki\n")
+print("Modes:\n1) Ethernatus\n2)Registeel/Regirock/Regice/Regidrago/Regieleki\n")
 
 mode = int(input("Input the desired mode: (1/2) "))
 
