@@ -180,7 +180,6 @@ while True:
     #game resetting
     print("Resetting...")
     b.quitGame(needHome=False)
-    print()
 
     b.enterGame()
     b.skipIntroAnimation()

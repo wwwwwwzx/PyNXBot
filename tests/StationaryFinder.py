@@ -75,7 +75,6 @@ while True:
     #game resetting
     print("Resetting...")
     b.quitGame()
-    print()
 
     b.enterGame()
     b.skipIntroAnimation()

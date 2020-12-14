@@ -220,7 +220,7 @@ class SWSHBot(NXBot):
                 self.pause(3)
 
         def enterGame(self):
-                print("Starting the game")
+                print("\nStarting the game")
                 self.click("A")
                 self.pause(0.2)
                 self.click("A")
