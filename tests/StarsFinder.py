@@ -73,10 +73,10 @@ while True:
     else:
         b.notfoundActions(bot='stars')
 
-    #game closing
+    #game resetting
     print("Resetting...")
     b.quitGame()
     print()
 
-    print("Starting the game")
+    b.enterGame()
     b.skipIntroAnimation() #luxray=True

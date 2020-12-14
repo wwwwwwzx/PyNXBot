@@ -72,10 +72,10 @@ while True:
     else:
         b.notfoundActions(i)
 
-    #game closing
+    #game resetting
     print("Resetting...")
     b.quitGame()
     print()
 
-    print("Starting the game")
+    b.enterGame()
     b.skipIntroAnimation()

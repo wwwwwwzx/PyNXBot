@@ -220,6 +220,7 @@ class SWSHBot(NXBot):
                 self.pause(3)
 
         def enterGame(self):
+                print("Starting the game")
                 self.click("A")
                 self.pause(0.2)
                 self.click("A")
@@ -229,7 +230,6 @@ class SWSHBot(NXBot):
                 self.click("A")
 
         def skipIntroAnimation(self): #luxray = False
-                self.enterGame()
                 skip = False
                 self.pause(14.7)
                 while skip is not True:
