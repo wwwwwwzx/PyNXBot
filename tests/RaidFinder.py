@@ -158,7 +158,7 @@ while True:
             r = Raid(seed,b.TID,b.SID,flawlessiv,shinylock,ability,gender,species,altform)
             seed = XOROSHIRO(seed).next()
             if usefilters:
-                if r.ShinyType != 'None' and Util.STRINGS.natures[r.Nature] == 'Adamant' and r.Ability == 'H' and r.IVs == V6: #and (r.IVs == V6 or  or r.IVs == S0):
+                if r.ShinyType != 'None' and Util.STRINGS.natures[r.Nature] == 'Adamant' and Util.GenderSymbol[r.Gender] === '' and r.Ability == 'H' and r.IVs == V6: #and (r.IVs == V6 or  or r.IVs == S0):
                     print(f"Frame:{i}")
                     r.print()
                     if found is not True:
