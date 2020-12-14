@@ -13,12 +13,6 @@ class RegiBot(SWSHBot):
             print("Regi Triggered...")
            
     def Reset(self):
-            self.click("HOME") #Home
-            print("HOME clicked")
-            self.pause(0.5)
-            self.click("A")
-            self.click("A")
-            self.pause(3)
-            self.click("A")
-            self.click("A")
-            self.pause(1)
+           closeGame()
+           skipIntroAnimation()
+           enterGame()
