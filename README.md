@@ -47,7 +47,7 @@ Raid Finder:
 * r.Ability == 1/2/'H'
 * r.ShinyType == 'None'/'Star'/'Square' (!= 'None' for both Square/Star shiny type)
 * r.IVs == spread_name (spread_name = [x,x,x,x,x,x])
-* Util.GenderSymbol[pk8.gender()] == '♂'/'♀'/'-'
+* Util.GenderSymbol[r.Gender] == '♂'/'♀'/'-'
 
 Stars Finder:
 1) Connect your Switch to Internet
