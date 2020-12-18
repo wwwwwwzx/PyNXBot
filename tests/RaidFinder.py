@@ -6,7 +6,7 @@
 #Start the script with your game opened
 #r.Ability == 1/2/'H'
 #r.Nature == 'Nature'
-#r.Gender == '♂' (Sumbols : ♂, ♀, -)
+#r.Gender == '♂' (Symbols : ♂, ♀, -)
 #r.ShinyType == 'None'/'Star'/'Square' (!= 'None' for both square/star)
 #r.IVs == spread_name (spread_name = [x,x,x,x,x,x])
 
