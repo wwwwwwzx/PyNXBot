@@ -10,6 +10,7 @@
 #r.Ability == 1/2/'H'
 #r.ShinyType == 'None'/'Star'/'Square' (!= 'None' for both square/star)
 #r.IVs == spread_name (spread_name = [x,x,x,x,x,x])
+#Util.GenderSymbol[pk8.gender()] == '♂'/'♀'/'-'
 
 import signal
 import sys
