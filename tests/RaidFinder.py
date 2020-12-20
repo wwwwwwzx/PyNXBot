@@ -49,7 +49,7 @@ if IoA_CT_check == "y" or IoA_CT_check == "Y":
     if IoA_CT_check == 1:
         denId += 111
     else:
-        denID += 132
+        denId += 132
 
 b.setTargetDen(denId)
 
