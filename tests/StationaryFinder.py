@@ -9,6 +9,7 @@
 #Util.STRINGS.natures[pk8.nature()] == 'Nature'
 #pk8.shinyString() == 'None'/'Star'/'Square' (!= 'None' for both star/square)
 #pk8.IVs == spread_name (spread_name = [x,x,x,x,x,x])
+#Util.GenderSymbol[pk8.gender()] == '♂'/'♀'/'-'
 
 # Go to root of PyNXBot
 import signal
