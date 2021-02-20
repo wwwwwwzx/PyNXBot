@@ -141,7 +141,7 @@ class SWSHBot(NXBot):
                 elif language == SystemLanguage.ES or language == SystemLanguage.ES419:
                         self.eventoffset = +0x1C0
                 elif language == SystemLanguage.DE:
-                        self.eventoffset = +0x2D0 
+                        self.eventoffset = +0x2D0
                 else: # English
                         pass
                 return self.eventoffset
@@ -176,16 +176,16 @@ class SWSHBot(NXBot):
                 return self.read(0x886BC348,self.PK8STOREDSIZE)
 
         def readEventBlock_RaidEncounter(self,path=''):
-                return self.read(0x2F9EB350 + self.eventoffset, 0x23D4, path + 'normal_encount')
+                return self.read(0x2F9EB300 + self.eventoffset, 0x23D4, path + 'normal_encount')
 
         def readEventBlock_CrystalEncounter(self,path=''):
-                return self.read(0x2F9ED7D8 + self.eventoffset, 0x1241C, path + 'dai_encount')
+                return self.read(0x2F9ED788 + self.eventoffset, 0x1241C, path + 'dai_encount')
 
         def readEventBlock_DropRewards(self,path=''):
-                return self.read(0x2F9FFCA8 + self.eventoffset, 0x426C, path + 'drop_rewards')
+                return self.read(0x2F9FFC58 + self.eventoffset, 0x426C, path + 'drop_rewards')
 
         def readEventBlock_BonusRewards(self,path=''):
-                return self.read(0x2FA03FC8 + self.eventoffset, 0x116C4, path + 'bonus_rewards')
+                return self.read(0x2FA03F78 + self.eventoffset, 0x116C4, path + 'bonus_rewards')
 
         def readDen(self,denID):
                 denDataSize = 0x18;
