@@ -48,8 +48,8 @@ while True:
 
     for ii in range(RaidBot.DENCOUNT):
         if ii > 189:
-                den = Den(b.readDen(ii + 32))
-        if ii > 99:
+                den = Den(b.readDen(ii+32))
+        elif ii > 99:
                 den = Den(b.readDen(ii+11))
         else:
                 den = Den(b.readDen(ii))
@@ -57,7 +57,7 @@ while True:
             spawn = den.getSpawn(denID = ii, isSword = b.isPlayingSword)
             if ii > 189:
                         info = f"[CT] denID {ii-189}"
-            if ii > 99:
+            elif ii > 99:
                     info = f"[IoA] denID {ii-99}"
             else:
                     info = f"denID {ii+1}"

@@ -36,7 +36,7 @@ for ii in range(RaidBot.DENCOUNT):
                 den = Den(b.readDen(ii + 11))
         else:
                 den = Den(b.readDen(ii))
-        if den.isActive() and not den.isEvent():
+        if den.isActive():
                 spawn = den.getSpawn(denID = ii, isSword = b.isPlayingSword)
                 currShinylock = 0
                 if ii > 189:
