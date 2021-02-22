@@ -119,7 +119,7 @@ class SWSHBot(NXBot):
                 self.eventoffset = 0
                 self.resets = 0
                 if self.TrainerSave.isPokemonSave():
-                        print(f"Game:{self.TrainerSave.GameVersion()} OT: {self.TrainerSave.OT()} ID:{self.TrainerSave.displayID()}\n")
+                        print(f"Game: {self.TrainerSave.GameVersion()}    OT: {self.TrainerSave.OT()}    ID: {self.TrainerSave.displayID()}\n")
                         self.isPlayingSword = self.TrainerSave.isSword()
                         self.getEventOffset(self.getSystemLanguage())
                         self.TID = self.TrainerSave.TID()

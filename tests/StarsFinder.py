@@ -56,14 +56,16 @@ while True:
         if den.isActive() and den.isWishingPiece() and not den.isEvent():
             spawn = den.getSpawn(denID = ii, isSword = b.isPlayingSword)
             if ii > 189:
-                        info = f"[CT] denID {ii-189}"
+                        info = f"[CT] denID: {ii-189}"
             elif ii > 99:
-                    info = f"[IoA] denID {ii-99}"
+                    info = f"[IoA] denID: {ii-99}"
             else:
-                    info = f"denID {ii+1}"
-            info += f":0x{den.seed():X}\t{den.stars()}★\tSpecies: {Util.STRINGS.species[spawn.Species()]}\t"
+                    info = f"denID: {ii+1}"
+            info += f"    {den.stars()}★    Species: {Util.STRINGS.species[spawn.Species()]}"
             if spawn.IsGigantamax():
-                info += "G-Max\t"
+                info += " G-Max"
+            if den.isEvent():
+                info += "    Event"
             print(info)
             b.pause(0.5)
             break

@@ -77,7 +77,8 @@ class XOROSHIRO(object):
 class FrameGenerator(object):
     def print(self):
         from lookups import Util
-        print(f"Seed:{self.seed:016X}\tShinyType:{self.ShinyType}\tEC:{self.EC:08X}\tPID:{self.PID:08X}\tAbility:{self.Ability}\tGender:{Util.GenderSymbol[self.Gender]}\tNature:{Util.STRINGS.natures[self.Nature]}\tIVs:{self.IVs}")
+        print(f"Seed: {self.seed:016X}    ShinyType: {self.ShinyType}    EC: {self.EC:08X}    PID: {self.PID:08X}")
+        print(f"Ability: {self.Ability}    Gender: {Util.GenderSymbol[self.Gender]}    Nature: {Util.STRINGS.natures[self.Nature]}    IVs: {self.IVs}")
 
 class Egg(FrameGenerator):
     EVERSTONE = 229

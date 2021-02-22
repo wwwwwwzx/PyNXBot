@@ -40,21 +40,21 @@ for ii in range(RaidBot.DENCOUNT):
                 spawn = den.getSpawn(denID = ii, isSword = b.isPlayingSword)
                 currShinylock = 0
                 if ii > 189:
-                        info = f"[CT] denID {ii-189}"
+                        info = f"[CT] denID: {ii-189}"
                 elif ii > 99:
-                        info = f"[IoA] denID {ii-99}"
+                        info = f"[IoA] denID: {ii-99}"
                 else:
-                        info = f"denID {ii+1}"
-                info += f":0x{den.seed():X}\t{den.stars()}★\tSpecies: {Util.STRINGS.species[spawn.Species()]}\t"
+                        info = f"denID: {ii+1}"
+                info += f"    {den.stars()}★    Species: {Util.STRINGS.species[spawn.Species()]}"
                 if spawn.IsGigantamax():
-                        info += "G-Max\t"
+                        info += " G-Max"
                 if den.isEvent():
-                        info += "Event\t"
+                        info += "    Event"
                         currShinylock = spawn.ShinyFlag()
                 if den.isWishingPiece():
-                        info += f"Next Shiny Frame: {Raid.getNextShinyFrame(den.seed())}\t"
+                        info += f"    Next Shiny Frame: {Raid.getNextShinyFrame(den.seed())}"
                         seed = den.seed()
-                        info = "!!!\t" + info
+                        info = "    !!!" + info
                         piecedSpawn = spawn
                         piecedShinylock = currShinylock
                 print(info)
