@@ -307,7 +307,7 @@ class Raid(FrameGenerator):
         self.EC = r.nextuint()
         OTID = r.nextuint()
         self.PID = r.nextuint()
-        TSV = (TID  ^ SID) >> 4
+        TSV = (TID ^ SID) >> 4
 
         if shinylock == 0: # random shiny chance
             FTSV = self.getShinyValue(OTID)
@@ -331,7 +331,7 @@ class Raid(FrameGenerator):
             if PSV == TSV:
                 self.PID ^= 0x10000000
         else: # forced shiny chance
-            val = (self.PID >> 16 ) ^ (self.PID & 0xFFFF) ^ TID ^ SID
+            val = getShinyXor(PID) ^ TID ^ SID
             if val >= 16:
                 highPID = (self.PID & 0xFFFF) ^ TID ^ SID
                 self.PID = (highPID << 16) | (self.PID & 0xFFFF)
