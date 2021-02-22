@@ -58,20 +58,22 @@ class Den(ByteStruct):
                         for ii in range(Den.EVENTTABLE.TablesLength()):
                                 table = Den.EVENTTABLE.Tables(ii)
                                 if table.GameVersion() == gameversion:
+                                        probability = 1
                                         for jj in range(table.EntriesLength()):
                                                 entry = table.Entries(jj)
-                                                randroll -= entry.Probabilities(rank)
-                                                if randroll < 0:
+                                                probability += entry.Probabilities(rank)
+                                                if probability > randroll:
                                                         return entry
                 else:
                         denhash = Den.DENHASHES[denID][1 if self.isRare() else 0]
                         for ii in range(Den.LOCALTABLE.TablesLength()):
                                 table = Den.LOCALTABLE.Tables(ii)
                                 if table.TableID() == denhash and table.GameVersion() == gameversion:
+                                        probability = 1
                                         for jj in range(table.EntriesLength()):
                                                 entry = table.Entries(jj)
-                                                randroll -= entry.Probabilities(rank)
-                                                if randroll < 0:
+                                                probability += entry.Probabilities(rank)
+                                                if probability > randroll:
                                                         return entry
 
         @staticmethod
@@ -113,7 +115,7 @@ class Den(ByteStruct):
             [1676899641446321509, 13439823650166594690],
             [1676055216516044686, 13441642242399277234],
             [1676055216516044686, 13441642242399277234],
-            [13438843985306047914, 1679871621376808167],
+            [1679871621376808167, 13438843985306047914],
             [1676048619446275420, 13438843985306047914],
             [1676055216516044686, 4973136007537393934],
             [1676895243399808665, 13440791220399231145],
