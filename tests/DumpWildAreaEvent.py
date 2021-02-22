@@ -12,7 +12,7 @@ np = import_numpy()
 
 ReadFromConsole = False
 DumpPath = 'Event/Current/'
-LocalPath = 'Event/Index 14/'
+LocalPath = 'Event/PersonalDump/'
 config = json.load(open("../config.json"))
 
 pmtext = PKMString()

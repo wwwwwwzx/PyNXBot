@@ -1,4 +1,4 @@
-Path = 'Event/Index 31/'
+Path = 'Event/PersonalDump/'
 lang = 'en'
 useLargeImage = True
 eventstyle = ' style = "background-color:#ffe4c3"'

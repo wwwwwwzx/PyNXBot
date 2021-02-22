@@ -1,5 +1,5 @@
 # Go to root of PyNXBot
-Path = 'Event/Index 12/'
+Path = 'Event/PersonalDump/'
 
 import sys
 sys.path.append('../')

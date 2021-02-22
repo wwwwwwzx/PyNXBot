@@ -1,4 +1,4 @@
-Path = 'Event/Index 42/'
+Path = 'Event/PersonalDump/'
 ShortVersion = False
 OneTable = False
 DumpCrystal = False

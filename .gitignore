@@ -127,9 +127,5 @@ dmypy.json
 # flatc
 resources/structure
 
-# Event binaries
-tests/Wondercards/
-tests/Event/
-
 # Mac
 .DS_Store
