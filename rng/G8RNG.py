@@ -313,13 +313,13 @@ class Raid(FrameGenerator):
             FTSV = self.getShinyValue(OTID)
             PSV = self.getShinyValue(self.PID)
             if FTSV == PSV: # force shiny
-                stype = self.getShinyType(OTID,self.PID)
-                if stype == 1:
+                shinyType = self.getShinyType(OTID,self.PID)
+                if shinyType == 1:
                     self.ShinyType = 'Star'
                 else:
                     self.ShinyType = 'Square'
                 if PSV != TSV:
-                    highPID = (self.PID & 0xFFFF) ^ TID ^ SID ^ (2 - stype)
+                    highPID = (self.PID & 0xFFFF) ^ TID ^ SID ^ (2 - shinyType)
                     self.PID = (highPID << 16) | (self.PID & 0xFFFF)
             else: # force non-shiny
                 self.ShinyType = 'None'
@@ -381,16 +381,24 @@ class Raid(FrameGenerator):
             self.Nature = Raid.toxtricityAmpedNatures[r.quickrand2(13,0xF)]
         else:
             self.Nature = Raid.toxtricityLowKeyNatures[r.quickrand2(12,0xF)]
+
+    @staticmethod
+    def getShinyXor(val):
+        return (val >> 16) ^ (val & 0xFFFF)
+
     @staticmethod
     def getShinyValue(PID):
-        return ((PID >> 16) ^ (PID & 0xFFFF)) >> 4
+        return Raid.getShinyXor(PID) >> 4
 
     @staticmethod
     def getShinyType(PID,OTID):
-        XOR = (OTID ^ PID) >> 16
-        if (XOR ^ (OTID & 0xFFFF)) == (PID & 0xFFFF):
-            return 2 #'Square'
-        return 1 #'Star'
+        p = Raid.getShinyXor(PID)
+        t = Raid.getShinyXor(OTID)
+        if p == t:
+            return 2 # Square
+        if p ^ t < 16:
+            return 1 # Star
+        return 0
 
     @staticmethod
     def getNextShinyFrame(seed):
@@ -399,8 +407,8 @@ class Raid(FrameGenerator):
             seed = r.next()
             OTID = r.nextuint()
             PID = r.nextuint()
-            XOR = (PID >> 16) ^ (PID & 0xFFFF) ^ (OTID >> 16) ^ (OTID & 0xFFFF)
-            if XOR < 16:
+            shinyType = Raid.getShinyType(PID, OTID)
+            if shinyType != 0:
                 return ii
 
     @staticmethod
