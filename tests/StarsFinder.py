@@ -35,9 +35,9 @@ if shinyLock == 'y' or shinyLock == 'Y':
 else:
     shinyLock = input("Is the Pokémon forced shiny? (y/n) ")
     if shinyLock == 'y' or shinyLock == 'Y':
-            shinyLock = 2
-        else:
-            shinyLock = 0
+        shinyLock = 2
+    else:
+        shinyLock = 0
 
 starsMin = int(input("Minimum Star Number (1 to 5): "))
 if(starsMin == 5):

@@ -294,4 +294,4 @@ class SWSHBot(NXBot):
                 if bot == 'raid':
                         print("Nothing found - Resets:", self.resets)
                 else:
-                        print("Wrong Species / Stars - Resets:", self.resets)
+                        print("Wrong Species/Stars - Resets:", self.resets)
