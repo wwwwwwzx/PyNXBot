@@ -53,7 +53,7 @@ while True:
                 den = Den(b.readDen(ii+11))
         else:
                 den = Den(b.readDen(ii))
-        if den.isActive() and den.isWishingPiece() and not den.isEvent():
+        if den.isActive() and den.isWishingPiece():
             spawn = den.getSpawn(denID = ii, isSword = b.isPlayingSword)
             if ii > 189:
                         info = f"[CT] denID: {ii-189}"
