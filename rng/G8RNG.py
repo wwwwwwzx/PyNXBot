@@ -331,7 +331,7 @@ class Raid(FrameGenerator):
             if PSV == TSV:
                 self.PID ^= 0x10000000
         else: # forced shiny chance
-            val = getShinyXor(PID) ^ TID ^ SID
+            val = self.getShinyXor(self.PID) ^ TID ^ SID
             if val >= 16:
                 highPID = (self.PID & 0xFFFF) ^ TID ^ SID
                 self.PID = (highPID << 16) | (self.PID & 0xFFFF)
