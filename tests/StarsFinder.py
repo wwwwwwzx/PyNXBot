@@ -29,6 +29,16 @@ if gigantamax == 'y' or gigantamax == 'Y':
 else:
     gigantamax = False
 
+shinyLock = input("Is the Pokémon shiny locked? (y/n) ")
+if shinyLock == 'y' or shinyLock == 'Y':
+    shinyLock = 1
+else:
+    shinyLock = input("Is the Pokémon forced shiny? (y/n) ")
+    if shinyLock == 'y' or shinyLock == 'Y':
+            shinyLock = 2
+        else:
+            shinyLock = 0
+
 starsMin = int(input("Minimum Star Number (1 to 5): "))
 if(starsMin == 5):
     starsMax = 5
@@ -70,7 +80,7 @@ while True:
             b.pause(0.5)
             break
 
-    if den.stars() >= starsMin and den.stars() <= starsMax and species == Util.STRINGS.species[spawn.Species()] and gigantamax == spawn.IsGigantamax():
+    if den.stars() >= starsMin and den.stars() <= starsMax and species == Util.STRINGS.species[spawn.Species()] and gigantamax == spawn.IsGigantamax() and shinyLock == spawn.ShinyFlag():
         b.foundActions()
     else:
         b.notfoundActions(bot='stars')
