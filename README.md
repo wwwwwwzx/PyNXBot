@@ -10,7 +10,7 @@
  * Check Dens info
  * Check Wilds info
  * Check Party Pokémon info
- * Check Box Pokémon info (incoming...)
+ * Check Box Pokémon info
  * Check Trainer info (incoming...)
 
  ## Bots
