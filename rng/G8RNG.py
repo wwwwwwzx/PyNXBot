@@ -299,7 +299,7 @@ class Raid(FrameGenerator):
     toxtricityAmpedNatures = [3, 4, 2, 8, 9, 19, 22, 11, 13, 14, 0, 6, 24]
     toxtricityLowKeyNatures = [1, 5, 7, 10, 12, 15, 16, 17, 18, 20, 21, 23]
 
-    def __init__(self, seed, TID, SID, flawlessiv, shinylock = 0, ability = 4, gender = 0, species = 25, altform = 0):
+    def __init__(self, seed, TID, SID, flawlessiv, shinyLock = 0, ability = 4, gender = 0, species = 25, altform = 0):
         from lookups import Util
         pi = Util.PT.getFormeEntry(species,altform)
         self.seed = seed
@@ -307,40 +307,26 @@ class Raid(FrameGenerator):
         self.EC = r.nextuint()
         OTID = r.nextuint()
         self.PID = r.nextuint()
-        TSV = (TID ^ SID) >> 4
+        shinyType = self.getShinyType(self.PID,OTID)
 
-        if shinylock == 0: # random shiny chance
-            FTSV = self.getShinyValue(OTID)
-            PSV = self.getShinyValue(self.PID)
-            if FTSV == PSV: # force shiny
-                shinyType = self.getShinyType(OTID,self.PID)
-                if shinyType == 1:
-                    self.ShinyType = 'Star'
-                else:
-                    self.ShinyType = 'Square'
-                if PSV != TSV:
-                    highPID = (self.PID & 0xFFFF) ^ TID ^ SID ^ (2 - shinyType)
-                    self.PID = (highPID << 16) | (self.PID & 0xFFFF)
+        if shinyLock == 0: # random shiny chance
+            if shinyType == 1:
+                self.ShinyType = 'Star'
+            elif shinyType == 2: # force shiny square
+                self.ShinyType = 'Square'
+                highPID = (self.PID & 0xFFFF) ^ self.getShinyXor(OTID)
+                self.PID = (highPID << 16) | (self.PID & 0xFFFF)
             else: # force non-shiny
                 self.ShinyType = 'None'
-                if PSV == TSV:
-                    self.PID ^= 0x10000000
-        elif shinylock == 1: # forced non-shiny chance
+        elif shinyLock == 1: # forced non-shiny chance
             self.ShinyType = 'None'
-            PSV = self.getShinyValue(self.PID)
-            if PSV == TSV:
+            if shinyType:
                 self.PID ^= 0x10000000
         else: # forced shiny chance
-            val = self.getShinyXor(self.PID) ^ TID ^ SID
-            if val >= 16:
-                highPID = (self.PID & 0xFFFF) ^ TID ^ SID
+            self.ShinyType = 'Square'
+            if not shinyType == 2:
+                highPID = (self.PID & 0xFFFF) ^ self.getShinyXor(OTID)
                 self.PID = (highPID << 16) | (self.PID & 0xFFFF)
-                self.ShinyType = 'Square'
-            else:
-                if val == 0:
-                    self.ShinyType = 'Square'
-                else:
-                    self.ShinyType = 'Star'
 
         i = 0
         self.IVs = [0,0,0,0,0,0]

@@ -100,15 +100,15 @@ else:
         else:
             gender = 3
 
-shinylock = input("Is the Pokémon shiny locked? (y/n) ")
-if shinylock == 'y' or shinylock == 'Y':
-    shinylock = 1
+shinyLock = input("Is the Pokémon shiny locked? (y/n) ")
+if shinyLock == 'y' or shinyLock == 'Y':
+    shinyLock = 1
 else:
-    shinylock = input("Is the Pokémon forced shiny? (y/n) ")
-    if shinylock == 'y' or shinylock == 'Y':
-        shinylock = 2
+    shinyLock = input("Is the Pokémon forced shiny? (y/n) ")
+    if shinyLock == 'y' or shinyLock == 'Y':
+        shinyLock = 2
     else:
-        shinylock = 0
+        shinyLock = 0
 
 if species == 849 and b.isPlayingSword == False:
     altform = 1
@@ -158,7 +158,7 @@ while True:
     found = False
     if do_research:
         while i < MaxFrame:
-            r = Raid(seed,b.TID,b.SID,flawlessiv,shinylock,ability,gender,species,altform)
+            r = Raid(seed,b.TID,b.SID,flawlessiv,shinyLock,ability,gender,species,altform)
             seed = XOROSHIRO(seed).next()
             if usefilters:
                 if r.ShinyType != 'None' and Util.STRINGS.natures[r.Nature] == 'Adamant' and r.Ability == 'H' and r.IVs == V6: #and (r.IVs == V6 or  or r.IVs == S0):
