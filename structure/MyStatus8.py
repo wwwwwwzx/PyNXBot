@@ -8,6 +8,9 @@ class MyStatus8(ByteStruct):
 	def SID(self):
 		return self.getushort(0xA2)
 
+	def TSV(self):
+		return (self.TID() ^ self.SID()) >> 4
+
 	def displayID(self):
 		return self.getuint(0xA0) % 1000000
 
