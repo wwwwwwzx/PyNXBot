@@ -20,6 +20,10 @@ class MyStatus8(ByteStruct):
 	def Language(self):
 		return self.getbyte(0xA7)
 
+	def getLangName(self):
+                langNames = ['Japanese', 'English', 'French', 'Italian', 'German', 'Spanish', 'Korean', 'Simpl. Chinese', 'Tradit. Chinese']
+                return langNames[self.Language()-1]
+
 	def isSword(self):
 		return self.Game() == 44
 
@@ -34,3 +38,6 @@ class MyStatus8(ByteStruct):
 
 	def OT(self):
 		return self.getstring(0xB0,0x1A)
+
+	def Money(self):
+		return self.getuint(0x110)

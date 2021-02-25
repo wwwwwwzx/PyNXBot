@@ -119,8 +119,7 @@ class SWSHBot(NXBot):
                 self.eventoffset = 0
                 self.resets = 0
                 if self.TrainerSave.isPokemonSave():
-                        print(f"Game: {self.TrainerSave.GameVersion()}    OT: {self.TrainerSave.OT()}    ID: {self.TrainerSave.displayID()}")
-                        print(f"TID: {self.TrainerSave.TID()}    SID: {self.TrainerSave.SID()}    TSV: {self.TrainerSave.TSV()}\n")
+                        print(f"Game: {self.TrainerSave.GameVersion()}    OT: {self.TrainerSave.OT()}    ID: {self.TrainerSave.displayID()}\n")
                         self.isPlayingSword = self.TrainerSave.isSword()
                         self.getEventOffset(self.getSystemLanguage())
                         self.TID = self.TrainerSave.TID()
@@ -148,7 +147,7 @@ class SWSHBot(NXBot):
                 return self.eventoffset
 
         def readTrainerBlock(self):
-                return self.read(0x45068F18, 0x110)
+                return self.read(0x45068F18, 0x110) + self.read(0x45072DF4, 0x4)
 
         def readParty(self,slot=1):
                 if slot > 6:

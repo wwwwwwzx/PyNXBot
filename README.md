@@ -11,7 +11,7 @@
  * Check Wilds info
  * Check Party Pokémon info
  * Check Box Pokémon info
- * Check Trainer info (incoming...)
+ * Check Save info
 
  ## Bots
 * RaidFinder - useful to softreset Den Seed (Event Raids, Rare Beam Raids, perfect IVs, Shininess at low frames, etc.)
