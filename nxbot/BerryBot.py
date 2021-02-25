@@ -33,9 +33,9 @@ class BerryBot(SWSHBot):
 
     def battleCheck(self):
         if PK8(self.readWild()).isValid():
-                print("Wild battle started!")
-                self.battleRun()
-                return True
+            print("Wild battle started!")
+            self.battleRun()
+            return True
         return False
 
     def continueShaking(self,shakes = 0):

@@ -40,6 +40,7 @@ while i < cycles:
     b.pause(0.5)
     print()
     i += 1
+
 print(i, "Cycles completed!")
 print()
 b.close()

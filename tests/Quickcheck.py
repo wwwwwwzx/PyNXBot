@@ -21,7 +21,7 @@ buf = bytearray(open(Path + 'normal_encount','rb').read())
 eventencounter = NestHoleDistributionEncounter8Archive.GetRootAsNestHoleDistributionEncounter8Archive(buf,0x20)
 buf = bytearray(open(Path + 'drop_rewards','rb').read())
 dropreward = NestHoleDistributionReward8Archive.GetRootAsNestHoleDistributionReward8Archive(buf,0x20)
-buf = bytearray(open(Path + 'Bonus_rewards','rb').read())
+buf = bytearray(open(Path + 'bonus_rewards','rb').read())
 bonusreward = NestHoleDistributionReward8Archive.GetRootAsNestHoleDistributionReward8Archive(buf,0x20)
 
 for ii in range(eventencounter.TablesLength()):

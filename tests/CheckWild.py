@@ -10,9 +10,9 @@ config = json.load(open("../config.json"))
 b = SWSHBot(config["IP"])
 
 while True:
-        pk8 = PK8(b.readWild())
-        print(pk8.toString())
-        stop = input("Check again? (y/n): ")
-        print()
-        if stop == 'n' or stop == 'N':
-                b.close()
+    pk8 = PK8(b.readWild())
+    print(pk8.toString())
+    stop = input("Check again? (y/n): ")
+    print()
+    if stop == 'n' or stop == 'N':
+        b.close()

@@ -37,7 +37,7 @@ dropreward = NestHoleDistributionReward8Archive.GetRootAsNestHoleDistributionRew
 if ReadFromConsole:
 	buf = b.readEventBlock_BonusRewards(DumpPath)
 else:
-	buf = bytearray(open(LocalPath + 'Bonus_rewards','rb').read())
+	buf = bytearray(open(LocalPath + 'bonus_rewards','rb').read())
 bonusreward = NestHoleDistributionReward8Archive.GetRootAsNestHoleDistributionReward8Archive(buf,0x20)
 
 if ReadFromConsole:

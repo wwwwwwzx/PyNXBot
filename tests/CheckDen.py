@@ -30,54 +30,55 @@ signal.signal(signal.SIGINT, signal_handler)
 seed = None
 
 for ii in range(RaidBot.DENCOUNT):
+    if ii > 189:
+        den = Den(b.readDen(ii + 32))
+    elif ii > 99:
+        den = Den(b.readDen(ii + 11))
+    else:
+        den = Den(b.readDen(ii))
+    if den.isActive():
+        spawn = den.getSpawn(denID = ii, isSword = b.isPlayingSword)
+        currShinyLock = 0
         if ii > 189:
-                den = Den(b.readDen(ii + 32))
+            info = f"[CT] denID: {ii-189}"
         elif ii > 99:
-                den = Den(b.readDen(ii + 11))
+            info = f"[IoA] denID: {ii-99}"
         else:
-                den = Den(b.readDen(ii))
-        if den.isActive():
-                spawn = den.getSpawn(denID = ii, isSword = b.isPlayingSword)
-                currShinyLock = 0
-                if ii > 189:
-                        info = f"[CT] denID: {ii-189}"
-                elif ii > 99:
-                        info = f"[IoA] denID: {ii-99}"
-                else:
-                        info = f"denID: {ii+1}"
-                info += f"    {den.stars()}★    Species: {Util.STRINGS.species[spawn.Species()]}"
-                if spawn.IsGigantamax():
-                        info += " G-Max"
-                if den.isEvent():
-                        info += "    Event"
-                        currShinyLock = spawn.ShinyFlag()
-                if den.isWishingPiece():
-                        info += f"    Next Shiny Frame: {Raid.getNextShinyFrame(den.seed())}"
-                        seed = den.seed()
-                        info = "!!! " + info
-                        piecedSpawn = spawn
-                        piecedShinyLock = currShinyLock
-                print(info)
-                r = Raid(seed = den.seed(), TID = b.TID, SID = b.SID, flawlessiv = spawn.FlawlessIVs(), shinyLock = currShinyLock, ability = spawn.Ability(), gender = spawn.Gender(), species = spawn.Species(), altform = spawn.AltForm())
-                r.print()
-                print()
+            info = f"denID: {ii+1}"
+        info += f"    {den.stars()}★    Species: {Util.STRINGS.species[spawn.Species()]}"
+        if spawn.IsGigantamax():
+            info += " G-Max"
+        if den.isEvent():
+            info += "    Event"
+            currShinyLock = spawn.ShinyFlag()
+        if den.isWishingPiece():
+            info += f"    Next Shiny Frame: {Raid.getNextShinyFrame(den.seed())}"
+            seed = den.seed()
+            info = "!!! " + info
+            piecedSpawn = spawn
+            piecedShinyLock = currShinyLock
+        print(info)
+        r = Raid(seed = den.seed(), TID = b.TID, SID = b.SID, flawlessiv = spawn.FlawlessIVs(), shinyLock = currShinyLock, ability = spawn.Ability(), gender = spawn.Gender(), species = spawn.Species(), altform = spawn.AltForm())
+        r.print()
+        print()
 
 # Choose RNGable den to calculate frames
 if seed is not None and doResearch:
-        print('Wishing Piece Den Prediction:')
-        i = 0
-        while i < MaxResults:
-                r = Raid(seed, TID = b.TID, SID = b.SID, flawlessiv = piecedSpawn.FlawlessIVs(), shinyLock = piecedShinyLock, ability = piecedSpawn.Ability(), gender = piecedSpawn.Gender(), species = piecedSpawn.Species(), altform = piecedSpawn.AltForm())
-                seed = XOROSHIRO(seed).next()
-                if useFilters:
-                        if (r.ShinyType != 'None' or r.IVs == V6 or r.IVs == S0 or r.IVs == A0) and Util.STRINGS.natures[r.Nature] == 'Careful':
-                                print(f"Frame:{i}")
-                                r.print()
-                                print()
-                else:
-                        print(f"Frame:{i}")
-                        r.print()
-                        print()
-                i += 1
+    print('Wishing Piece Den Prediction:')
+    i = 0
+    while i < MaxResults:
+        r = Raid(seed, TID = b.TID, SID = b.SID, flawlessiv = piecedSpawn.FlawlessIVs(), shinyLock = piecedShinyLock, ability = piecedSpawn.Ability(), gender = piecedSpawn.Gender(), species = piecedSpawn.Species(), altform = piecedSpawn.AltForm())
+        seed = XOROSHIRO(seed).next()
+        if useFilters:
+            if (r.ShinyType != 'None' or r.IVs == V6 or r.IVs == S0 or r.IVs == A0) and Util.STRINGS.natures[r.Nature] == 'Careful':
+                print(f"Frame:{i}")
+                r.print()
+                print()
+        else:
+            print(f"Frame:{i}")
+            r.print()
+            print()
+        i += 1
+
 print()
 b.close()
