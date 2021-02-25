@@ -307,26 +307,34 @@ class Raid(FrameGenerator):
         self.EC = r.nextuint()
         OTID = r.nextuint()
         self.PID = r.nextuint()
-        shinyType = self.getShinyType(self.PID,OTID)
+        PSV = self.getShinyValue(self.PID)
+        PIDShinyType = self.getShinyXor(self.PID) ^ TID ^ SID
+        TSV = self.getShinyValue(TID ^ SID)
 
         if shinyLock == 0: # random shiny chance
-            if shinyType == 1:
-                self.ShinyType = 'Star'
-            elif shinyType == 2: # force shiny square
-                self.ShinyType = 'Square'
-                highPID = (self.PID & 0xFFFF) ^ self.getShinyXor(OTID)
-                self.PID = (highPID << 16) | (self.PID & 0xFFFF)
+            SeedShinyType = self.getShinyType(OTID,self.PID)
+            FTSV = self.getShinyValue(OTID)
+            if FTSV == PSV: # force shiny
+                if SeedShinyType == 1:
+                    self.ShinyType = 'Star'
+                    if PSV != TSV or not PIDShinyType: # force to star if PID isn't shiny/is shiny square
+                        self.PID = Raid.getFinalPID(self.PID,TID,SID,SeedShinyType)
+                elif SeedShinyType == 2:
+                    self.ShinyType = 'Square'
+                    if PSV != TSV or PIDShinyType: # force to square if PID isn't shiny/is shiny star
+                        self.PID = Raid.getFinalPID(self.PID,TID,SID,SeedShinyType)
             else: # force non-shiny
                 self.ShinyType = 'None'
+                if PSV == TSV:
+                    self.PID ^= 0x10000000
         elif shinyLock == 1: # forced non-shiny chance
             self.ShinyType = 'None'
-            if shinyType:
+            if PSV == TSV:
                 self.PID ^= 0x10000000
         else: # forced shiny chance
+            if PIDShinyType >= 16 or PIDShinyType: # force to square if PID isn't shiny/is shiny star
+                self.PID = Raid.getFinalPID(self.PID,TID,SID,2)
             self.ShinyType = 'Square'
-            if not shinyType == 2:
-                highPID = (self.PID & 0xFFFF) ^ self.getShinyXor(OTID)
-                self.PID = (highPID << 16) | (self.PID & 0xFFFF)
 
         i = 0
         self.IVs = [0,0,0,0,0,0]
@@ -385,6 +393,11 @@ class Raid(FrameGenerator):
         if p ^ t < 16:
             return 1 # Star
         return 0
+
+    @staticmethod
+    def getFinalPID(PID,TID,SID,SeedShinyType):
+        highPID = (PID & 0xFFFF) ^ TID ^ SID ^ (2 - SeedShinyType)
+        return (highPID << 16) | (PID & 0xFFFF)
 
     @staticmethod
     def getNextShinyFrame(seed):

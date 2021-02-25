@@ -6,14 +6,14 @@
 ## Warning
  I won't be liable if your Switch get damaged or banned. Use at your own risk.
 
- ## Features
+## Features
  * Check Dens info
  * Check Wilds info
  * Check Party Pokémon info
  * Check Box Pokémon info
  * Check Save info
 
- ## Bots
+## Bots
 * RaidFinder - useful to softreset Den Seed (Event Raids, Rare Beam Raids, perfect IVs, Shininess at low frames, etc.)
 * StarsFinder - useful to softreset Den Species + Stars
 * BerryPicker - useful to farm berries/apricorns from trees
