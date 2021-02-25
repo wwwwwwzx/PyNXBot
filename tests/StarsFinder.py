@@ -71,11 +71,15 @@ while True:
                     info = f"[IoA] denID: {ii-99}"
             else:
                     info = f"denID: {ii+1}"
-            info += f"    {den.stars()}★    Species: {Util.STRINGS.species[spawn.Species()]}"
+            info += f"    {den.stars()}★    Species: {Util.STRINGS.species[spawn.Species()]} "
+            if spawn.ShinyFlag() == 1:
+                info += 'Shiny Locked '
+            elif spawn.ShinyFlag() == 2:
+                info += '◇ '
             if spawn.IsGigantamax():
-                info += " G-Max"
+                info += "G-Max "
             if den.isEvent():
-                info += "    Event"
+                info += "   Event"
             print(info)
             b.pause(0.5)
             break

@@ -312,7 +312,7 @@ class Raid(FrameGenerator):
         TSV = self.getShinyValue(TID ^ SID)
 
         if shinyLock == 0: # random shiny chance
-            SeedShinyType = self.getShinyType(OTID,self.PID)
+            SeedShinyType = self.getShinyType(self.PID,OTID)
             FTSV = self.getShinyValue(OTID)
             if FTSV == PSV: # force shiny
                 if SeedShinyType == 1:

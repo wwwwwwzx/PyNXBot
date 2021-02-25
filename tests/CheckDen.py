@@ -52,7 +52,10 @@ for ii in range(RaidBot.DENCOUNT):
             info += "    Event"
             currShinyLock = spawn.ShinyFlag()
         if den.isWishingPiece():
-            info += f"    Next Shiny Frame: {Raid.getNextShinyFrame(den.seed())}"
+            if spawn.ShinyFlag() != 2:
+                info += f"    Next Shiny Frame: {Raid.getNextShinyFrame(den.seed())}"
+            else:
+                info += f"    Next Shiny Frame: 0"
             seed = den.seed()
             info = "!!! " + info
             piecedSpawn = spawn

@@ -161,7 +161,7 @@ else:
 				pass # random nature
 			else:
 				msg += f"{pmtext.natures[entry.Nature()]}\t"
-			   
+
 			msg += f"IVs:{entry.FlawlessIVs()}\t"
 			rank = np.nonzero(entry.ProbabilitiesAsNumpy())[0][0]
 			msg += f"{entry.ProbabilitiesAsNumpy()}\t"
