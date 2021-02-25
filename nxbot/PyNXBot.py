@@ -155,12 +155,12 @@ class SWSHBot(NXBot):
         address = 0x450C68B0 + (slot - 1) * self.PK8PARTYSIZE
         return self.read(address,self.PK8PARTYSIZE)
 
-    def readBox(self,box = 0,slot = 0):
+    def readBox(self,box = 1,slot = 1):
         if box > 31:
             box = 31
         if slot > 29:
             slot = 29
-        address = 0x45075880 + (box * 30 * self.PK8PARTYSIZE) + (slot * self.PK8PARTYSIZE)
+        address = 0x45075880 + ((box - 1) * 30 * self.PK8PARTYSIZE) + ((slot - 1) * self.PK8PARTYSIZE)
         return self.read(address,self.PK8PARTYSIZE)
 
     def readTrade(self):

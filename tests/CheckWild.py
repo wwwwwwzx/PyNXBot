@@ -11,7 +11,10 @@ b = SWSHBot(config["IP"])
 
 while True:
     pk8 = PK8(b.readWild())
-    print(pk8.toString())
+    if pk8.isValid() and pk8.ec() != 0:
+        print(pk8.toString())
+    else:
+        print("No battle started\n")
     stop = input("Check again? (y/n): ")
     print()
     if stop == 'n' or stop == 'N':

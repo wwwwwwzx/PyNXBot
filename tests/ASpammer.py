@@ -27,12 +27,11 @@ b.pause(0.5)
 
 while True:
     print("A spamming...")
-    for i in range(sys.maxsize):
+    while True:
         if (apricorns and b.endApricornsCheck(apricorns)) or b.endApricornsCheck():
             break
         b.click('A')
         b.pause(0.5)
-        i += 1
     print()
     stop = input("Continue spamming? (y/n): ")
     if stop == 'n' or stop == 'N':
