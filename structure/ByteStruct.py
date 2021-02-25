@@ -19,4 +19,7 @@ class ByteStruct(object):
 		return self.data[offset:offset+size].decode("utf-16").rstrip('\x00')
 
 	def setushort(self,offset,p):
-		self.data[offset:offset + 2] = (p).to_bytes(2, byteorder='little')
+		self.data[offset:offset + 2] = (p).to_bytes(2, byteorder='little') 
+
+	def getCustomInt(self,offset,size):
+		return int.from_bytes(self.data[offset:offset + size], byteorder='little')

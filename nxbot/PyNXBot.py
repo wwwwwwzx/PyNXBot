@@ -147,7 +147,7 @@ class SWSHBot(NXBot):
                 return self.eventoffset
 
         def readTrainerBlock(self):
-                return self.read(0x45068F18, 0x110) + self.read(0x45072DF4, 0x4)
+                return self.read(0x45068F18, 0x110) + self.read(0x45072DF4, 0x3)
 
         def readParty(self,slot=1):
                 if slot > 6:
