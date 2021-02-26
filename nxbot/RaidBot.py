@@ -17,14 +17,20 @@ class RaidBot(SWSHBot):
     def getDenData(self):
         return Den(self.readDen(self.denID))
 
-    def getWatts(self):
+    def getWatts(self,wattFarmer = False,speed=0):
         self.click("A")
-        self.pause(1.5)
+        self.pause(1.5-speed)
         self.click("A")
-        self.pause(1.2)
+        self.pause(1.2-speed)
         self.click("A")
-        self.pause(1.2)
-        self.saveGame()
+        self.pause(1.2-speed)
+        if not wattFarmer:
+            self.saveGame()
+        else:
+            self.click("B")
+            self.pause(0.2)
+            self.click("B")
+            self.pause(0.9)
 
     def throwPiece(self):
         self.click("A") #A on den

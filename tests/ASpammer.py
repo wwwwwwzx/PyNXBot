@@ -26,7 +26,7 @@ else:
 b.pause(0.5)
 
 while True:
-    print("A spamming...")
+    print("A spamming...\n")
     while True:
         if (apricorns and b.endApricornsCheck(apricorns)) or b.endApricornsCheck():
             break
@@ -42,6 +42,7 @@ while True:
             apricorns = True
         else:
             apricorns = False
+
 print("A spamming ended")
 print()
 b.close()
