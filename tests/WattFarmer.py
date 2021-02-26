@@ -1,4 +1,4 @@
-#Watt farmer Bot
+#Watts farmer Bot
 
 import signal
 import sys
@@ -18,9 +18,13 @@ b = RaidBot(config["IP"])
 
 signal.signal(signal.SIGINT, signal_handler)
 
+currWatts = b.TrainerSave.Watts()
+b.setWatts(currWatts)
+print(f"Current Watts: {currWatts}\n")
+
 print("Farming watts...")
 while True:
-    b.click('R') #R on Luxray "+3" button
+    b.click('R') #R on Luxray "+1" button
     b.pause(0.7)
 
     for ii in range(RaidBot.DENCOUNT):
@@ -32,17 +36,16 @@ while True:
                 den = Den(b.readDen(ii))
         if den.isActive() and den.isWishingPiece():
              if den.hasWatts():
-                #print("Den has watts - Getting them...")
                 b.getWatts(True,0.5)
-                #print(f"Watts: {b.TrainerSave.Watt()}\n")
                 break
              else:
                 print("No watts in Den")
+                break
 
 #    stop = input("Continue farming? (y/n): ")
 #    if stop == 'n' or stop == 'N':
 #        break
 
-print("Watt farming ended")
+print("Watts farming ended")
 print()
 b.close()

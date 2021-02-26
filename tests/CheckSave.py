@@ -13,6 +13,6 @@ print(f"SID: {b.TrainerSave.SID()}")
 print(f"TSV: {b.TrainerSave.TSV()}")
 print(f"Language: {b.TrainerSave.getLangName()}")
 print(f"Money: {b.TrainerSave.Money()}$")
-print(f"Watt: {b.TrainerSave.Watt()}\n")
+print(f"Watts: {b.TrainerSave.Watts()}\n")
 
 b.close()

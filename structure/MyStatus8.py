@@ -39,8 +39,11 @@ class MyStatus8(ByteStruct):
 	def OT(self):
 		return self.getstring(0xB0,0x1A)
 
-	def Watt(self):
+	def Watts(self):
 		return self.getCustomInt(0xD0,0x3)
+
+	def currentWatts(self):
+		return self.getCustomInt(0x0,0x3)
 
 	def Money(self):
 		return self.getCustomInt(0x110,0x3)

@@ -17,13 +17,15 @@ class RaidBot(SWSHBot):
     def getDenData(self):
         return Den(self.readDen(self.denID))
 
-    def getWatts(self,wattFarmer = False,speed=0):
+    def getWatts(self,wattFarmer=False,speed=0):
         self.click("A")
         self.pause(1.5-speed)
         self.click("A")
         self.pause(1.2-speed)
+        if wattFarmer:
+            self.readWatts()
         self.click("A")
-        self.pause(1.2-speed)
+        self.pause(1.2)
         if not wattFarmer:
             self.saveGame()
         else:
@@ -31,6 +33,16 @@ class RaidBot(SWSHBot):
             self.pause(0.2)
             self.click("B")
             self.pause(0.9)
+    
+    def setWatts(self,watts):
+        self.Watts = watts
+
+    def readWatts(self):
+        from structure import MyStatus8
+        newWatts = MyStatus8(self.read(0x45068FE8, 0x3)).currentWatt()
+        diffWatts = newWatts - self.Watts
+        self.Watts = newWatts
+        print(f"Watts: {newWatts} (+{diffWatts})")
 
     def throwPiece(self):
         self.click("A") #A on den
