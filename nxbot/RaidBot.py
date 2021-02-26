@@ -39,7 +39,7 @@ class RaidBot(SWSHBot):
 
     def readWatts(self):
         from structure import MyStatus8
-        newWatts = MyStatus8(self.read(0x45068FE8, 0x3)).currentWatt()
+        newWatts = MyStatus8(self.read(0x45068FE8, 0x3)).currentWatts()
         diffWatts = newWatts - self.Watts
         self.Watts = newWatts
         print(f"Watts: {newWatts} (+{diffWatts})")
