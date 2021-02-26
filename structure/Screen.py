@@ -1,27 +1,34 @@
 from structure.ByteStruct import ByteStruct
 
 class Screen(ByteStruct):
-    DIALOGENDED = 0x5127
-    BATTLEMENU = 0xFF000000FF000000
+    DIALOGENDED1 = 0xFFFF5127
+    DIALOGENDED2 = 0xFFFFFFFF
+    BATTLEMENU = 0xFF000000
+
+    def getScreenOffByte(self):
+        return self.getbyte(0x0)
 
     def getScreenOffShort(self):
         return self.getushort(0x0)
 
-    def getScreenOff(self):
+    def getScreenOffInt(self):
+        return self.getuint(0x0)
+
+    def getScreenOffLong(self):
         return self.getulong(0x0)
 
     def isIntroAnimationSkippable(self):
-        #print(f"{self.getScreenOff():0X}")
-        return self.getScreenOff() >= 0xFFFF
+        #print(f"{self.getScreenOffLong():0X}")
+        return self.getScreenOffLong() >= 0xFFFF
 
     def overworldCheck(self):
-        #print(f"{self.getbyte(0x0):0X}")
-        return self.getbyte(0x0)
+        #print(f"{self.getScreenOffByte(0x0):0X}")
+        return self.getScreenOffByte(0x0)
 
     def battleMenuAppeared(self):
-        #print(f"{self.getScreenOff():0X}")
-        return self.getScreenOff() == self.BATTLEMENU
+        #print(f"{self.getScreenOffInt():0X}")
+        return self.getScreenOffInt() == self.BATTLEMENU
 
     def endedDialogue(self):
-        #print(f"{self.getScreenOffShort():0X}")
-        return self.getScreenOffShort() == self.DIALOGENDED
+        #print(f"{self.getScreenOffInt():0X}")
+        return self.getScreenOffInt() == self.DIALOGENDED1 or self.getScreenOffInt() == self.DIALOGENDED2
