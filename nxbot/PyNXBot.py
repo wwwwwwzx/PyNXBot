@@ -234,8 +234,8 @@ class SWSHBot(NXBot):
         self.pause(14.7)
         while skip is not True:
             self.pause(0.3)
-            self.currScreen = Screen(self.readScreenOff())
-            if self.currScreen.isIntroAnimationSkippable():
+            currScreen = Screen(self.readScreenOff())
+            if currScreen.isIntroAnimationSkippable():
                 skip = True
             else:
                 self.click("A")
@@ -250,8 +250,8 @@ class SWSHBot(NXBot):
         #self.pause(8)
         skipped = False
         while skipped is not True:
-            self.currScreen = Screen(self.readOverworldCheck())
-            if self.currScreen.overworldCheck():
+            currScreen = Screen(self.readOverworldCheck())
+            if currScreen.overworldCheck():
                 skipped = True
             self.pause(0.5)
 

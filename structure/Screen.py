@@ -22,8 +22,8 @@ class Screen(ByteStruct):
         return self.getScreenOffLong() >= 0xFFFF
 
     def overworldCheck(self):
-        #print(f"{self.getScreenOffByte(0x0):0X}")
-        return self.getScreenOffByte(0x0)
+        #print(f"{self.getScreenOffByte():0X}")
+        return self.getScreenOffByte()
 
     def battleMenuAppeared(self):
         #print(f"{self.getScreenOffInt():0X}")
