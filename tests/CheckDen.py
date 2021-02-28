@@ -83,5 +83,4 @@ if seed is not None and doResearch:
             print()
         i += 1
 
-print()
 b.close()

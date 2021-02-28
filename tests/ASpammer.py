@@ -28,8 +28,9 @@ b.pause(0.5)
 while True:
     print("A spamming...\n")
     while True:
-        if (apricorns and b.endApricornsCheck(apricorns)) or b.endApricornsCheck():
-            break
+        if apricorns:
+            if (b.endApricornsCheck(apricorns)) or b.endApricornsCheck():
+                break
         b.click('A')
         b.pause(0.5)
     print()
