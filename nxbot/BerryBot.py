@@ -18,8 +18,8 @@ class BerryBot(SWSHBot):
         menu = False
         i = 0
         while menu is not True and i <= 40:
-            self.currScreen = Screen(self.readBattleStart())
-            if self.currScreen.battleMenuAppeared():
+            currScreen = Screen(self.readBattleStart())
+            if currScreen.battleMenuAppeared():
                 menu = True
             else:
                 self.click("B")
@@ -60,8 +60,8 @@ class BerryBot(SWSHBot):
         picked = False
         i = 0
         while picked is not True and i <= 30:
-            self.currScreen = Screen(self.readOverworldCheck())
-            if self.currScreen.overworldCheck():
+            currScreen = Screen(self.readOverworldCheck())
+            if currScreen.overworldCheck():
                 picked = True
             else:
                 self.click("B")

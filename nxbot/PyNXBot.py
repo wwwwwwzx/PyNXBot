@@ -240,7 +240,7 @@ class SWSHBot(NXBot):
             else:
                 self.click("A")
         #self.pause(20.5)
-        #self.currScreen.isIntroAnimationSkippable()
+        #currScreen.isIntroAnimationSkippable()
         #if luxray:
             #self.pause(1.3)
         print("Skip animation")

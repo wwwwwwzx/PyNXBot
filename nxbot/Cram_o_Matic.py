@@ -7,9 +7,9 @@ class Cram_o_Matic(SWSHBot):
         SWSHBot.__init__(self,ip,port)
 
     def endApricornsCheck(self, apricorns = False):
-        self.currScreen = Screen(self.readScreenOff())
-        if self.currScreen.endedDialogue() and apricorns:
+        currScreen = Screen(self.readScreenOff())
+        if currScreen.endedDialogue() and apricorns:
             print("Apricorns endend!")
-        elif self.currScreen.endedDialogue():
+        elif currScreen.endedDialogue():
             print("Dialogue ended!")
-        return self.currScreen.endedDialogue()
+        return currScreen.endedDialogue()
