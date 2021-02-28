@@ -162,13 +162,13 @@ while True:
             seed = XOROSHIRO(seed).next()
             if usefilters:
                 if r.ShinyType != 'None' and Util.STRINGS.natures[r.Nature] == 'Adamant' and r.Ability == 'H' and r.IVs == V6: #and (r.IVs == V6 or  or r.IVs == S0):
-                    print(f"Frame: {i}")
+                    print(f"\nFrame: {i}")
                     r.print()
                     print()
                     if found is not True:
                         found = True
             else:
-                print(f"Frame: {i}")
+                print(f"\nFrame: {i}")
                 r.print()
                 print()
                 if found is not True:
