@@ -72,19 +72,24 @@ while True:
             else:
                     info = f"denID: {ii+1}"
             info += f"    {den.stars()}★    Species: {Util.STRINGS.species[spawn.Species()]} "
-            if spawn.ShinyFlag() == 1:
-                info += 'Shiny Locked '
-            elif spawn.ShinyFlag() == 2:
-                info += '◇ '
             if spawn.IsGigantamax():
                 info += "G-Max "
             if den.isEvent():
+                if spawn.ShinyFlag() == 1:
+                    info += 'Shiny Locked '
+                elif spawn.ShinyFlag() == 2:
+                    info += '◇ '
                 info += "   Event"
             print(info)
             b.pause(0.5)
             break
 
-    if den.stars() >= starsMin and den.stars() <= starsMax and species == Util.STRINGS.species[spawn.Species()] and gigantamax == spawn.IsGigantamax() and shinyLock == spawn.ShinyFlag():
+    if den.isEvent():
+        shinyLockCheck = shinyLock == spawn.ShinyFlag()
+    else:
+        shinyLockCheck = 1
+
+    if den.stars() >= starsMin and den.stars() <= starsMax and species == Util.STRINGS.species[spawn.Species()] and gigantamax == spawn.IsGigantamax() and shinyLockCheck:
         b.foundActions()
     else:
         b.notfoundActions(bot='stars')
