@@ -187,6 +187,12 @@ class SWSHBot(NXBot):
     def readEventBlock_BonusRewards(self,path=''):
         return self.read(0x2FA03F78 + self.eventoffset, 0x116C4, path + 'bonus_rewards')
 
+    def readEventBlock_RaidEncounter_IoA(self,path=''):
+        return self.read(0x2FA156F0 + self.eventoffset, 0x23D4, path + 'normal_encount_rigel1')
+
+    def readEventBlock_RaidEncounter_CT(self,path=''):
+        return self.read(0x2FA17B78 + self.eventoffset, 0x23D4, path + 'normal_encount_rigel2')
+
     def readDen(self,denID):
         denDataSize = 0x18;
         if denID > SWSHBot.DENCOUNT + 31:

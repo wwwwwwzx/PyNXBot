@@ -1,4 +1,5 @@
 Path = 'Event/PersonalDump/'
+Island = 0
 lang = 'en'
 useLargeImage = True
 eventstyle = ' style = "background-color:#ffe4c3"'
@@ -205,7 +206,7 @@ bonus = NestHoleReward8Archive.GetRootAsNestHoleReward8Archive(buf,0)
 buf = bytearray(open('../resources/bytes/personal_swsh','rb').read())
 pt = PersonalTable(buf)
 
-buf = bytearray(open(Path + 'normal_encount','rb').read())
+buf = bytearray(open(Path + 'normal_encount','rb').read()) if Island == 0 else bytearray(open(Path + f'normal_encount_rigel{Island}','rb').read())
 eventencounter = NestHoleDistributionEncounter8Archive.GetRootAsNestHoleDistributionEncounter8Archive(buf,0x20)
 buf = bytearray(open(Path + 'drop_rewards','rb').read())
 dropreward = NestHoleDistributionReward8Archive.GetRootAsNestHoleDistributionReward8Archive(buf,0x20)
@@ -229,9 +230,9 @@ elif lang == "zh":
 output.write(tr(tableheader))
 for star in range(5):
 	star = 4 - star
-	stars = '★'
+	stars = '&#9733'
 	for pp in range(star):
-		stars += '★'
+		stars += '&#9733'
 	output.write('\t\t<td colspan="13">'+ stars +'</td>')
 	for ii in range(tablelength):
 		ii = tablelength - ii - 1

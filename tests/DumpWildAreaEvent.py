@@ -14,6 +14,7 @@ ReadFromConsole = False
 DumpPath = 'Event/Current/'
 LocalPath = 'Event/PersonalDump/'
 config = json.load(open("../config.json"))
+Island = 0
 
 pmtext = PKMString()
 buf = bytearray(open('../resources/bytes/local_drop','rb').read())
@@ -23,9 +24,14 @@ bonus = NestHoleReward8Archive.GetRootAsNestHoleReward8Archive(buf,0)
 
 if ReadFromConsole:
 	b = SWSHBot(config["IP"])
-	buf = b.readEventBlock_RaidEncounter(DumpPath)
+	if Island == 0:
+		buf = b.readEventBlock_RaidEncounter(DumpPath)
+	elif Island == 1:
+		buf = b.readEventBlock_RaidEncounter_IoA(DumpPath)
+	else:
+		buf = b.readEventBlock_RaidEncounter_CT(DumpPath)
 else:
-	buf = bytearray(open(LocalPath + 'normal_encount','rb').read())
+	buf = bytearray(open(LocalPath + 'normal_encount','rb').read()) if Island == 0 else bytearray(open(LocalPath + f'normal_encount_rigel{Island}','rb').read())
 eventencounter = NestHoleDistributionEncounter8Archive.GetRootAsNestHoleDistributionEncounter8Archive(buf,0x20)
 
 if ReadFromConsole:

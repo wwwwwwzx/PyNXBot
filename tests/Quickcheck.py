@@ -1,5 +1,6 @@
 # Go to root of PyNXBot
 Path = 'Event/PersonalDump/'
+Island = 0
 
 import sys
 sys.path.append('../')
@@ -17,7 +18,7 @@ drop = NestHoleReward8Archive.GetRootAsNestHoleReward8Archive(buf,0)
 buf = bytearray(open('../resources/bytes/local_bonus','rb').read())
 bonus = NestHoleReward8Archive.GetRootAsNestHoleReward8Archive(buf,0)
 
-buf = bytearray(open(Path + 'normal_encount','rb').read())
+buf = bytearray(open(Path + 'normal_encount','rb').read()) if Island == 0 else bytearray(open(Path + f'normal_encount_rigel{Island}','rb').read())
 eventencounter = NestHoleDistributionEncounter8Archive.GetRootAsNestHoleDistributionEncounter8Archive(buf,0x20)
 buf = bytearray(open(Path + 'drop_rewards','rb').read())
 dropreward = NestHoleDistributionReward8Archive.GetRootAsNestHoleDistributionReward8Archive(buf,0x20)
