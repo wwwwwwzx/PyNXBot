@@ -4,7 +4,7 @@ sys.path.append('../')
 from nxbot import SWSHBot
 import json
 
-DumpPath = 'Event/Current/'
+DumpPath = 'Event/PersonalDump/'
 config = json.load(open("../config.json"))
 
 b = SWSHBot(config["IP"])
