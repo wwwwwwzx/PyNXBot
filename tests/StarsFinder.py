@@ -26,10 +26,15 @@ species = input("Which Pokémon are you looking for? (e.g.: Gengar) ")
 altFormFilter = False
 altForm = 0
 if species == "Gourgeist":
+    altForm = input("Are you looking for a specific size? (y/n) ")
+    if altForm == 'y' or altForm == 'Y':
+        altFormFilter = True
+        altForm = int(input("Which size are you looking for?\n0) Avarage / 1) Small / 2) Large / 3) Super: "))
+elif species == "Sinistea" or species == "Polteageist":
     altForm = input("Are you looking for a specific form? (y/n) ")
     if altForm == 'y' or altForm == 'Y':
         altFormFilter = True
-        altForm = int(input("Which dimension are you looking for?\n0) Avarage / 1) Small / 2) Large / 3) Super: "))
+        altForm = int(input("Which form are you looking for?\n0) Phony / 1) Antique: "))
 
 gigantamax = input("Are you looking for a Gigantamax form? (y/n) ")
 if gigantamax == 'y' or gigantamax == 'Y':
