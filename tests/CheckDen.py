@@ -67,7 +67,7 @@ for ii in range(RaidBot.DENCOUNT):
 
 # Choose RNGable den to calculate frames
 if seed is not None and doResearch:
-    print('Wishing Piece Den Prediction:')
+    print('\nWishing Piece Den Prediction:\n')
     i = 0
     while i < MaxResults:
         r = Raid(seed, TID = b.TID, SID = b.SID, flawlessiv = piecedSpawn.FlawlessIVs(), shinyLock = piecedShinyLock, ability = piecedSpawn.Ability(), gender = piecedSpawn.Gender(), species = piecedSpawn.Species(), altform = piecedSpawn.AltForm())

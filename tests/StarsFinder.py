@@ -23,6 +23,14 @@ b = RaidBot(config["IP"])
 signal.signal(signal.SIGINT, signal_handler)
 
 species = input("Which Pokémon are you looking for? (e.g.: Gengar) ")
+altFormFilter = False
+altForm = 0
+if species == "Gourgeist":
+    altForm = input("Are you looking for a specific form? (y/n) ")
+    if altForm == 'y' or altForm == 'Y':
+        altFormFilter = True
+        altForm = int(input("Which dimension are you looking for?\n0) Avarage / 1) Small / 2) Large / 3) Super: "))
+
 gigantamax = input("Are you looking for a Gigantamax form? (y/n) ")
 if gigantamax == 'y' or gigantamax == 'Y':
     gigantamax = True
@@ -89,7 +97,12 @@ while True:
     else:
         shinyLockCheck = 1
 
-    if den.stars() >= starsMin and den.stars() <= starsMax and species == Util.STRINGS.species[spawn.Species()] and gigantamax == spawn.IsGigantamax() and shinyLockCheck:
+    if altFormFilter:
+        altFormCheck = altForm == spawn.AltForm()
+    else:
+        altFormCheck = 1
+
+    if den.stars() >= starsMin and den.stars() <= starsMax and species == Util.STRINGS.species[spawn.Species()] and gigantamax == spawn.IsGigantamax() and shinyLockCheck and altFormCheck:
         b.foundActions()
     else:
         b.notfoundActions(bot='stars')
