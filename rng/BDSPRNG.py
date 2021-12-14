@@ -1,6 +1,6 @@
 class XORSHIFT(object):
     def __init__(self, seed):
-            self.seed = [seed[0], seed[1], seed[2], seed[3]]
+            self.seed = seed
 
     def state(self):
         return self.seed
@@ -29,6 +29,11 @@ class FrameGenerator(object):
         print(f"S[0]: {self.seed[0]:08X} S[1]: {self.seed[1]:08X}\nS[2]: {self.seed[2]:08X} S[3]: {self.seed[3]:08X}\n")
         print(f"ShinyType: {self.ShinyType}    EC: {self.EC:08X}    PID: {self.PID:08X}")
         print(f"Ability: {self.Ability}    Nature: {Util.STRINGS.natures[self.Nature]}    IVs: {self.IVs}")
+
+    def printTrainerInfo(self):
+        from lookups import Util
+        print(f"S[0]: {self.seed[0]:08X} S[1]: {self.seed[1]:08X}\nS[2]: {self.seed[2]:08X} S[3]: {self.seed[3]:08X}\n")
+        print(f"G8TID: {self.G8TID}    TID: {self.TID}    SID: {self.SID}")
 
 class Stationary(FrameGenerator):
     def __init__(self, seed, TID, SID, flawlessiv = 0, shinyLock = 0, ability = 4, gender = 0):
@@ -63,4 +68,12 @@ class Stationary(FrameGenerator):
                 self.IVs[i] = r.quickrand2(0x1F)
         self.Ability = r.quickrand2(0x1)
         self.Nature = r.quickrand1(25)
-        
+
+class IDs(FrameGenerator):
+    def __init__(self, seed):
+        self.seed = seed
+        r = XORSHIFT(self.seed)
+        self.SIDTID = r.next()
+        self.TID = self.SIDTID & 0xFFFF
+        self.SID = self.SIDTID >> 16
+        self.G8TID = (((self.SID << 16) & 0xFFFFFFFF) | self.TID) % 1000000
