@@ -25,3 +25,6 @@ from .NestHoleDistributionReward8Archive import NestHoleDistributionReward8Archi
 from .NestHoleReward8 import NestHoleReward8
 from .NestHoleReward8Table import NestHoleReward8Table
 from .NestHoleReward8Archive import NestHoleReward8Archive
+
+from .BDSPEgg import BDSPEgg
+from .MyStatusBDSP import MyStatusBDSP
