@@ -31,7 +31,7 @@ while True:
     seed = b.getSeed()
     tmpRNG = XORSHIFT(seed)
     print("Initial Seed")
-    print(f"S[0]: {seed[0]:08X}\tS[1]: {seed[1]:08X}\nS[2]: {seed[2]:08X}\tS[1]: {seed[3]:08X}")
+    print(f"S[0]: {seed[0]:08X}\tS[1]: {seed[1]:08X}\nS[2]: {seed[2]:08X}\tS[3]: {seed[3]:08X}")
     print()
     print("Searchig...")
     found = False

@@ -322,7 +322,7 @@ class BDSPBot(NXBot):
         NXBot.__init__(self,ip,port)
         from structure import MyStatusBDSP
         self.TrainerSave = MyStatusBDSP(self.readTrainerBlock())
-        print(f"TID: {self.TrainerSave.TID()}    SID: {self.TrainerSave.SID()}    ID: {self.TrainerSave.displayID()}\n")
+        print(f"G8TID: {self.TrainerSave.displayID()}    TID: {self.TrainerSave.TID()}    SID: {self.TrainerSave.SID()}\n")
         self.TID = self.TrainerSave.TID()
         self.SID = self.TrainerSave.SID()
 

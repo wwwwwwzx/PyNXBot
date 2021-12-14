@@ -76,4 +76,4 @@ class IDs(FrameGenerator):
         self.SIDTID = r.next()
         self.TID = self.SIDTID & 0xFFFF
         self.SID = self.SIDTID >> 16
-        self.G8TID = (((self.SID << 16) & 0xFFFFFFFF) | self.TID) % 1000000
+        self.G8TID = self.SIDTID % 1000000
