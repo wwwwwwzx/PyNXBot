@@ -4,6 +4,7 @@ import sys
 import json
 sys.path.append('../')
 
+from lookups import Util
 from rng import XORSHIFT,Stationary
 from nxbot import BDSPBot
 
