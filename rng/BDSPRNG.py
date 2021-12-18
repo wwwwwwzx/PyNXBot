@@ -8,14 +8,46 @@ class XORSHIFT(object):
     def next(self):
         t = self.seed[0]
         s = self.seed[3]
-
         t ^= (t << 11) & 0xFFFFFFFF
         t ^= t >> 8
         t ^= s ^ (s >> 19)
-
         self.seed = [self.seed[1], self.seed[2], self.seed[3], t]
-
         return ((t % 0xFFFFFFFF) + 0x80000000) & 0xFFFFFFFF
+
+    def quickrand1(self,mask):
+        return self.next() % mask
+
+    def quickrand2(self,mask):
+        return self.next() & mask
+
+class XOROSHIRO128PLUS(object):
+    ulongmask = 2 ** 64 - 1
+    uintmask = 2 ** 32 - 1
+
+    def __init__(self, seed):
+        _seed1 = (seed - 0x61C8864680B583EB) & XOROSHIRO128PLUS.ulongmask
+        _seed2 = (seed + 0x3C6EF372FE94F82A) & XOROSHIRO128PLUS.ulongmask
+        _seed1 = (0xBF58476D1CE4E5B9 * (_seed1 ^ (_seed1 >> 30))) & XOROSHIRO128PLUS.ulongmask
+        _seed2 = (0xBF58476D1CE4E5B9 * (_seed2 ^ (_seed2 >> 30))) & XOROSHIRO128PLUS.ulongmask
+        _seed1 = (0x94D049BB133111EB * (_seed1 ^ (_seed1 >> 27))) & XOROSHIRO128PLUS.ulongmask
+        _seed2 = (0x94D049BB133111EB * (_seed2 ^ (_seed2 >> 27))) & XOROSHIRO128PLUS.ulongmask
+        seed1 = _seed1 ^ (_seed1 >> 31)
+        seed2 = _seed2 ^ (_seed2 >> 31)
+        self.seed = [seed1, seed2]
+
+    def state(self):
+        return self.seed
+
+    @staticmethod
+    def rotl(x, k):
+        return ((x << k) | (x >> (64 - k))) & XOROSHIRO128PLUS.ulongmask
+
+    def next(self):
+        s0, s1 = self.seed
+        result = (s0 + s1) & XOROSHIRO128PLUS.ulongmask
+        s1 ^= s0
+        self.seed = [XOROSHIRO128PLUS.rotl(s0, 24) ^ s1 ^ ((s1 << 16) & XOROSHIRO128PLUS.ulongmask), XOROSHIRO128PLUS.rotl(s1, 37)]
+        return result >> 32
 
     def quickrand1(self,mask):
         return self.next() % mask
@@ -35,11 +67,15 @@ class FrameGenerator(object):
         print(f"S[0]: {self.seed[0]:08X} S[1]: {self.seed[1]:08X}\nS[2]: {self.seed[2]:08X} S[3]: {self.seed[3]:08X}\n")
         print(f"G8TID: {self.G8TID}    TID: {self.TID}    SID: {self.SID}")
 
-class Stationary(FrameGenerator):
-    def __init__(self, seed, TID, SID, flawlessiv = 0, shinyLock = 0, ability = 4, gender = 0):
+class Generator(FrameGenerator):
+    def __init__(self, seed, u32seed, TID, SID, encounter = "s", flawlessiv = 0, shinyLock = 0, ability = 4, gender = 0):
         self.seed = seed
-        r = XORSHIFT(self.seed)
-        self.EC = r.next()
+        if encounter == "s":
+            r = XORSHIFT(self.seed)
+            self.EC = r.next()
+        elif encounter == "r":
+            r = XOROSHIRO128PLUS(u32seed)
+            self.EC = u32seed            
         self.OTID = r.next()
         self.PID = r.next()
         fakeXor = (self.OTID >> 16) ^ (self.OTID & 0xFFFF) ^ (self.PID >> 16) ^ (self.PID & 0xFFFF)

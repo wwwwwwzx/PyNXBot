@@ -5,7 +5,7 @@ import json
 sys.path.append('../')
 
 from lookups import Util
-from rng import XORSHIFT,Stationary
+from rng import XORSHIFT,Generator
 from nxbot import BDSPBot
 
 config = json.load(open("../config.json"))
@@ -24,6 +24,7 @@ A0 = [31,0,31,31,31,31]
 S0 = [31,31,31,31,31,0]
 TRA0 = [31,0,31,31,31,0]
 
+encounterType = input("Which is the encounter type? (s - stationary / r - roamer) ")
 MaxAdvances = int(input("Input Max Advances: "))
 b.pause(0.5)
 print()
@@ -38,7 +39,7 @@ while True:
     found = False
     i = 0
     while i < MaxAdvances:
-        r = Stationary(tmpRNG.state(), b.TrainerSave.TID(), b.TrainerSave.SID(), 3)
+        r = Generator(tmpRNG.state(), tmpRNG.next(), b.TrainerSave.TID(), b.TrainerSave.SID(), encounterType, 3)
         if usefilters:
             if r.ShinyType != 'None' and (r.IVs == A0 or r.IVs == V6): #and Util.STRINGS.natures[r.Nature] == 'Adamant' and (r.IVs == V6 or  or r.IVs == S0):
                 print(f"\nAdvances: {i}")
@@ -52,7 +53,6 @@ while True:
             print()
             if found is not True:
                 found = True
-        tmpRNG.next()
         i += 1
 
     if found:
