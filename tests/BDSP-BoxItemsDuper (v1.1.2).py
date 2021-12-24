@@ -60,7 +60,7 @@ def moveToNextSlot(line):
 
 def moveToNextLine():
     b.moveStick("RIGHT",x=0,y=-32767)
-    b.pause(0.5)
+    b.pause(0.3)
     b.moveStick("RIGHT",x=0,y=0)
 
 def goBackToFirstMenu():
