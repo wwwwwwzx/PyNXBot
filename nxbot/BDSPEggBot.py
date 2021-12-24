@@ -6,5 +6,5 @@ class BDSPEggBot(BDSPBot):
         BDSPBot.__init__(self,ip,port)
 
     def getEggData(self):
-        eggBlockPointer = "[[[[[[main+4E60170]+18]+C0]+28]+B8]]+458"
+        eggBlockPointer = "[[[[[[main+4E853F0]+18]+C0]+28]+B8]]+458"
         return BDSPEgg(self.read_pointer(eggBlockPointer, 17))

@@ -327,7 +327,7 @@ class BDSPBot(NXBot):
         self.SID = self.TrainerSave.SID()
 
     def getSeed(self):
-        seed = self.read_pointer("[main+4F8CCD0]",16)
+        seed = self.read_pointer("[main+4FB2050]",16)
         s0 = int.from_bytes(seed[:4], "little")
         s1 = int.from_bytes(seed[4:8], "little")
         s2 = int.from_bytes(seed[8:12], "little")
@@ -335,5 +335,5 @@ class BDSPBot(NXBot):
         return [s0, s1, s2, s3]
 
     def readTrainerBlock(self):
-        trainerBlockPointer = "[[[[[[main+4E60170]+18]+C0]+28]+B8]]+E8"
+        trainerBlockPointer = "[[[[[[main+4E853F0]+18]+C0]+28]+B8]]+E8"
         return self.read_pointer(trainerBlockPointer, 8)
