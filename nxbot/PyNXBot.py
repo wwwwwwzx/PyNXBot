@@ -317,6 +317,7 @@ class SWSHBot(NXBot):
 
 class BDSPBot(NXBot):
     PK8STOREDSIZE = 0x148
+    ROAMERSBLOCKSIZE = 0x60
 
     def __init__(self,ip,port = 6000):
         NXBot.__init__(self,ip,port)
@@ -333,6 +334,14 @@ class BDSPBot(NXBot):
         s2 = int.from_bytes(seed[8:12], "little")
         s3 = int.from_bytes(seed[12:], "little")
         return [s0, s1, s2, s3]
+
+    def readWild(self):
+        roamerPointer = "[[[[[[[[[[[[[main+4E853F0]+18]+C0]+28]+B8]]+7E8]+58]+28]+10]+20]+20]+18]+20"
+        return self.read_pointer(roamerPointer,self.PK8STOREDSIZE)
+
+    def readRoamerBlock(self):
+        roamerPointer = "[[[[[[[main+4E853F0]+18]+C0]+28]+B8]]+2A0]+20"
+        return self.read_pointer(roamerPointer,self.ROAMERSBLOCKSIZE)
 
     def readTrainerBlock(self):
         trainerBlockPointer = "[[[[[[main+4E853F0]+18]+C0]+28]+B8]]+E8"

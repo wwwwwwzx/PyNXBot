@@ -28,3 +28,4 @@ from .NestHoleReward8Archive import NestHoleReward8Archive
 
 from .BDSPEgg import BDSPEgg
 from .MyStatusBDSP import MyStatusBDSP
+from .BDSPRoamer import BDSPRoamer

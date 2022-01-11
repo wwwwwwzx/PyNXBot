@@ -58,7 +58,8 @@ class XOROSHIRO128PLUS(object):
 class FrameGenerator(object):
     def print(self):
         from lookups import Util
-        print(f"S[0]: {self.seed[0]:08X} S[1]: {self.seed[1]:08X}\nS[2]: {self.seed[2]:08X} S[3]: {self.seed[3]:08X}\n")
+        if self.seed is not 0:
+            print(f"S[0]: {self.seed[0]:08X} S[1]: {self.seed[1]:08X}\nS[2]: {self.seed[2]:08X} S[3]: {self.seed[3]:08X}\n")
         print(f"ShinyType: {self.ShinyType}    EC: {self.EC:08X}    PID: {self.PID:08X}")
         print(f"Ability: {self.Ability}    Nature: {Util.STRINGS.natures[self.Nature]}    IVs: {self.IVs}")
 
