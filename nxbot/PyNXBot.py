@@ -135,7 +135,7 @@ class NXBot(object):
         self.click("A")
         self.pause(0.2)
         self.click("A")
-        self.pause(3)
+        self.pause(1.3)
 
     def enterGame(self):
         print("\nStarting the game")
