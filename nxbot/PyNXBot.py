@@ -335,11 +335,19 @@ class BDSPBot(NXBot):
         s3 = int.from_bytes(seed[12:], "little")
         return [s0, s1, s2, s3]
 
-    def readParty(self,slot):
+    def readParty(self,slot=1):
         if slot > 6:
             slot = 6
         partyPointer = f"[[[[[[[[[[[main+4E853F0]+18]+C0]+28]+B8]]+7F0]+10]+{0x20+(0x08*(slot-1)):X}]+20]+18]+20"
         return self.read_pointer(partyPointer,self.PK8STOREDSIZE)
+
+    def readBox(self,box=1,slot=1):
+        if box > 40:
+            box = 40
+        if slot > 29:
+            slot = 29
+        boxPointer = f"[[[[[[[[[main+4E853F0]+18]+C0]+28]+B8]]+A0]+{0x20+(0x08*(box-1)):X}]+{0x20+(0x08*(slot-1)):X}]+20"
+        return self.read_pointer(boxPointer,self.PK8STOREDSIZE)
 
     def readWild(self):
         roamerPointer = "[[[[[[[[[[[[[main+4E853F0]+18]+C0]+28]+B8]]+7E8]+58]+28]+10]+20]+20]+18]+20"
