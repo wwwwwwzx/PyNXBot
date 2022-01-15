@@ -264,8 +264,8 @@ class SWSHBot(NXBot):
     def readBox(self,box = 1,slot = 1):
         if box > 31:
             box = 31
-        if slot > 29:
-            slot = 29
+        if slot > 30:
+            slot = 30
         address = 0x45075880 + ((box - 1) * 30 * self.PK8PARTYSIZE) + ((slot - 1) * self.PK8PARTYSIZE)
         return self.read(address,self.PK8PARTYSIZE)
 
@@ -344,8 +344,8 @@ class BDSPBot(NXBot):
     def readBox(self,box=1,slot=1):
         if box > 40:
             box = 40
-        if slot > 29:
-            slot = 29
+        if slot > 30:
+            slot = 30
         boxPointer = f"[[[[[[[[[main+4E853F0]+18]+C0]+28]+B8]]+A0]+{0x20+(0x08*(box-1)):X}]+{0x20+(0x08*(slot-1)):X}]+20"
         return self.read_pointer(boxPointer,self.PK8STOREDSIZE)
 
