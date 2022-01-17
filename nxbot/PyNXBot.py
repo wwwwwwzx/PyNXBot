@@ -332,30 +332,38 @@ class BDSPBot(NXBot):
     ROAMERSBLOCKSIZE = 0x60
 
     POINTERS = {
-        0x0100000011D90000: { # Brilliant Diamond
-            0xD9E96FB92878E345: { # 1.1.1
+        0x0100000011D90000: {
+            'Game': 'Brilliant Diamond',
+            0xD9E96FB92878E345: {
+                'Version': '1.1.1',
                 'PlayerPrefsProvider': 0x4C49098,
                 'MainRng': 0x4F8CCD0
             },
-            0x1B5215DF918BA04B: { # 1.1.2
+            0x1B5215DF918BA04B: {
+                'Version': '1.1.2',
                 'PlayerPrefsProvider': 0x4E60170,
                 'MainRng': 0x4F8CCD0
             },
-            0xBC259F7EE8E79A49: { # 1.1.3
+            0xBC259F7EE8E79A49: {
+                'Version': '1.1.3',
                 'PlayerPrefsProvider': 0x4E853F0,
                 'MainRng': 0x4FB2050
             }
         },
-        0x010018E011D92000: { # Shining Pearl
-            0x3C70CAE153DF0B4F: { # 1.1.1
+        0x010018E011D92000: {
+            'Game': 'Shining Pearl',
+            0x3C70CAE153DF0B4F: {
+                'Version': '1.1.1',
                 'PlayerPrefsProvider': 0x4E60170,
                 'MainRng': 0x4F8CCD0
             },
-            0x5D3A3B56321FFD4C: { # 1.1.2
+            0x5D3A3B56321FFD4C: {
+                'Version': '1.1.2',
                 'PlayerPrefsProvider': 0x4E60170,
                 'MainRng': 0x4F8CCD0
             },
-            0x046D130F0873314A: { # 1.1.3
+            0x046D130F0873314A: {
+                'Version': '1.1.3',
                 'PlayerPrefsProvider': 0x4E853F0,
                 'MainRng': 0x4FB2050
             }
@@ -375,9 +383,11 @@ class BDSPBot(NXBot):
         if self.buildID not in self.POINTERS[self.titleID]:
             print(f"Unsupported build: {self.buildID:016X}")
             self.close()
-        print(f"Title: {self.titleID:016X}    Build: {self.buildID:016X}")
+        self.game = self.POINTERS[self.titleID]['Game']
+        self.version = self.POINTERS[self.titleID][self.buildID]['Version']
         self.playerPrefsProvider = self.POINTERS[self.titleID][self.buildID]['PlayerPrefsProvider']
         self.mainRng = self.POINTERS[self.titleID][self.buildID]['MainRng']
+        print(f"Game: {self.game}    Version: {self.version}")
         from structure import MyStatusBDSP
         self.TrainerSave = MyStatusBDSP(self.readTrainerBlock())
         print(f"G8TID: {self.TrainerSave.displayID()}    TID: {self.TrainerSave.TID()}    SID: {self.TrainerSave.SID()}\n")
