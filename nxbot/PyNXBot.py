@@ -112,6 +112,18 @@ class NXBot(object):
                 fileOut.write(buf)
         return buf
 
+    def getTitleId(self):
+        self.sendCommand('getTitleID')
+        sleep(0.005)
+        buf = self.s.recv(18)
+        return buf[0:-1]
+
+    def getBuildId(self):
+        self.sendCommand('getBuildID')
+        sleep(0.005)
+        buf = self.s.recv(18)
+        return buf[0:-1]
+
     def getSystemLanguage(self):
         self.sendCommand('getSystemLanguage')
         sleep(0.005)
@@ -319,8 +331,63 @@ class BDSPBot(NXBot):
     PK8STOREDSIZE = 0x148
     ROAMERSBLOCKSIZE = 0x60
 
+    POINTERS = {
+        0x0100000011D90000: {
+            'Game': 'Brilliant Diamond',
+            0xD9E96FB92878E345: {
+                'Version': '1.1.1',
+                'PlayerPrefsProvider': 0x4C49098,
+                'MainRng': 0x4F8CCD0
+            },
+            0x1B5215DF918BA04B: {
+                'Version': '1.1.2',
+                'PlayerPrefsProvider': 0x4E60170,
+                'MainRng': 0x4F8CCD0
+            },
+            0xBC259F7EE8E79A49: {
+                'Version': '1.1.3',
+                'PlayerPrefsProvider': 0x4E853F0,
+                'MainRng': 0x4FB2050
+            }
+        },
+        0x010018E011D92000: {
+            'Game': 'Shining Pearl',
+            0x3C70CAE153DF0B4F: {
+                'Version': '1.1.1',
+                'PlayerPrefsProvider': 0x4E60170,
+                'MainRng': 0x4F8CCD0
+            },
+            0x5D3A3B56321FFD4C: {
+                'Version': '1.1.2',
+                'PlayerPrefsProvider': 0x4E60170,
+                'MainRng': 0x4F8CCD0
+            },
+            0x046D130F0873314A: {
+                'Version': '1.1.3',
+                'PlayerPrefsProvider': 0x4E853F0,
+                'MainRng': 0x4FB2050
+            }
+        }
+    }
+
     def __init__(self,ip,port = 6000):
         NXBot.__init__(self,ip,port)
+        self.titleID = int(self.getTitleId(), 16)
+        if self.titleID == 0:
+            print("Game not running")
+            self.close()
+        elif self.titleID not in self.POINTERS:
+            print(f"Unsupported title: {self.titleID:016X}")
+            self.close()
+        self.buildID = int(self.getBuildId(), 16)
+        if self.buildID not in self.POINTERS[self.titleID]:
+            print(f"Unsupported build: {self.buildID:016X}")
+            self.close()
+        self.game = self.POINTERS[self.titleID]['Game']
+        self.version = self.POINTERS[self.titleID][self.buildID]['Version']
+        self.playerPrefsProvider = self.POINTERS[self.titleID][self.buildID]['PlayerPrefsProvider']
+        self.mainRng = self.POINTERS[self.titleID][self.buildID]['MainRng']
+        print(f"Game: {self.game}    Version: {self.version}")
         from structure import MyStatusBDSP
         self.TrainerSave = MyStatusBDSP(self.readTrainerBlock())
         print(f"G8TID: {self.TrainerSave.displayID()}    TID: {self.TrainerSave.TID()}    SID: {self.TrainerSave.SID()}\n")
@@ -328,7 +395,7 @@ class BDSPBot(NXBot):
         self.SID = self.TrainerSave.SID()
 
     def getSeed(self):
-        seed = self.read_pointer("[main+4FB2050]",16)
+        seed = self.read_pointer(f"[main+{self.mainRng:X}]",16)
         s0 = int.from_bytes(seed[:4], "little")
         s1 = int.from_bytes(seed[4:8], "little")
         s2 = int.from_bytes(seed[8:12], "little")
@@ -338,7 +405,7 @@ class BDSPBot(NXBot):
     def readParty(self,slot=1):
         if slot > 6:
             slot = 6
-        partyPointer = f"[[[[[[[[[[[main+4E853F0]+18]+C0]+28]+B8]]+7F0]+10]+{0x20+(0x08*(slot-1)):X}]+20]+18]+20"
+        partyPointer = f"[[[[[[[[[[[main+{self.playerPrefsProvider:X}]+18]+C0]+28]+B8]]+7F0]+10]+{0x20+(0x08*(slot-1)):X}]+20]+18]+20"
         return self.read_pointer(partyPointer,self.PK8STOREDSIZE)
 
     def readBox(self,box=1,slot=1):
@@ -346,17 +413,17 @@ class BDSPBot(NXBot):
             box = 40
         if slot > 30:
             slot = 30
-        boxPointer = f"[[[[[[[[[main+4E853F0]+18]+C0]+28]+B8]]+A0]+{0x20+(0x08*(box-1)):X}]+{0x20+(0x08*(slot-1)):X}]+20"
+        boxPointer = f"[[[[[[[[[main+{self.playerPrefsProvider:X}]+18]+C0]+28]+B8]]+A0]+{0x20+(0x08*(box-1)):X}]+{0x20+(0x08*(slot-1)):X}]+20"
         return self.read_pointer(boxPointer,self.PK8STOREDSIZE)
 
     def readWild(self):
-        roamerPointer = "[[[[[[[[[[[[[main+4E853F0]+18]+C0]+28]+B8]]+7E8]+58]+28]+10]+20]+20]+18]+20"
+        roamerPointer = f"[[[[[[[[[[[[[main+{self.playerPrefsProvider:X}]+18]+C0]+28]+B8]]+7E8]+58]+28]+10]+20]+20]+18]+20"
         return self.read_pointer(roamerPointer,self.PK8STOREDSIZE)
 
     def readRoamerBlock(self):
-        roamerPointer = "[[[[[[[main+4E853F0]+18]+C0]+28]+B8]]+2A0]+20"
+        roamerPointer = f"[[[[[[[main+{self.playerPrefsProvider:X}]+18]+C0]+28]+B8]]+2A0]+20"
         return self.read_pointer(roamerPointer,self.ROAMERSBLOCKSIZE)
 
     def readTrainerBlock(self):
-        trainerBlockPointer = "[[[[[[main+4E853F0]+18]+C0]+28]+B8]]+E8"
+        trainerBlockPointer = f"[[[[[[main+{self.playerPrefsProvider:X}]+18]+C0]+28]+B8]]+E8"
         return self.read_pointer(trainerBlockPointer, 8)
