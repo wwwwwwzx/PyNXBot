@@ -30,6 +30,15 @@ eggSeed = egg.seed()
 eggSteps = egg.steps()
 print(f"Is egg ready? {isEggReady}\nEgg Seed: {eggSeed:08X}\nSteps for next egg: {180 - eggSteps}\n\n")
 
+targetAdvances = 0
+botFlag = input("Press D-pad Down at a specific advance? (y/n) ")
+if botFlag == "y" or botFlag == "Y":
+    botFlag = True
+    targetAdvances = int(input("Input the target advance: "))
+else:
+    botFlag = False
+print("\n")
+
 while True:
     currSeed = b.getSeed()
     currEgg = b.getEggData()
@@ -47,3 +56,8 @@ while True:
             print()
             print(f"Advances: {advances}\n")
             print(f"Is egg ready? {currIsEggReady}\nEgg Seed: {currEggSeed:08X}\nSteps for next egg: {180 - currEggSteps}\n\n")
+
+            if botFlag and advances == targetAdvances:
+                for i in range(5):
+                    b.click("DDOWN")
+                    b.pause(0.1)
