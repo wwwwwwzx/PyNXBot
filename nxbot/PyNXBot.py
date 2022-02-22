@@ -348,6 +348,11 @@ class BDSPBot(NXBot):
                 'Version': '1.1.3',
                 'PlayerPrefsProvider': 0x4E853F0,
                 'MainRng': 0x4FB2050
+            },
+            0x35B9D8779B195141: {
+                'Version': '1.2.0',
+                'PlayerPrefsProvider': 0x4E61DD0,
+                'MainRng': 0x4F8E750
             }
         },
         0x010018E011D92000: {
@@ -366,6 +371,11 @@ class BDSPBot(NXBot):
                 'Version': '1.1.3',
                 'PlayerPrefsProvider': 0x4E853F0,
                 'MainRng': 0x4FB2050
+            },
+            0xD75246EC33C2F64B: {
+                'Version': '1.2.0',
+                'PlayerPrefsProvider': 0x4E61DD0,
+                'MainRng': 0x4F8E750
             }
         }
     }
