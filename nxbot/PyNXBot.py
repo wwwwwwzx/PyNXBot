@@ -337,22 +337,30 @@ class BDSPBot(NXBot):
             0xD9E96FB92878E345: {
                 'Version': '1.1.1',
                 'PlayerPrefsProvider': 0x4C49098,
-                'MainRng': 0x4F8CCD0
+                'MainRng': 0x4F8CCD0,
+                'WildPkmn': 0x7E8,
+                'PartyPkmn': 0x7F0
             },
             0x1B5215DF918BA04B: {
                 'Version': '1.1.2',
                 'PlayerPrefsProvider': 0x4E60170,
-                'MainRng': 0x4F8CCD0
+                'MainRng': 0x4F8CCD0,
+                'WildPkmn': 0x7E8,
+                'PartyPkmn': 0x7F0
             },
             0xBC259F7EE8E79A49: {
                 'Version': '1.1.3',
                 'PlayerPrefsProvider': 0x4E853F0,
-                'MainRng': 0x4FB2050
+                'MainRng': 0x4FB2050,
+                'WildPkmn': 0x7E8,
+                'PartyPkmn': 0x7F0
             },
             0x35B9D8779B195141: {
                 'Version': '1.2.0',
                 'PlayerPrefsProvider': 0x4E61DD0,
-                'MainRng': 0x4F8E750
+                'MainRng': 0x4F8E750,
+                'WildPkmn': 0x7F0,
+                'PartyPkmn': 0x7F8
             }
         },
         0x010018E011D92000: {
@@ -360,22 +368,30 @@ class BDSPBot(NXBot):
             0x3C70CAE153DF0B4F: {
                 'Version': '1.1.1',
                 'PlayerPrefsProvider': 0x4E60170,
-                'MainRng': 0x4F8CCD0
+                'MainRng': 0x4F8CCD0,
+                'WildPkmn': 0x7E8,
+                'PartyPkmn': 0x7F0
             },
             0x5D3A3B56321FFD4C: {
                 'Version': '1.1.2',
                 'PlayerPrefsProvider': 0x4E60170,
-                'MainRng': 0x4F8CCD0
+                'MainRng': 0x4F8CCD0,
+                'WildPkmn': 0x7E8,
+                'PartyPkmn': 0x7F0
             },
             0x046D130F0873314A: {
                 'Version': '1.1.3',
                 'PlayerPrefsProvider': 0x4E853F0,
-                'MainRng': 0x4FB2050
+                'MainRng': 0x4FB2050,
+                'WildPkmn': 0x7E8,
+                'PartyPkmn': 0x7F0
             },
             0xD75246EC33C2F64B: {
                 'Version': '1.2.0',
                 'PlayerPrefsProvider': 0x4E61DD0,
-                'MainRng': 0x4F8E750
+                'MainRng': 0x4F8E750,
+                'WildPkmn': 0x7F0,
+                'PartyPkmn': 0x7F8
             }
         }
     }
@@ -397,6 +413,8 @@ class BDSPBot(NXBot):
         self.version = self.POINTERS[self.titleID][self.buildID]['Version']
         self.playerPrefsProvider = self.POINTERS[self.titleID][self.buildID]['PlayerPrefsProvider']
         self.mainRng = self.POINTERS[self.titleID][self.buildID]['MainRng']
+        self.wildPkmn = self.POINTERS[self.titleID][self.buildID]['WildPkmn']
+        self.partyPkmn = self.POINTERS[self.titleID][self.buildID]['PartyPkmn']
         print(f"Game: {self.game}    Version: {self.version}")
         from structure import MyStatusBDSP
         self.TrainerSave = MyStatusBDSP(self.readTrainerBlock())
@@ -415,7 +433,7 @@ class BDSPBot(NXBot):
     def readParty(self,slot=1):
         if slot > 6:
             slot = 6
-        partyPointer = f"[[[[[[[[[[[main+{self.playerPrefsProvider:X}]+18]+C0]+28]+B8]]+7F8]+10]+{0x20+(0x08*(slot-1)):X}]+20]+18]+20"
+        partyPointer = f"[[[[[[[[[[[main+{self.playerPrefsProvider:X}]+18]+C0]+28]+B8]]+{self.partyPkmn:X}]+10]+{0x20+(0x08*(slot-1)):X}]+20]+18]+20"
         return self.read_pointer(partyPointer,self.PK8STOREDSIZE)
 
     def readBox(self,box=1,slot=1):
@@ -427,7 +445,7 @@ class BDSPBot(NXBot):
         return self.read_pointer(boxPointer,self.PK8STOREDSIZE)
 
     def readWild(self):
-        roamerPointer = f"[[[[[[[[[[[[[main+{self.playerPrefsProvider:X}]+18]+C0]+28]+B8]]+7F0]+58]+28]+10]+20]+20]+18]+20"
+        roamerPointer = f"[[[[[[[[[[[[[main+{self.playerPrefsProvider:X}]+18]+C0]+28]+B8]]+{self.wildPkmn:X}]+58]+28]+10]+20]+20]+18]+20"
         return self.read_pointer(roamerPointer,self.PK8STOREDSIZE)
 
     def readRoamerBlock(self):
