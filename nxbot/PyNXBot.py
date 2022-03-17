@@ -459,8 +459,8 @@ class BDSPBot(NXBot):
         return self.read_pointer(boxPointer,self.PK8STOREDSIZE)
 
     def readWild(self):
-        roamerPointer = f"[[[[[[[[[[[[[main+{self.playerPrefsProvider:X}]+18]+C0]+28]+B8]]+{self.wildPkmn:X}]+58]+28]+10]+20]+20]+18]+20"
-        return self.read_pointer(roamerPointer,self.PK8STOREDSIZE)
+        wildPointer = f"[[[[[[[[[[[[[main+{self.playerPrefsProvider:X}]+18]+C0]+28]+B8]]+{self.wildPkmn:X}]+58]+28]+10]+20]+20]+18]+20"
+        return self.read_pointer(wildPointer,self.PK8STOREDSIZE)
 
     def readRoamerBlock(self):
         roamerPointer = f"[[[[[[[main+{self.playerPrefsProvider:X}]+18]+C0]+28]+B8]]+2A0]+20"
