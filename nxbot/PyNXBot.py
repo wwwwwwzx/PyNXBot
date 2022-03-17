@@ -353,6 +353,11 @@ class BDSPBot(NXBot):
                 'Version': '1.2.0',
                 'PlayerPrefsProvider': 0x4E61DD0,
                 'MainRng': 0x4F8E750
+            },
+            0x94CEAE325C205C4B: {
+                'Version': '1.3.0',
+                'PlayerPrefsProvider': 0x4C90330,
+                'MainRng': 0x4FD43D0
             }
         },
         0x010018E011D92000: {
@@ -376,6 +381,11 @@ class BDSPBot(NXBot):
                 'Version': '1.2.0',
                 'PlayerPrefsProvider': 0x4E61DD0,
                 'MainRng': 0x4F8E750
+            },
+            0x38F59CBDA2EB9C44: {
+                'Version': '1.3.0',
+                'PlayerPrefsProvider': 0x4EA7408,
+                'MainRng': 0x4FD43D0
             }
         }
     }
@@ -415,7 +425,7 @@ class BDSPBot(NXBot):
     def readParty(self,slot=1):
         if slot > 6:
             slot = 6
-        partyPointer = f"[[[[[[[[[[[main+{self.playerPrefsProvider:X}]+18]+C0]+28]+B8]]+7F8]+10]+{0x20+(0x08*(slot-1)):X}]+20]+18]+20"
+        partyPointer = f"[[[[[[[[[[[main+{self.playerPrefsProvider:X}]+18]+C0]+28]+B8]]+808]+10]+{0x20+(0x08*(slot-1)):X}]+20]+18]+20"
         return self.read_pointer(partyPointer,self.PK8STOREDSIZE)
 
     def readBox(self,box=1,slot=1):
@@ -427,7 +437,7 @@ class BDSPBot(NXBot):
         return self.read_pointer(boxPointer,self.PK8STOREDSIZE)
 
     def readWild(self):
-        roamerPointer = f"[[[[[[[[[[[[[main+{self.playerPrefsProvider:X}]+18]+C0]+28]+B8]]+7F0]+58]+28]+10]+20]+20]+18]+20"
+        roamerPointer = f"[[[[[[[[[[[[[main+{self.playerPrefsProvider:X}]+18]+C0]+28]+B8]]+800]+58]+28]+10]+20]+20]+18]+20"
         return self.read_pointer(roamerPointer,self.PK8STOREDSIZE)
 
     def readRoamerBlock(self):
