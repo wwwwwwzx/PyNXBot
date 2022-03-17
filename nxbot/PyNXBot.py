@@ -361,6 +361,13 @@ class BDSPBot(NXBot):
                 'MainRng': 0x4F8E750,
                 'WildPkmn': 0x7F0,
                 'PartyPkmn': 0x7F8
+            },
+            0x94CEAE325C205C4B: {
+                'Version': '1.3.0',
+                'PlayerPrefsProvider': 0x4C90330,
+                'MainRng': 0x4FD43D0
+                'WildPkmn': 0x800,
+                'PartyPkmn': 0x808
             }
         },
         0x010018E011D92000: {
@@ -392,6 +399,13 @@ class BDSPBot(NXBot):
                 'MainRng': 0x4F8E750,
                 'WildPkmn': 0x7F0,
                 'PartyPkmn': 0x7F8
+            },
+            0x38F59CBDA2EB9C44: {
+                'Version': '1.3.0',
+                'PlayerPrefsProvider': 0x4EA7408,
+                'MainRng': 0x4FD43D0
+                'WildPkmn': 0x800,
+                'PartyPkmn': 0x808
             }
         }
     }
